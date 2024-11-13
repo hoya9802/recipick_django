@@ -1,0 +1,15 @@
+# Git
+.git
+.gitignore
+
+# Docker
+.docker
+
+# Python
+recipick_app/__pycache__/
+recipick_app/*/__pycache__/
+recipick_app/*/*/__pycache__/
+recipick_app/*/*/*/__pycache__/
+.env/
+.venv/
+venv/
