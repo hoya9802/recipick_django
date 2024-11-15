@@ -150,7 +150,7 @@ class PrivateUserApiTests(TestCase):
         })
 
     def test_post_me_not_allowed(self):
-        # 허용되지 않은 사용자가 post요청 했을때
+        # ME_URL경로가 post요청을 처리하지 않는지 확인
         res = self.client.post(ME_URL, {})
 
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
