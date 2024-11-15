@@ -30,7 +30,8 @@ class PublicUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         user = get_user_model().objects.get(id=payload['id']) #생성된 사용자를 id로 가져옴
-        self.assertTrue(user.check_password(payload['password'])) #비밀번호가 해시로 저장되었는지 확인
+        #비밀번호가 해시로 저장되었는지 확인
+        self.assertTrue(user.check_password(payload['password']))
         self.assertNotIn('password', res.data) #응답할 때 비밀번호가 포함 안됐는지 확인
 
     def test_user_with_id_exists_error(self): #이미 존재하는 아이디로 가입했을 때 오류가 발생하는지
@@ -95,7 +96,11 @@ class PublicUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_token_id_not_found(self): #존재하지 않는 아이디로 토큰 요청할 때
-        payload = {'id': 'test', 'email': 'test@example.com', 'password': 'pass123'}
+        payload = {
+                    'id': 'test',
+                    'email': 'test@example.com',
+                    'password': 'pass123'
+        }
         res = self.client.post(TOKEN_URL, payload)
 
         self.assertNotIn('token', res.data)
@@ -149,4 +154,3 @@ class PrivateUserApiTests(TestCase):
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password(payload['password']))
         self.assertEqual(res.status_code, status.HTTP_200_OK)'''
-

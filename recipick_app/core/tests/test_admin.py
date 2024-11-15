@@ -29,7 +29,8 @@ class AdminSiteTests(TestCase):
         self.assertContains(res, self.user.email)
 
     def test_edit_user_page(self): #사용자 수정페이지가 열리는지 확인
-        url = reverse('admin:core_user_change', args=[self.user.id]) #self.user의 id를 url에 전달하여 페이지 생성
+        #self.user의 id를 url에 전달하여 페이지 생성
+        url = reverse('admin:core_user_change', args=[self.user.id])
         res = self.client.get(url)
 
         self.assertEqual(res.status_code, 200)
