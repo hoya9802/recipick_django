@@ -1,6 +1,18 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
+from recipe import models
+
+
+def create_user(id='user', password='testpass'):
+    """유저를 만들고 해당 객체를 return"""
+    return get_user_model().objects.create(
+        id=id,
+        password=password,
+        nick_name='user1',
+        email='test@example.com',
+    )
+
 
 class ModelTests(TestCase):
 
@@ -28,3 +40,17 @@ class ModelTests(TestCase):
         self.assertEqual(user.id, id)
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
+
+    def test_craete_recipe(self):
+        """레시피 모델 성공적으로 만들어지는지 테스트"""
+
+        user = create_user()
+        recipe = models.Recipe.objects.create(
+            user=user,
+            name='spaghetti',
+            time_minutes=20,
+            serving=2,
+            description='looks so good',
+        )
+
+        self.assertEqual(str(recipe), recipe.name)
