@@ -5,7 +5,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import RecipeViewSet
+from .views import RecipeViewSet, CategoryListView
 
 
 router = DefaultRouter()
@@ -15,4 +15,5 @@ app_name = 'recipe'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('categories/', CategoryListView.as_view(), name='category-list'),
 ]

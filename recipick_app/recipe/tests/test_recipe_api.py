@@ -8,12 +8,13 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from recipe.models import Recipe
+from recipe.models import Recipe, Category
 
-from recipe.serializers import RecipeSerializer, RecipeDetailSerializer
+from recipe.serializers import RecipeSerializer, RecipeListSerializer
 
 
 RECIPE_URL = reverse('recipe:recipe-list')
+CATEGORY_URL = reverse('recipe:category-list')
 
 
 def detail_url(recipe_id):
@@ -38,11 +39,12 @@ def create_recipe(user, **params):
 
 def create_user(id='user', nick_name='user1', email='test@example.com'):
     """유저를 만들고 해당 객체를 return"""
+
     return get_user_model().objects.create(
         id=id,
         password='testpass',
         nick_name=nick_name,
-        email=email,
+        email=email
     )
 
 
@@ -80,7 +82,7 @@ class PrivateRecipeAPITest(TestCase):
         res = self.client.get(RECIPE_URL)
 
         recipes = Recipe.objects.all().order_by('-modify_dt')
-        serializer = RecipeSerializer(recipes, many=True)
+        serializer = RecipeListSerializer(recipes, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -100,7 +102,7 @@ class PrivateRecipeAPITest(TestCase):
         res = self.client.get(RECIPE_URL)
 
         recipes = Recipe.objects.filter(user=self.user)
-        serializer = RecipeSerializer(recipes, many=True)
+        serializer = RecipeListSerializer(recipes, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
@@ -120,13 +122,13 @@ class PrivateRecipeAPITest(TestCase):
         res = self.client.get(RECIPE_URL, {'all': 'true'})
 
         recipes = Recipe.objects.all()
-        serializer = RecipeSerializer(recipes, many=True)
+        serializer = RecipeListSerializer(recipes, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
     def test_recipes_includes_user_nick_name(self):
-        """레시피들을 가져올때 유저 닉네임도 가져오는지 확인"""
+        """레시피들을 가져올때 유저 닉네임을 가져오는지 확인"""
         create_recipe(user=self.user)
 
         res = self.client.get(RECIPE_URL)
@@ -143,7 +145,7 @@ class PrivateRecipeAPITest(TestCase):
         url = detail_url(recipe.id)
         res = self.client.get(url)
 
-        serializer = RecipeDetailSerializer(recipe)
+        serializer = RecipeSerializer(recipe)
         self.assertEqual(res.data, serializer.data)
 
     def test_create_recipe(self):
@@ -249,3 +251,42 @@ class PrivateRecipeAPITest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
         self.assertTrue(Recipe.objects.filter(id=recipe.id).exists())
+
+    def test_create_recipe_with_existing_category(self):
+        """존재하는 카테고리로 레시피 생성 테스트"""
+        category = Category.objects.create(name='한식')
+        payload = {
+            'name': 'party noodle',
+            'time_minutes': 30,
+            'category': category.name,
+            'serving': 2,
+            'link': 'http://example.com',
+            'description': 'Sample Description'
+        }
+        res = self.client.post(RECIPE_URL, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        recipes = Recipe.objects.filter(user=self.user)
+        self.assertEqual(len(recipes), 1)
+        recipe = recipes[0]
+        self.assertEqual(recipe.category.name, category.name)
+
+    def test_create_recipe_with_invalid_category(self):
+        """유효하지 않은 카테고리로 레시피 생성 테스트"""
+        payload = {
+            'name': 'party noodle',
+            'time_minutes': 30,
+            'category': '괴식',
+            'serving': 2,
+            'link': 'http://example.com',
+            'description': 'Sample Description'
+        }
+        res = self.client.post(RECIPE_URL, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('category', res.data)
+        self.assertEqual(Recipe.objects.count(), 0)
+
+    def test_recipes_includes_user_level(self):
+        """레시피들을 가져올때 유저의 칭호을 가져오는지 확인"""
+        pass

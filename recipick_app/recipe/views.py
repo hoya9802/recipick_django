@@ -8,12 +8,25 @@ from drf_spectacular.utils import (
 )
 from drf_spectacular.types import OpenApiTypes
 
+from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from recipe.models import Recipe
-from .serializers import RecipeSerializer, RecipeDetailSerializer
+from recipe.models import Recipe, Category
+from .serializers import (
+    RecipeSerializer,
+    RecipeListSerializer,
+    CategorySerializer,
+)
+
+
+class CategoryListView(generics.ListAPIView):
+    """Category APIs을 관리하기 위한 view"""
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
 @extend_schema_view(
@@ -50,8 +63,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         """요청에 따라서 다른 Serializer을 사용하기 위한 메서드"""
         if self.action == 'list':
-            return RecipeSerializer
-        return RecipeDetailSerializer
+            return RecipeListSerializer
+        return RecipeSerializer
 
     def perform_create(self, serializer):
         """새로운 레시피를 만드는 메서드"""

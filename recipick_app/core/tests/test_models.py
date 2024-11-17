@@ -54,3 +54,11 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(recipe), recipe.name)
+
+    def test_create_category(self):
+        """카테고리 모델 성공적으로 만들어지는 테스트"""
+        category = models.Category.objects.create(
+            name='양식'
+        )
+
+        self.assertEqual(str(category), category.name)
