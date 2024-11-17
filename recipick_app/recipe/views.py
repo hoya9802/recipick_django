@@ -1,7 +1,11 @@
 """
 Views for the recipe APIs.
 """
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
+from drf_spectacular.utils import (
+    extend_schema_view,
+    extend_schema,
+    OpenApiParameter
+)
 from drf_spectacular.types import OpenApiTypes
 
 from rest_framework import viewsets
@@ -10,6 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from recipe.models import Recipe
 from .serializers import RecipeSerializer, RecipeDetailSerializer
+
 
 @extend_schema_view(
     list=extend_schema(
@@ -38,7 +43,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         if all_recipes == 'true':
             return Recipe.objects.all().order_by('-modify_dt')
-        return Recipe.objects.filter(user=self.request.user).order_by('-modify_dt')
+        return Recipe.objects.filter(
+            user=self.request.user
+        ).order_by('-modify_dt')
 
     def get_serializer_class(self):
         """요청에 따라서 다른 Serializer을 사용하기 위한 메서드"""

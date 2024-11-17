@@ -211,9 +211,10 @@ class PrivateRecipeAPITest(TestCase):
 
     def test_update_user_returns_error(self):
         """레시피에 유저이름을 변경할 수 없다는 것을 테스트"""
-        new_user = create_user(id='new_user',
-                               nick_name='new_user',
-                               email='new@example.com'
+        new_user = create_user(
+            id='new_user',
+            nick_name='new_user',
+            email='new@example.com'
         )
         recipe = create_recipe(user=self.user)
 
@@ -236,9 +237,10 @@ class PrivateRecipeAPITest(TestCase):
 
     def test_delete_other_users_recipe_error(self):
         """다른 유저들은 해당유저의 레시피를 삭제할 수 없다는 것을 테스트"""
-        new_user = create_user(id='new_user',
-                               nick_name='new_user',
-                               email='new@example.com'
+        new_user = create_user(
+            id='new_user',
+            nick_name='new_user',
+            email='new@example.com'
         )
         recipe = create_recipe(user=new_user)
 
