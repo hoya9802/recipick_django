@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
 
     'core.apps.CoreConfig',
-    'user',
+    'user.apps.UserConfig',
+    'report.apps.ReportConfig',
     'recipe.apps.RecipeConfig',
 ]
 

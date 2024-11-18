@@ -42,7 +42,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    # 레벨을 나타내는 ForeignKey
     level = models.ForeignKey(
                     'Level',
                     on_delete=models.SET_NULL,
@@ -56,11 +55,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     loc = models.FloatField(null=True, blank=True)
 
-    # User 모델이 UserManager모델의 기능을 사용하도록 지정
     objects = UserManager()
+    # User 모델이 UserManager모델의 기능을 사용하도록 지정
 
     USERNAME_FIELD = 'id'
-    REQUIRED_FIELDS = ['email']  # 이메일을 필수 필드로 설정
+    REQUIRED_FIELDS = ['email']
 
 
 class Level(models.Model):

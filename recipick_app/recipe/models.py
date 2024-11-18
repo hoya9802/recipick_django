@@ -13,7 +13,8 @@ class Recipe(models.Model):
     """Recipe 객체"""
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='recipe'
     )
     name = models.CharField(max_length=255)
     time_minutes = models.PositiveSmallIntegerField(null=True, blank=True)
