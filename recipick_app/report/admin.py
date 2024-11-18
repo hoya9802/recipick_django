@@ -14,6 +14,7 @@ class ReportpageAdmin(admin.ModelAdmin):
                         'create_dt',
                         'detail')}),
     )
-    readonly_fields = ['reporter','link','create_dt','detail']
+    readonly_fields = ['reporter', 'link', 'create_dt', 'detail']
+
 
 admin.site.register(models.Reportpage, ReportpageAdmin)

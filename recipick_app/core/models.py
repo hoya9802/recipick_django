@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                         blank=True,
                         null=True
     )
-    loc = models.FloatField(null=True)
+    loc = models.FloatField(null=True, blank=True)
 
     objects = UserManager()
     # User 모델이 UserManager모델의 기능을 사용하도록 지정

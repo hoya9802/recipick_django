@@ -1,5 +1,3 @@
-from django.utils.translation import gettext as _
-
 from rest_framework import serializers
 from report.models import Reportpage
 
@@ -14,5 +12,3 @@ class ReportpageSerializer(serializers.ModelSerializer):
             'create_dt',
             'detail',
         ]
-
-

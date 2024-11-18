@@ -14,5 +14,9 @@ urlpatterns = [
         name='api-docs'
     ),
     path('api/user/', include('user.urls')),
+<<<<<<< HEAD
     path('api/report/', include('report.urls')),
+=======
+    path('api/', include('recipe.urls')),
+>>>>>>> a04f3cc98fa6c7f0c2ffa30e9a72ae52e1c09b5a
 ]
