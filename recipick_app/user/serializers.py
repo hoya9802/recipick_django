@@ -29,13 +29,40 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class MypageSerializer(serializers.ModelSerializer):
+
+    recipe_count = serializers.SerializerMethodField()
+    labs_count = serializers.SerializerMethodField()
+    freemarket_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = get_user_model()
+        fields = [
+                'profile_image',
+                'level',
+                'nick_name',
+                'recipe_count',
+                'labs_count',
+                'freemarket_count',
+        ]
+
+    def get_recipe_count(self, obj):
+        return obj.recipe.count()
+
+    def get_labs_count(self, obj):
+        return obj.labs.count()
+
+    def get_freemarket_count(self, obj):
+        return obj.freemarket.count()
+
+
 class AuthTokenSerializer(serializers.Serializer):
     id = serializers.CharField()
     email = serializers.EmailField()
     password = serializers.CharField(
-        style={'input_type': 'password'},  # 비밀번호는 감춰지게 설정
+        style={'input_type': 'password'},
         trim_whitespace=False,
-    )
+    )  # 비밀번호는 감춰지게 설정
 
     def validate(self, attrs):
         id = attrs.get('id')

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     'core.apps.CoreConfig',
     'user',
+    'report',
 ]
 
 CORS_ALLOWED_ORIGINS = [
