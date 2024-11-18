@@ -8,6 +8,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from core.models import Level
 from recipe.models import Recipe, Category
 
 from recipe.serializers import RecipeSerializer, RecipeListSerializer
@@ -288,5 +289,19 @@ class PrivateRecipeAPITest(TestCase):
         self.assertEqual(Recipe.objects.count(), 0)
 
     def test_recipes_includes_user_level(self):
-        """레시피들을 가져올때 유저의 칭호을 가져오는지 확인"""
-        pass
+        """레시피들을 가져올 때 유저의 칭호(level)를 가져오는지 확인"""
+        # 유저의 칭호를 정의하고 레시피 생성
+        level = Level.objects.create(name='Master Chef')
+        self.user.level = level
+        self.user.save()
+
+        create_recipe(user=self.user, name='Spaghetti Bolognese')
+
+        # API 요청
+        res = self.client.get(RECIPE_URL)
+
+        # 응답 데이터 확인
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn('user', res.data[0])
+        self.assertIn('level', res.data[0]['user'])
+        self.assertEqual(res.data[0]['user']['level'], 'Master Chef')
