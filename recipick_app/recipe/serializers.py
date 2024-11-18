@@ -25,6 +25,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class RecipeListSerializer(serializers.ModelSerializer):
     """Recipe List view을 위한 serializer"""
     user = NicknameSerializer(read_only=True)
+    category = serializers.CharField(required=False)
 
     class Meta:
         model = Recipe
@@ -32,19 +33,18 @@ class RecipeListSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'user',
+            'category'
         ]
         read_only_fields = ['id']
 
 
 class RecipeSerializer(RecipeListSerializer):
     """Serializer for recipes"""
-    category = serializers.CharField(required=False)
 
     class Meta(RecipeListSerializer.Meta):
         model = Recipe
         fields = RecipeListSerializer.Meta.fields + [
             'time_minutes',
-            'category',
             'serving',
             'link',
             'description',
