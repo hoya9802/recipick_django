@@ -45,12 +45,9 @@ INSTALLED_APPS = [
     'drf_spectacular',
 
     'core.apps.CoreConfig',
-    'user',
-<<<<<<< HEAD
-    'report',
-=======
+    'user.apps.UserConfig',
+    'report.apps.ReportConfig',
     'recipe.apps.RecipeConfig',
->>>>>>> a04f3cc98fa6c7f0c2ffa30e9a72ae52e1c09b5a
 ]
 
 CORS_ALLOWED_ORIGINS = [
