@@ -8,7 +8,7 @@ from rest_framework import status
 from recipe.models import Recipe
 from report.models import Report, Status
 
-REPORT_URL = reverse('report:report')
+REPORT_URL = reverse('report:report-list')
 
 
 def create_superuser(**params):
