@@ -10,6 +10,7 @@ from report.models import Report, Status
 
 REPORT_URL = reverse('report:report')
 
+
 def create_superuser(**params):
     return get_user_model().objects.create_superuser(**params)
 
@@ -85,7 +86,9 @@ class ReportTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertIn('detail', res.data)
 
-        report = Report.objects.filter(reporter=self.user1, url=payload['url']).first()
+        report = Report.objects.filter(
+                    reporter=self.user1,
+                    url=payload['url']).first()
 
         self.assertIsNotNone(report)
         self.assertEqual(report.reporter, self.user1)

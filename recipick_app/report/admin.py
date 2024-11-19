@@ -8,7 +8,7 @@ class ReportAdmin(admin.ModelAdmin):
     search_fields = ('reporter', 'reported_user')
     list_filter = ('create_dt',)
 
+
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
     list_display = ('status', )
-

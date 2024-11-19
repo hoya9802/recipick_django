@@ -29,6 +29,7 @@ class Report(models.Model):
                 on_delete=models.CASCADE,
                 blank=True,
                 null=True)
+
     class Meta:
         ordering = ['-create_dt']
 
