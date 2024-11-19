@@ -5,11 +5,17 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from .views import RecipeViewSet, CategoryListView, RecipesByCategoryListView
+from .views import (
+    RecipeViewSet,
+    CategoryListView,
+    RecipesByCategoryListView,
+    LikeNgViewSet
+)
 
 
 router = DefaultRouter()
 router.register('recipes', RecipeViewSet)
+router.register('likengs', LikeNgViewSet)
 
 app_name = 'recipe'
 

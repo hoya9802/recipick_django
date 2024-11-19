@@ -1,5 +1,5 @@
 from django.contrib import admin
-from recipe.models import Recipe, Category
+from recipe.models import Recipe, Category, LikeNg
 
 
 @admin.register(Recipe)
@@ -8,3 +8,4 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Category)
+admin.site.register(LikeNg)

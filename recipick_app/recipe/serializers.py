@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 
-from .models import Recipe, Category
+from .models import Recipe, Category, LikeNg
 
 
 class NicknameSerializer(serializers.ModelSerializer):
@@ -20,6 +20,12 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['id', 'name']
+
+
+class LikeNgSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LikeNg
+        fields = ['id', 'rater', 'recipe_rated', 'rate']
 
 
 class RecipeListSerializer(serializers.ModelSerializer):
