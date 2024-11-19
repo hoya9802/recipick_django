@@ -32,6 +32,8 @@ class RecipeListSerializer(serializers.ModelSerializer):
     """Recipe List view을 위한 serializer"""
     user = NicknameSerializer(read_only=True)
     category = serializers.CharField(required=False)
+    likes_count = serializers.SerializerMethodField()
+    dislikes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -39,9 +41,17 @@ class RecipeListSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'user',
-            'category'
+            'category',
+            'likes_count',
+            'dislikes_count'
         ]
         read_only_fields = ['id']
+
+    def get_likes_count(self, obj):
+        return LikeNg.objects.filter(recipe_rated=obj, rate=1).count()
+
+    def get_dislikes_count(self, obj):
+        return LikeNg.objects.filter(recipe_rated=obj, rate=-1).count()
 
 
 class RecipeSerializer(RecipeListSerializer):

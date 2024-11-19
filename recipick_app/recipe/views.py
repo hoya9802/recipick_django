@@ -55,6 +55,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         인증한 유저의 레시피들도 가져온다.
         url 뒤에 쿼리문이 True이면 모든 유저들의 레시피를 가져온다.
         """
+        if self.action == 'retrieve':
+            return self.queryset
+
         all_recipes = self.request.query_params.get('all')
 
         if all_recipes == 'true':
