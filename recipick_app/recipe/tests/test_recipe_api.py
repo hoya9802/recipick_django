@@ -305,3 +305,37 @@ class PrivateRecipeAPITest(TestCase):
         self.assertIn('user', res.data[0])
         self.assertIn('level', res.data[0]['user'])
         self.assertEqual(res.data[0]['user']['level'], 'Master Chef')
+
+    def test_get_recipes_by_category(self):
+        """존재하는 카테고리를 가지고 있는 레시피들을 가져오는지 테스트"""
+        category = Category.objects.create(name='양식')
+        create_recipe(
+            user=self.user,
+            name='Steak',
+            category=category
+        )
+        new_user = create_user(
+            id='new_user',
+            nick_name='new_user',
+            email='new@example.com'
+        )
+        create_recipe(
+            user=new_user,
+            name='Cream Pasta',
+            category=category
+        )
+
+        url = reverse('recipe:recipe-list-by-category', args=[category.id])
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(res.data), 2)
+        self.assertEqual(res.data[0]['category'], category.name)
+        self.assertEqual(res.data[1]['category'], category.name)
+
+    def test_get_recipes_by_nonexistent_category(self):
+        """존재하지 않은 category는 검색되지 않게 테스트"""
+        url = reverse('recipe:recipe-list-by-category', args=[99999])
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)

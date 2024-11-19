@@ -1,6 +1,8 @@
 """
 Views for the recipe APIs.
 """
+from django.http import Http404
+
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
@@ -69,3 +71,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """새로운 레시피를 만드는 메서드"""
         serializer.save(user=self.request.user)
+
+
+class RecipesByCategoryListView(generics.ListAPIView):
+    """카테코리에 맞는 레시피들을 가져오는 ListView"""
+    serializer_class = RecipeListSerializer
+    queryset = Recipe.objects.all()
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        category_id = self.kwargs.get('category_id', 99999)
+        if not Category.objects.filter(id=category_id).exists():
+            raise Http404('존재하지 않은 카테고리입니다.')
+        return Recipe.objects.filter(category_id=category_id)
