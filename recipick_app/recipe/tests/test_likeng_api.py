@@ -8,7 +8,6 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Level
 from recipe.models import Recipe, LikeNg
 from recipe.serializers import LikeNgSerializer
 
@@ -78,8 +77,8 @@ class PrivateLikeNgAPITest(TestCase):
         recipe = create_recipe(user=self.user)
         LikeNg.objects.create(
             rater=self.user,
-            recipe_rated = recipe,
-            rate = 1
+            recipe_rated=recipe,
+            rate=1
         )
 
         res = self.client.get(LIKENG_URL)

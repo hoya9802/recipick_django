@@ -83,9 +83,9 @@ class ModelTests(TestCase):
         new_user = create_user()
         recipe = create_recipe(user=new_user)
         likeng = models.LikeNg.objects.create(
-            rater = new_user,
-            recipe_rated = recipe,
-            rate = 1,
+            rater=new_user,
+            recipe_rated=recipe,
+            rate=1,
         )
 
         self.assertEqual(str(likeng), f"{likeng.recipe_rated} - {likeng.rate}")

@@ -12,7 +12,6 @@ from drf_spectacular.types import OpenApiTypes
 
 from rest_framework.response import Response
 from rest_framework import generics, viewsets, status
-from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -96,14 +95,16 @@ class LikeNgViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-
     def create(self, request, *args, **kwargs):
         rater = request.user
         recipe_id = request.data.get('recipe_rated')
         rate = request.data.get('rate')
 
         try:
-            like_ng = LikeNg.objects.get(rater=rater, recipe_rated_id=recipe_id)
+            like_ng = LikeNg.objects.get(
+                rater=rater,
+                recipe_rated_id=recipe_id
+            )
             if like_ng.rate == int(rate):
                 like_ng.delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
@@ -114,6 +115,10 @@ class LikeNgViewSet(viewsets.ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_200_OK)
 
         except LikeNg.DoesNotExist:
-            like_ng = LikeNg.objects.create(rater=rater, recipe_rated_id=recipe_id, rate=rate)
+            like_ng = LikeNg.objects.create(
+                rater=rater,
+                recipe_rated_id=recipe_id,
+                rate=rate
+            )
             serializer = self.get_serializer(like_ng)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
