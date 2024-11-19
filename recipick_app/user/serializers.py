@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MypageSerializer(serializers.ModelSerializer):
-
+    level = serializers.CharField(source='level.name', read_only=True)
     recipe_count = serializers.SerializerMethodField()
     labs_count = serializers.SerializerMethodField()
     freemarket_count = serializers.SerializerMethodField()

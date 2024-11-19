@@ -1,20 +1,14 @@
 from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
-
-from . import models
+from .models import Report, Status
 
 
-class ReportpageAdmin(admin.ModelAdmin):
-    ordering = ['-reporter']
-    list_display = ['reporter', 'create_dt']
-    fieldsets = (
-        (_('Info'), {'fields': (
-                        'reporter',
-                        'link',
-                        'create_dt',
-                        'detail')}),
-    )
-    readonly_fields = ['reporter', 'link', 'create_dt', 'detail']
+@admin.register(Report)
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ('reporter', 'reported_user', 'status', 'create_dt')
+    search_fields = ('reporter', 'reported_user')
+    list_filter = ('create_dt',)
 
+@admin.register(Status)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = ('status', )
 
-admin.site.register(models.Reportpage, ReportpageAdmin)
