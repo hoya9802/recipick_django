@@ -1,6 +1,11 @@
 """
 Tests for recipe APIs.
 """
+import tempfile
+import os
+
+from PIL import Image
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -21,6 +26,11 @@ CATEGORY_URL = reverse('recipe:category-list')
 def detail_url(recipe_id):
     """Recipe id을 통한 디테일한 url을 리턴"""
     return reverse('recipe:recipe-detail', args=[recipe_id])
+
+
+def image_upload_url(recipe_id):
+    """레시피 id를 통한 이미지 업로드 url을 리턴"""
+    return reverse('recipe:recipe-upload-image', args=[recipe_id])
 
 
 def create_recipe(user, **params):
@@ -229,7 +239,7 @@ class PrivateRecipeAPITest(TestCase):
         self.assertEqual(recipe.user, self.user)
 
     def test_update_user_returns_error(self):
-        """레시피에 유저이름을 변경할 수 없다는 것을 테스트"""
+        """레시피에 유저이름을 변경할 수 없다는 것을 ���스트"""
         new_user = create_user(
             id='new_user',
             nick_name='new_user',
@@ -384,3 +394,99 @@ class PrivateRecipeAPITest(TestCase):
         self.assertEqual(res.data[0], serializer.data)
         self.assertEqual(serializer.data['likes_count'], 1)
         self.assertEqual(serializer.data['dislikes_count'], 1)
+
+
+class ImageUploadTests(TestCase):
+    """이미지 업로드 테스트"""
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = get_user_model().objects.create_user(
+            id='userid',
+            password='testpass',
+            nick_name='user1',
+            email='test@example.com',
+            level=Level.objects.create(name='Master Chef')
+        )
+        self.client.force_authenticate(user=self.user)
+        self.category = Category.objects.create(name='한식')
+        self.recipe = create_recipe(user=self.user, category=self.category)
+
+    def tearDown(self):
+        self.recipe.image.delete()
+
+    def test_upload_image(self):
+        """이미지 업로드 테스트"""
+        url = image_upload_url(self.recipe.id)
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
+            Image.new('RGB', (10, 10)).save(image_file, format='JPEG')
+            image_file.seek(0)
+            payload = {'image': image_file}
+            res = self.client.post(url, payload, format='multipart')
+
+        self.recipe.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn('image', res.data)
+        self.assertTrue(os.path.exists(self.recipe.image.path))
+
+    def test_upload_image_to_recipe(self):
+        """레시피에 이미지를 업로드하는 테스트"""
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
+            Image.new('RGB', (10, 10)).save(image_file, format='JPEG')
+            image_file.seek(0)
+            payload = {
+                'name': 'party noodle',
+                'time_minutes': 30,
+                'category': self.category.name,
+                'serving': 2,
+                'link': 'http://example.com',
+                'description': 'Sample Description',
+                'image': image_file,
+            }
+            res = self.client.post(RECIPE_URL, payload, format='multipart')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        self.assertIn('image', res.data)
+
+        # Get the newly created recipe
+        new_recipe = Recipe.objects.get(id=res.data['id'])
+        self.assertTrue(os.path.exists(new_recipe.image.path))
+
+    def test_update_recipe_with_image(self):
+        """기존 이미지에 대해서 레시피를 업데이트하는 테스트"""
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
+            Image.new('RGB', (10, 10)).save(image_file, format='JPEG')
+            image_file.seek(0)
+            payload = {
+                'name': 'party noodle',
+                'time_minutes': 30,
+                'category': self.category.name,
+                'serving': 2,
+                'link': 'http://example.com',
+                'description': 'Sample Description',
+                'image': image_file,
+            }
+            res = self.client.post(RECIPE_URL, payload, format='multipart')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        url = detail_url(res.data['id'])
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as image_file:
+            Image.new('RGB', (20, 20)).save(image_file, format='JPEG')
+            image_file.seek(0)
+            payload = {'image': image_file}
+            res = self.client.patch(url, payload, format='multipart')
+
+        self.recipe.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        new_recipe = Recipe.objects.get(id=res.data['id'])
+        self.assertTrue(os.path.exists(new_recipe.image.path))
+
+    def test_upload_image_bad_request(self):
+        """잘못된 요청으로 이미지 업로드 테스트"""
+        url = image_upload_url(self.recipe.id)
+        payload = {'image': 'notimage'}
+        res = self.client.post(url, payload, format='multipart')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)

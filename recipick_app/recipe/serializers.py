@@ -43,7 +43,8 @@ class RecipeListSerializer(serializers.ModelSerializer):
             'user',
             'category',
             'likes_count',
-            'dislikes_count'
+            'dislikes_count',
+            'image'
         ]
         read_only_fields = ['id']
 
@@ -89,3 +90,12 @@ class RecipeSerializer(RecipeListSerializer):
             instance.category = category
         instance.save()
         return instance
+
+class RecipeImageSerializer(serializers.ModelSerializer):
+    """이미지 업로드를 위한 serializer"""
+
+    class Meta:
+        model = Recipe
+        fields = ['id', 'image']
+        read_only_fields = ['id']
+        extra_kwargs = {'image': {'required': True}}

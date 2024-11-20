@@ -10,8 +10,9 @@ from drf_spectacular.utils import (
 )
 from drf_spectacular.types import OpenApiTypes
 
-from rest_framework.response import Response
 from rest_framework import generics, viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -20,7 +21,8 @@ from .serializers import (
     RecipeSerializer,
     RecipeListSerializer,
     CategorySerializer,
-    LikeNgSerializer
+    LikeNgSerializer,
+    RecipeImageSerializer,
 )
 
 
@@ -70,11 +72,25 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """요청에 따라서 다른 Serializer을 사용하기 위한 메서드"""
         if self.action == 'list':
             return RecipeListSerializer
+        elif self.action == 'upload_image':
+            return RecipeImageSerializer
+
         return RecipeSerializer
 
     def perform_create(self, serializer):
         """새로운 레시피를 만드는 메서드"""
         serializer.save(user=self.request.user)
+
+    @action(methods=['POST'], detail=True, url_path='upload-image')
+    def upload_image(self, request, pk=None):
+        """레시피에 이미지를 업로드하는 메서드"""
+        recipe = self.get_object()
+        serializer = self.get_serializer(recipe, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RecipesByCategoryListView(generics.ListAPIView):
