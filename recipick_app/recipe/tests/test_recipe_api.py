@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Level
-from recipe.models import Recipe, Category
+from recipe.models import Recipe, Category, LikeNg
 
 from recipe.serializers import RecipeSerializer, RecipeListSerializer
 
@@ -147,6 +147,22 @@ class PrivateRecipeAPITest(TestCase):
         res = self.client.get(url)
 
         serializer = RecipeSerializer(recipe)
+        self.assertEqual(res.data, serializer.data)
+
+    def test_get_other_user_recipe_detail(self):
+        """다른유저가 만든 레시피의 디테일한 내용을 가져오는지 테스트"""
+        other_user = create_user(
+            id='newuser',
+            nick_name='newuser',
+            email='newuser@example.com'
+        )
+        recipe = create_recipe(user=other_user)
+
+        url = detail_url(recipe.id)
+        res = self.client.get(url)
+
+        serializer = RecipeSerializer(recipe)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
     def test_create_recipe(self):
@@ -339,3 +355,32 @@ class PrivateRecipeAPITest(TestCase):
         res = self.client.get(url)
 
         self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_recipe_serializer_likes_count(self):
+        """레시피에 LikeNg를 카운팅 해주는지 테스트"""
+        category = Category.objects.create(name='한식')
+        other_user = create_user(
+            id='newuser',
+            nick_name='newuser',
+            email='newuser@example.com'
+        )
+        recipe = create_recipe(
+            user=self.user,
+            category=category
+        )
+        LikeNg.objects.create(
+            rater=self.user,
+            recipe_rated=recipe,
+            rate=1
+        )
+        LikeNg.objects.create(
+            rater=other_user,
+            recipe_rated=recipe,
+            rate=-1
+        )
+        res = self.client.get(RECIPE_URL)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        serializer = RecipeListSerializer(recipe)
+        self.assertEqual(res.data[0], serializer.data)
+        self.assertEqual(serializer.data['likes_count'], 1)
+        self.assertEqual(serializer.data['dislikes_count'], 1)

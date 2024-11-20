@@ -32,3 +32,22 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class LikeNg(models.Model):
+    """LikeNg 객체"""
+    rater = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='likes'
+    )
+    recipe_rated = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='likes'
+    )
+    rate = models.SmallIntegerField(choices=[(-1, 'Dislike'), (1, 'Like')])
+    create_dt = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.recipe_rated} - {self.rate}'
