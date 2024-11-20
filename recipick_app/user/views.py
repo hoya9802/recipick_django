@@ -4,6 +4,7 @@ from rest_framework import (
     permissions,
     status
 )
+
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
@@ -32,6 +33,11 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+    def delete(self, request):
+        request.user.delete()
+        return Response({"message": "회원탈퇴가 완료되었습니다."},
+                        status=status.HTTP_200_OK)
+
 
 class MypageView(APIView):
     serializer_class = MypageSerializer
@@ -42,13 +48,3 @@ class MypageView(APIView):
         user = request.user
         serializer = self.serializer_class(user)
         return Response(serializer.data)
-
-
-class DeleteUserView(APIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-
-    def delete(self, request):
-        request.user.delete()
-        return Response({"message": "회원탈퇴가 완료되었습니다."},
-                        status=status.HTTP_200_OK)
