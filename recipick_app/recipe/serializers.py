@@ -91,6 +91,7 @@ class RecipeSerializer(RecipeListSerializer):
         instance.save()
         return instance
 
+
 class RecipeImageSerializer(serializers.ModelSerializer):
     """이미지 업로드를 위한 serializer"""
 
