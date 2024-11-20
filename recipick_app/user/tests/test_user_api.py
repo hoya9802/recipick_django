@@ -9,6 +9,7 @@ from rest_framework import status
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
+DELETE_URL = reverse('user:delete')
 
 
 def create_user(**params):
@@ -163,3 +164,14 @@ class PrivateUserApiTests(TestCase):
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password(payload['password']))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+    def test_user_delete_success(self):
+        # 회원탈퇴가 제대로 되었는지 확인
+        payload = {'password': 'testpass123'}
+
+        res = self.client.delete(DELETE_URL, data=payload)
+
+        self.assertTrue(self.user.check_password(payload['password']))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        user_exists = get_user_model().objects.filter(id=self.user.id).exists()
+        self.assertFalse(user_exists)

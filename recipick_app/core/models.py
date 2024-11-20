@@ -16,6 +16,10 @@ class UserManager(BaseUserManager):
         if not password:
             raise ValueError('비밀번호를 반드시 입력해주세요.')
 
+        from .models import Level
+        default_level = Level.objects.get_or_create(name='초보요리사')[0]
+        extra_fields.setdefault('level', default_level)
+
         user = self.model(
                         id=id,
                         email=self.normalize_email(email),
