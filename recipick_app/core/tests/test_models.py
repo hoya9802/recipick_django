@@ -14,6 +14,21 @@ def create_user(id='user', password='testpass'):
     )
 
 
+def create_recipe(user, **params):
+    """간단한 레시피를 만들고 반환하는 함수"""
+    default = {
+        'name': 'Sample recipe',
+        'time_minutes': 5,
+        'serving': 5,
+        'link': 'http://example.com',
+        'description': 'sample description',
+    }
+    default.update(params)
+
+    recipe = models.Recipe.objects.create(user=user, **default)
+    return recipe
+
+
 class ModelTests(TestCase):
 
     def test_create_user_with_id_successful(self):
@@ -62,3 +77,15 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(category), category.name)
+
+    def test_create_likeng(self):
+        """likeng 모델이 성공적으로 만들어지는지 테스트"""
+        new_user = create_user()
+        recipe = create_recipe(user=new_user)
+        likeng = models.LikeNg.objects.create(
+            rater=new_user,
+            recipe_rated=recipe,
+            rate=1,
+        )
+
+        self.assertEqual(str(likeng), f"{likeng.recipe_rated} - {likeng.rate}")

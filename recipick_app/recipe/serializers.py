@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 
-from .models import Recipe, Category
+from .models import Recipe, Category, LikeNg
 
 
 class NicknameSerializer(serializers.ModelSerializer):
@@ -22,10 +22,18 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+class LikeNgSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LikeNg
+        fields = ['id', 'rater', 'recipe_rated', 'rate']
+
+
 class RecipeListSerializer(serializers.ModelSerializer):
     """Recipe List view을 위한 serializer"""
     user = NicknameSerializer(read_only=True)
     category = serializers.CharField(required=False)
+    likes_count = serializers.SerializerMethodField()
+    dislikes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Recipe
@@ -33,9 +41,17 @@ class RecipeListSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'user',
-            'category'
+            'category',
+            'likes_count',
+            'dislikes_count'
         ]
         read_only_fields = ['id']
+
+    def get_likes_count(self, obj):
+        return LikeNg.objects.filter(recipe_rated=obj, rate=1).count()
+
+    def get_dislikes_count(self, obj):
+        return LikeNg.objects.filter(recipe_rated=obj, rate=-1).count()
 
 
 class RecipeSerializer(RecipeListSerializer):
