@@ -33,7 +33,7 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-    def delete(self, request):
+    def delete(self, request):  # 수정 예정
         request.user.delete()
         return Response({"message": "회원탈퇴가 완료되었습니다."},
                         status=status.HTTP_200_OK)
