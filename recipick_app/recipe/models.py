@@ -40,6 +40,7 @@ class Recipe(models.Model):
     description = models.TextField()
     create_dt = models.DateField(auto_now_add=True)
     modify_dt = models.DateField(auto_now=True)
+    ingredients = models.ManyToManyField('Ingredient')
     image = models.ImageField(null=True, upload_to=recipe_image_file_path)
 
     def __str__(self):
@@ -63,3 +64,10 @@ class LikeNg(models.Model):
 
     def __str__(self):
         return f'{self.recipe_rated} - {self.rate}'
+
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name

@@ -16,13 +16,14 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from recipe.models import Recipe, Category, LikeNg
+from recipe.models import Recipe, Category, LikeNg, Ingredient
 from .serializers import (
     RecipeSerializer,
     RecipeListSerializer,
     CategorySerializer,
     LikeNgSerializer,
     RecipeImageSerializer,
+    IngredientSerializer,
 )
 
 
@@ -141,3 +142,14 @@ class LikeNgViewSet(viewsets.ModelViewSet):
             )
             serializer = self.get_serializer(like_ng)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
+    """db에서 재료들을 관리하기 위한 ViewSet"""
+    serializer_class = IngredientSerializer
+    queryset = Ingredient.objects.all()
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.order_by('name')

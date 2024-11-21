@@ -14,7 +14,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Level
-from recipe.models import Recipe, Category, LikeNg
+from recipe.models import Recipe, Category, LikeNg, Ingredient
 
 from recipe.serializers import RecipeSerializer, RecipeListSerializer
 
@@ -239,7 +239,7 @@ class PrivateRecipeAPITest(TestCase):
         self.assertEqual(recipe.user, self.user)
 
     def test_update_user_returns_error(self):
-        """레시피에 유저이름을 변경할 수 없다는 것을 ���스트"""
+        """레시피에 유저이름을 변경할 수 없다는 것을 스트"""
         new_user = create_user(
             id='new_user',
             nick_name='new_user',
@@ -394,6 +394,103 @@ class PrivateRecipeAPITest(TestCase):
         self.assertEqual(res.data[0], serializer.data)
         self.assertEqual(serializer.data['likes_count'], 1)
         self.assertEqual(serializer.data['dislikes_count'], 1)
+
+    def test_create_recipe_with_existing_ingredient(self):
+        """기존에 존재하는 재료들을 바탕으로 레시피를 만드는지 테스트"""
+        # 미리 재료들을 생성
+        Ingredient.objects.create(name='Lemon')
+        Ingredient.objects.create(name='Fish Sauce')
+        Ingredient.objects.create(name='Dragon')
+
+        payload = {
+            'name': 'party noodle',
+            'time_minutes': 30,
+            'serving': 2,
+            'link': 'http://example.com',
+            'description': 'Sample Description',
+            'ingredients': [
+                {'name': 'Lemon'},
+                {'name': 'Fish Sauce'},
+                {'name': 'Dragon'}
+            ]
+        }
+        res = self.client.post(RECIPE_URL, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+        recipes = Recipe.objects.all()
+        self.assertEqual(recipes.count(), 1)
+        recipe = recipes[0]
+        self.assertEqual(recipe.ingredients.count(), 3)
+
+        for ingredient in payload['ingredients']:
+            exists = recipe.ingredients.filter(
+                name=ingredient['name']
+            ).exists()
+            self.assertTrue(exists)
+
+    def test_create_recipe_with_non_existing_ingredient_error(self):
+        """존재하지 않는 재료로 레시피를 만들려고 할 때 에러가 발생하는지 테스트"""
+        Ingredient.objects.create(name='Lemon')
+
+        payload = {
+            'name': 'party noodle',
+            'time_minutes': 30,
+            'serving': 2,
+            'link': 'http://example.com',
+            'description': 'Sample Description',
+            'ingredients': [
+                {'name': 'Lemon'},
+                {'name': 'NonExistingIngredient'}
+            ]
+        }
+        res = self.client.post(RECIPE_URL, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(Recipe.objects.count(), 0)
+
+    def test_update_recipe_assign_ingredient(self):
+        """할당된 재료를 바탕으로 업데이트하는지 테스트"""
+        # 미리 재료들을 생성
+        ingredient1 = Ingredient.objects.create(name='Pepper')
+        ingredient2 = Ingredient.objects.create(name='Chili')
+
+        recipe = create_recipe(user=self.user)
+        recipe.ingredients.add(ingredient1)
+
+        payload = {'ingredients': [{'name': 'Chili'}]}
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        recipe.refresh_from_db()  # DB에서 최신 데이터를 다시 불러옴
+        self.assertIn(ingredient2, recipe.ingredients.all())
+        self.assertNotIn(ingredient1, recipe.ingredients.all())
+
+    def test_update_recipe_with_non_existing_ingredient_error(self):
+        """존재하지 않는 재료로 레시피를 업데이트하려고 할 때 에러가 발생하는지 테스트"""
+        ingredient = Ingredient.objects.create(name='Pepper')
+        recipe = create_recipe(user=self.user)
+        recipe.ingredients.add(ingredient)
+
+        payload = {'ingredients': [{'name': 'NonExistingIngredient'}]}
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(ingredient, recipe.ingredients.all())
+
+    def test_clear_recipe_ingredients(self):
+        """레시피 재료들을 다 정리할 수 있는지 테스트"""
+        ingredient = Ingredient.objects.create(name='Garlic')
+        recipe = create_recipe(user=self.user)
+        recipe.ingredients.add(ingredient)
+
+        payload = {'ingredients': []}
+        url = detail_url(recipe.id)
+        res = self.client.patch(url, payload, format='json')
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(recipe.ingredients.count(), 0)
 
 
 class ImageUploadTests(TestCase):
