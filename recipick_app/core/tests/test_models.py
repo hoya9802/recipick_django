@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 
 from recipe import models
+from help.models import Help
 
 
 def create_user(id='user', password='testpass'):
@@ -107,3 +108,13 @@ class ModelTests(TestCase):
         file_path = models.recipe_image_file_path(None, 'example.jpg')
         expected_path = f'uploads/recipe/{uuid}.jpg'
         self.assertEqual(file_path, expected_path)
+
+    def test_create_help(self):
+        """지식인이 성공적으로 만들어지는 테스트"""
+        helps = Help.objects.create(
+            user=create_user(),
+            title='지신인 제목',
+            description='Sample Description'
+        )
+
+        self.assertEqual(str(helps), f"{helps.id} - {helps.title}")
