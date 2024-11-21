@@ -9,13 +9,15 @@ from .views import (
     RecipeViewSet,
     CategoryListView,
     RecipesByCategoryListView,
-    LikeNgViewSet
+    LikeNgViewSet,
+    IngredientViewSet
 )
 
 
 router = DefaultRouter()
 router.register('recipes', RecipeViewSet)
 router.register('likengs', LikeNgViewSet)
+router.register('ingredients', IngredientViewSet)
 
 app_name = 'recipe'
 
