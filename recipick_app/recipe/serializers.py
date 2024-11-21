@@ -1,6 +1,7 @@
 """
 Serializers for recipe APIs.
 """
+from drf_spectacular.utils import extend_schema_field
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
@@ -55,9 +56,11 @@ class RecipeListSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id']
 
+    @extend_schema_field(serializers.IntegerField)
     def get_likes_count(self, obj):
         return LikeNg.objects.filter(recipe_rated=obj, rate=1).count()
 
+    @extend_schema_field(serializers.IntegerField)
     def get_dislikes_count(self, obj):
         return LikeNg.objects.filter(recipe_rated=obj, rate=-1).count()
 

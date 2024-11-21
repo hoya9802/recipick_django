@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'report.apps.ReportConfig',
     'recipe.apps.RecipeConfig',
+    'help.apps.HelpConfig',
 ]
 
 CORS_ALLOWED_ORIGINS = [
