@@ -1,3 +1,4 @@
+from unittest.mock import patch
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
@@ -89,3 +90,20 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(likeng), f"{likeng.recipe_rated} - {likeng.rate}")
+
+    def test_create_ingredient(self):
+        """재료가 성공적으로 만들어지는지 테스트"""
+        ingredient = models.Ingredient.objects.create(
+            name='Ingredient1'
+        )
+
+        self.assertEqual(str(ingredient), ingredient.name)
+
+    @patch('recipe.models.uuid.uuid4')
+    def test_recipe_file_name_uuid(self, mock_uuid):
+        """레시피 파일 이름이 uuid로 생성되는지 테스트"""
+        uuid = 'test-uuid'
+        mock_uuid.return_value = uuid
+        file_path = models.recipe_image_file_path(None, 'example.jpg')
+        expected_path = f'uploads/recipe/{uuid}.jpg'
+        self.assertEqual(file_path, expected_path)
