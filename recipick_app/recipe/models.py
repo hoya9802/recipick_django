@@ -36,7 +36,7 @@ class Recipe(models.Model):
         null=True
     )
     serving = models.PositiveSmallIntegerField()
-    link = models.CharField(max_length=255, null=True, blank=True)
+    link = models.URLField(null=True, blank=True)
     description = models.TextField()
     create_dt = models.DateField(auto_now_add=True)
     modify_dt = models.DateField(auto_now=True)
