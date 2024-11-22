@@ -1,9 +1,14 @@
+from datetime import datetime
 from unittest.mock import patch
+
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
 from recipe import models
 from help.models import Help
+from lab.models import Lab, Like
+from freemarket.models import Freemarket
+from notification.models import Expiration, Announcement
 
 
 def create_user(id='user', password='testpass'):
@@ -29,6 +34,18 @@ def create_recipe(user, **params):
 
     recipe = models.Recipe.objects.create(user=user, **default)
     return recipe
+
+
+def create_lab(user, **params):
+    """간단한 요리실험일지를 만들고 반환하는 함수"""
+    default = {
+        'title': 'Lab title',
+        'description': 'Lab desc',
+    }
+    default.update(params)
+
+    lab = Lab.objects.create(user=user, **default)
+    return lab
 
 
 class ModelTests(TestCase):
@@ -118,3 +135,57 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual(str(helps), f"{helps.id} - {helps.title}")
+
+    def test_create_lab(self):
+        """요리실험실이 성공적으로 만들어지는지 테스트"""
+        lab = Lab.objects.create(
+            user=create_user(),
+            title='newlab title',
+            description='newlab description'
+        )
+
+        self.assertEqual(str(lab), lab.title)
+
+    def test_create_like(self):
+        new_user = create_user()
+        lab = create_lab(user=new_user)
+
+        like = Like.objects.create(
+            user=new_user,
+            exlog=lab
+        )
+
+        self.assertEqual(str(like), f"{like.exlog} - {like.user}")
+
+    def test_create_freemarket(self):
+        """무료나눔 모델이 성공적으로 만들어지는지 테스트"""
+        freemarket = Freemarket.objects.create(
+            user=create_user(),
+            name='freemarket name',
+            purchase_dt=datetime.now(),
+            count=100,
+            is_shared=False,
+            description='freemarket description',
+        )
+
+        self.assertEqual(str(freemarket), freemarket.name)
+
+    def test_create_expiration(self):
+        """유통기한 모델이 성공적으로 만들어지는지 테스트"""
+        expiration = Expiration.objects.create(
+            title='expiration title',
+            description='expiration description',
+            url='http://example.com'
+        )
+
+        self.assertEqual(str(expiration), expiration.title)
+
+    def test_create_announcement(self):
+        """공지사항 모델이 성공적으로 만들어지는지 테스트"""
+        announcement = Announcement.objects.create(
+            title='announcement title',
+            contents='announcement contents',
+            announce_dt=datetime.now()
+        )
+
+        self.assertEqual(str(announcement), announcement.title)

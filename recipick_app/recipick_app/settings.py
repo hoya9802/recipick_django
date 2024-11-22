@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'report.apps.ReportConfig',
     'recipe.apps.RecipeConfig',
     'help.apps.HelpConfig',
+    'lab.apps.LabConfig',
+    'freemarket.apps.FreemarketConfig',
+    'notification.apps.NotificationConfig',
 ]
 
 CORS_ALLOWED_ORIGINS = [
