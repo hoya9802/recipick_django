@@ -2,17 +2,27 @@ from django.contrib.auth import (
     get_user_model,
     authenticate,
 )
-
+from drf_spectacular.utils import extend_schema_field
 from django.utils.translation import gettext as _
 
 from rest_framework import serializers
+from recipe.models import Recipe
+from lab.models import Lab
+from freemarket.models import Freemarket
 
 
 class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'password', 'nick_name', 'email']
+        fields = [
+            'id',
+            'password',
+            'nick_name',
+            'email',
+            'profile_image',
+            'loc'
+        ]
         extra_kwargs = {
             'password': {'write_only': True, 'min_length': 5}}
 
@@ -31,30 +41,41 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MypageSerializer(serializers.ModelSerializer):
+    profile_image = serializers.SerializerMethodField()
     level = serializers.CharField(source='level.name', read_only=True)
-    recipe_count = serializers.SerializerMethodField()
+    recipes_count = serializers.SerializerMethodField()
     labs_count = serializers.SerializerMethodField()
-    freemarket_count = serializers.SerializerMethodField()
+    freemarkets_count = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
         fields = [
-                'profile_image',
-                'level',
-                'nick_name',
-                'recipe_count',
-                'labs_count',
-                'freemarket_count',
+            'profile_image',
+            'level',
+            'nick_name',
+            'recipes_count',
+            'labs_count',
+            'freemarkets_count',
         ]
 
-    def get_recipe_count(self, obj):
-        return obj.recipe.count()
+    def get_profile_image(self, obj):
+        if obj.profile_image:
+            return self.context['request'].build_absolute_uri(
+                obj.profile_image.url
+            )
+        return None
 
+    @extend_schema_field(serializers.IntegerField)
+    def get_recipes_count(self, obj):
+        return Recipe.objects.filter(user=obj).count()
+
+    @extend_schema_field(serializers.IntegerField)
     def get_labs_count(self, obj):
-        return obj.labs.count()
+        return Lab.objects.filter(user=obj).count()
 
-    def get_freemarket_count(self, obj):
-        return obj.freemarket.count()
+    @extend_schema_field(serializers.IntegerField)
+    def get_freemarkets_count(self, obj):
+        return Freemarket.objects.filter(user=obj).count()
 
 
 class AuthTokenSerializer(serializers.Serializer):
@@ -80,3 +101,16 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class ProfileImageSerializer(serializers.ModelSerializer):
+    """프로필 이미지 업로드를 위한 serializer"""
+
+    class Meta:
+        model = get_user_model()
+        fields = ['profile_image']
+
+        def validate(self, data):
+            if not data.get('profile_image'):
+                raise serializers.ValidationError("프로필 이미지를 추가해주세요.")
+            return data
