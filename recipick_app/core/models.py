@@ -1,9 +1,20 @@
+import uuid
+import os
+
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
     PermissionsMixin,
 )
+
+
+def profile_image_file_path(instance, filename):
+    """새로운 이미지에대한 이미지 경로 생성"""
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+
+    return os.path.join('uploads', 'user', filename)
 
 
 class UserManager(BaseUserManager):
@@ -47,15 +58,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     level = models.ForeignKey(
-                    'Level',
-                    on_delete=models.SET_NULL,
-                    blank=True,
-                    null=True
+            'Level',
+            on_delete=models.SET_NULL,
+            blank=True,
+            null=True
     )
     profile_image = models.ImageField(
-                        upload_to='media/%Y/%m/',
-                        blank=True,
-                        null=True
+            upload_to=profile_image_file_path,
+            blank=True,
+            null=True
     )
     loc = models.FloatField(null=True, blank=True)
 
