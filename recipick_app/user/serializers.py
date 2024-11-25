@@ -60,7 +60,9 @@ class MypageSerializer(serializers.ModelSerializer):
 
     def get_profile_image(self, obj):
         if obj.profile_image:
-            return self.context['request'].build_absolute_uri(obj.profile_image.url)
+            return self.context['request'].build_absolute_uri(
+                obj.profile_image.url
+            )
         return None
 
     @extend_schema_field(serializers.IntegerField)
