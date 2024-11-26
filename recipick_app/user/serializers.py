@@ -27,7 +27,15 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):
-        return get_user_model().objects.create_user(**validated_data)
+        # 비밀번호 암호화 처리
+        user = get_user_model()(
+            id=validated_data['id'],
+            email=validated_data['email'],
+            nick_name=validated_data['nick_name'],
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
@@ -88,12 +96,11 @@ class AuthTokenSerializer(serializers.Serializer):
     def validate(self, attrs):
         id = attrs.get('id')
         password = attrs.get('password')
-        email = attrs.get('email')
+
         user = authenticate(
             request=self.context.get('request'),
             username=id,
             password=password,
-            email=email,
         )  # 유효하지 않으면 None반환
         if not user:
             msg = _('제공된 정보로 인증할 수 없습니다.')
