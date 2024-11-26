@@ -19,7 +19,10 @@ urlpatterns = [
     path('api/user/', include('user.urls')),
     path('api/report/', include('report.urls')),
     path('api/', include('recipe.urls')),
-
+    path('api/', include('help.urls')),
+    path('api/', include('lab.urls')),
+    path('api/', include('freemarket.urls')),
+    path('api/', include('notification.urls')),
 ]
 
 if settings.DEBUG:

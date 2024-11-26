@@ -25,7 +25,7 @@ class Recipe(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='recipe'
+        related_name='recipes'
     )
     name = models.CharField(max_length=255)
     time_minutes = models.PositiveSmallIntegerField(null=True, blank=True)
@@ -36,7 +36,7 @@ class Recipe(models.Model):
         null=True
     )
     serving = models.PositiveSmallIntegerField()
-    link = models.CharField(max_length=255, null=True, blank=True)
+    link = models.URLField(null=True, blank=True)
     description = models.TextField()
     create_dt = models.DateField(auto_now_add=True)
     modify_dt = models.DateField(auto_now=True)

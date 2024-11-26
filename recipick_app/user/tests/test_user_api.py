@@ -2,6 +2,10 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
+import os
+import tempfile
+from PIL import Image
+
 from rest_framework.test import APIClient
 from rest_framework import status
 
@@ -9,6 +13,8 @@ from rest_framework import status
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
+PROFILE_URL = reverse('user:profile')
+TEMP_MEDIA_ROOT = tempfile.mkdtemp()  # 임시 미디어 디렉토리 생성
 
 
 def create_user(**params):
@@ -147,6 +153,8 @@ class PrivateUserApiTests(TestCase):
             'id': self.user.id,
             'nick_name': self.user.nick_name,
             'email': self.user.email,
+            'profile_image': None,
+            'loc': None
         })
 
     def test_post_me_not_allowed(self):
@@ -166,11 +174,31 @@ class PrivateUserApiTests(TestCase):
 
     def test_user_delete_success(self):
         # 회원탈퇴가 제대로 되었는지 확인
-        payload = {'password': 'testpass123'}
+        res = self.client.delete(ME_URL)
 
-        res = self.client.delete(ME_URL, data=payload)
-
-        self.assertTrue(self.user.check_password(payload['password']))
-        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         user_exists = get_user_model().objects.filter(id=self.user.id).exists()
         self.assertFalse(user_exists)
+
+    def tearDown(self):
+        # 테스트 후 프로필 이미지 삭제
+        if self.user.profile_image:
+            self.user.profile_image.delete()
+
+    def test_upload_profile_image(self):
+        #  프로필 이미지를 성공적으로 업로드
+        with tempfile.NamedTemporaryFile(suffix=".jpg") as image_file:
+            # 10x10 크기의 임시 이미지 생성
+            Image.new("RGB", (10, 10)).save(image_file, format="JPEG")
+            image_file.seek(0)
+
+            payload = {'profile_image': image_file}
+            res = self.client.post(PROFILE_URL, payload, format='multipart')
+
+        # 응답 상태 확인
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.user.refresh_from_db()
+
+        # 이미지가 응답에 포함되었는지 확인
+        self.assertIn('profile_image', res.data)
+        self.assertTrue(os.path.exists(self.user.profile_image.path))
