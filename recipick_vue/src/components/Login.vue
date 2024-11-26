@@ -71,49 +71,49 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .login-box {
     background: white;
-    border: 1px solid #dbdbdb;
-    padding: 20px;
-    margin-bottom: 20px;
+    border: 1px solid #d6d6d6;
     text-align: center;
-    width: 300px;
-    height: 400px;
+    width: 80%;
+    height: 100%;
+    margin-top: 50px;
 }
 
 .login-box img {
     margin-top: 30px;
-    max-width: 160px;
-    width: 60%;
+    max-width: 230px;
+    width: 90%;
     height: auto;
 }
 
 input {
     width: 70%;
     margin-bottom: 15px;
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #dbdbdb;
     border-radius: 5px;
     background: #fafafa;
-    font-size: 60%;
+    font-size: 100%;
 }
 
 button {
-    width: 77%;
-    padding: 8px;
+    width: 80%;
+    padding: 13px;
     color: white;
-    background-color: #fadba0;
+    background-color: black;
     border: none;
     border-radius: 5px;
     font-weight: bold;
+    font-size: 15px;
     cursor: pointer;
     margin-bottom: 10px;
 }
 
 a {
     text-decoration-line: none;
-    color: #fdb226;
-    font-size: 60%;
+    color: black;
+    font-size: 80%;
 }
 </style>

@@ -1,132 +1,207 @@
 <template>
-    <div class="top">
-        <div class="top-box">
-            <a href="">{{ id }} 님</a>
-            <button @click="logout">로그아웃</button>
-            <a href="">공지사항</a>
-        </div>
-    </div>
-    <div class="header">
-        <img src="@/assets/recipick1.png">
-    </div>
+<Header></Header>
+  <div class="welcom-recipick">
+    <img src='@/assets/welcom-recipick.png'>
+  </div>
 
-    <nav class="custom-navbar">
-        <div class="container">
-            <ul class="nav-menu">
-                <li><a href="#">카테고리</a></li>
-                <li><a href="#">요리보기</a></li>
-                <li><a href="#">재료 무료 나눔</a></li>
-                <li><a href="#">요리 실험 일지</a></li>
-                <li><a href="#">요리 지식인</a></li>
-                <li><a href="#">유통기한 알림</a></li>
-            </ul>
-        </div>
-    </nav>
+  <h2>📌Recipick의 메뉴 알기</h2>
 
+  <div class="slider-container">
+    <div class="slider">
+      <div
+        class="slide"
+        v-for="(image, i) in banners"
+        :key="i"
+        :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
+      >
+        <img :src="image" alt="배너 이미지" />
+      </div>
+    </div>
+    <button class="prev" @click="prevSlide">〈</button>
+    <button class="next" @click="nextSlide">〉</button>
+  </div>
+
+  <div class="bestrecipe-section">
+    <h2>🎉어제의 Best 레시피</h2>
+    <h4>best레시피 나열</h4>
+    <button @click="more">더보기</button>
+  </div>
+
+  <div class="recipenote-section">
+    <h2>📋요리 실험 일지</h2>
+    <h4>요리 실험 일지 나열</h4>
+    <button @click="more">더보기</button>
+  </div>
 </template>
 
 <script>
-import { setAuthToken } from '@/store/api';
+import Header from '@/components/Header.vue';
 
 export default {
-    name: 'Mainpage',
-    computed: {
-        id(){
-            return this.$store.state.id;
-        }
+  data() {
+    return {
+      banners: [
+        require('@/assets/banner1.png'),
+        require('@/assets/banner2.png'),
+        require('@/assets/banner3.png'),
+        require('@/assets/banner4.png'),
+        require('@/assets/banner5.png'),
+      ],
+      currentIndex: 0,
+      intervalId: null,
+    };
+  },
+  components: {
+    Header,
+  },
+  methods: {
+    nextSlide() {
+      this.currentIndex = (this.currentIndex + 1) % this.banners.length;
     },
-
-    methods: {
-        logout() {
-            localStorage.removeItem("authToken");
-            setAuthToken(null);
-            this.$store.commit("removeToken");
-            alert("로그아웃되었습니다.");
-            this.$router.push("/");
-        }
-    }
+    prevSlide() {
+      this.currentIndex =
+        (this.currentIndex - 1 + this.banners.length) % this.banners.length;
+    },
+    startAutoSlide() {
+      this.intervalId = setInterval(() => {
+        this.nextSlide();
+      }, 5000);
+    },
+    stopAutoSlide() {
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+      }
+    },
+  },
+  mounted() {
+    this.startAutoSlide();
+  },
+  beforeDestroy() {
+    this.stopAutoSlide();
+  },
 };
 </script>
 
 <style scoped>
-.top {
-    padding: 5px 30px;
-    display: flex;
-    justify-content: flex-end;
-    margin-right: 8%;
-}
-.top-box {
-    display: flex;
-    align-items: center;
-    gap: 1px;
-}
-
-.top-box a {
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    min-width: 80px;
-    text-align: center;
-}
-
-.top-box a:first-child {
-    margin-right: 0px;
-}
-
-.top-box button {
-    background-color: white;
-    border: 2px solid #fce4b9;
-    color: #6b6b6b;
-    border-radius: 3px;
-    margin-top: 12px;
-    padding: 3px 8px;
-    font-size: 13px;
-}
-
-.header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-}
-.header img {
-    max-width: 190px;
+.welcom-recipick img{
+    width: 100%;
     height: auto;
-}
+    margin-bottom: 40px;
 
-/* nav */
-.custom-navbar {
-    background-color: white;
-    border: 3px solid #fce4b9;
-    border-radius: 20px;
-    padding: 10px 20px;
-    max-width: 1500px;
-    margin-left: auto;
-    margin-right: auto;
+    display: block;
 }
-
-.container {
-    max-width: 100%;
+.slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 1520px;
     margin: 0 auto;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.nav-menu {
-    list-style: none;
+.slider {
     display: flex;
-    gap: clamp(10px, 12vw, 150px);
-    margin: 0;
-    padding: 0;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(175, 175, 175, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+
+.slider-container:hover .prev,
+    .slider-container:hover .next {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 베스트 레시피 */
+.bestrecipe-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px;
+}
+.bestrecipe-section h2 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
     width: 100%;
 }
+.bestrecipe-section button {
+    padding: 10px 20px;
+    font-size: 15px;
+    color: #fff;
+    background-color: black;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
 
-.nav-menu a {
-    text-decoration: none;
-    color: rgb(88, 88, 88);
+/* 요리실험일지 */
+.recipenote-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px;
+}
+.recipenote-section h2 {
+    font-size: 25px;
     font-weight: bold;
-    font-size: clamp(0.8rem, 1vw, 1rem);
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+}
+.recipenote-section button {
+    padding: 10px 20px;
+    font-size: 15px;
+    color: #fff;
+    background-color: black;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
 }
 </style>

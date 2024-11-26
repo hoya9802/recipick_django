@@ -6,7 +6,7 @@
   <div class="container">
     <!-- 왼쪽 -->
     <div class="left-section">
-      <p>왼쪽</p>
+      <img src="@/assets/monitor.png">
     </div>
 
     <!-- 오른쪽 -->
@@ -35,7 +35,7 @@ export default {
   width: 100%;
 }
 .logo-image img {
-  margin-top: 30px;
+  margin-top: 50px;
   max-width: 250px;
   height: auto;
 }
@@ -58,6 +58,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.left-section img{
+  width: 100%;
 }
 /* 오른쪽 */
 .right-section {

@@ -1,6 +1,6 @@
 <template>
 
-<router-view />
+  <router-view />
 
 </template>
 
@@ -12,7 +12,6 @@ export default{
 </script>
 
 
-
 <style scoped lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -21,4 +20,5 @@ export default{
   text-align: center;
   color: #2c3e50;
 }
+
 </style>
