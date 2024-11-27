@@ -35,8 +35,8 @@ router.beforeEach((to, from, next) => {
   const isAuthenticated = store.state.isAuthenticated;
 
   if (to.meta.requireLogin && !isAuthenticated) {
-    next({ name: 'loginaccount' });
     alert('로그인 후에 접근할 수 있습니다.')
+    next({ name: 'loginaccount' });
   } else if (to.name === 'loginaccount' && isAuthenticated) {
     alert('로그아웃 후에 접근할 수 있습니다.')
     next({ name: 'main' });
