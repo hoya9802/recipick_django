@@ -2,6 +2,7 @@
 Views for the recipe APIs.
 """
 from django.http import Http404
+from django.db.models import Count, Q
 
 from drf_spectacular.utils import (
     extend_schema_view,
@@ -92,6 +93,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'], url_path='top-liked')
+    def top_liked_recipes(self, request):
+        """
+        좋아요가 많은 상위 10개 레시피를 가져오는 메서드.
+        """
+        top_recipes = Recipe.objects.annotate(
+            likes_count=Count('likes', filter=Q(likes__rate=1))
+        ).order_by('-likes_count')[:10]
+
+        serializer = RecipeListSerializer(top_recipes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class RecipesByCategoryListView(generics.ListAPIView):
