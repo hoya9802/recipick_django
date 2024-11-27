@@ -3,6 +3,7 @@ import LoginAccount from '../views/LoginAccountView.vue';
 import Mainpage from '@/views/MainView.vue';
 import store from '@/store';
 import DishList from '@/views/DishListView.vue';
+import Signup from '@/views/SignupView.vue';
 
 const routes = [
   {
@@ -32,6 +33,19 @@ const routes = [
     meta: {
       requireLogin: true
     }
+  },
+  {
+    path: '/signup',
+    name: 'Signup',
+    component: Signup,
+    beforeEnter: (to, from, next) => {
+      if (store.state.isAuthenticated) {
+        alert('회원가입 페이지는 로그아웃 후에 접근할 수 있습니다.');
+        next({ name: 'main' });
+      } else {
+        next();
+      }
+    },
   },
 
 ]

@@ -20,7 +20,7 @@
 
         <a href="">아이디 찾기 / </a>
         <a href="">비밀번호 찾기 / </a>
-        <a href="">회원가입</a>
+        <a @click.prevent="goToSignup">회원가입</a>
     </div>
 </template>
 
@@ -66,6 +66,9 @@ export default {
                 this.$store.commit("removeToken");
                 localStorage.removeItem("authToken");
             }
+        },
+        goToSignup() {
+            this.$router.push('/signup');
         },
     },
 };
@@ -115,5 +118,6 @@ a {
     text-decoration-line: none;
     color: black;
     font-size: 80%;
+    cursor: pointer;
 }
 </style>

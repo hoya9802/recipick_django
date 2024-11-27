@@ -2,7 +2,7 @@
 Views for the recipe APIs.
 """
 from django.http import Http404
-from django.db.models import Count, Q
+from django.db.models import Count, Q, F
 
 from drf_spectacular.utils import (
     extend_schema_view,
@@ -94,16 +94,31 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['GET'], url_path='top-liked')
-    def top_liked_recipes(self, request):
+    @action(detail=False, methods=['GET'], url_path='top-ranked')
+    def top_ranked_recipes(self, request):
         """
-        좋아요가 많은 상위 10개 레시피를 가져오는 메서드.
+        좋아요 수와 NG 수를 합산하여 상위 레시피를 가져오는 메서드.
         """
         top_recipes = Recipe.objects.annotate(
-            likes_count=Count('likes', filter=Q(likes__rate=1))
-        ).order_by('-likes_count')[:10]
+            likes_count=Count('likes', filter=Q(likes__rate=1)),
+            ng_count=Count('likes', filter=Q(likes__rate=-1)),
+            score=F('likes_count') - F('ng_count')  # 좋아요 - NG로 점수 계산
+        ).filter(score__gt=0)  # score가 0보다 큰 레시피만 가져옴
+        top_recipes = top_recipes.order_by('-score', '-likes_count')[:5]
 
         serializer = RecipeListSerializer(top_recipes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['GET'], url_path='top-nglisted')
+    def top_nglisted_recipes(self, request):
+        """
+        NG 수를 계산하여 상위 레시피를 가져오는 메서드.
+        """
+        ng_recipes = Recipe.objects.annotate(
+            ng_count=Count('likes', filter=Q(likes__rate=-1))
+        ).order_by('-ng_count')[:5]
+
+        serializer = RecipeListSerializer(ng_recipes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

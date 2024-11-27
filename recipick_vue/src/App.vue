@@ -14,7 +14,7 @@ export default {
     },
     computed: {
         showHeader() {
-            return this.$route?.name !== "loginaccount";
+            return !['loginaccount', 'Signup'].includes(this.$route?.name);
         },
     },
 
