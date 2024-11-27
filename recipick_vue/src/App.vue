@@ -1,13 +1,22 @@
 <template>
-
+  <Header v-if="showHeader"></Header>
   <router-view />
 
 </template>
 
 <script>
+import Header from '@/components/Header.vue';
 
 export default{
   name : 'App',
+  components: {
+    Header: Header,
+  },
+  computed: {
+    showHeader() {
+      return this.$route.name !== 'loginaccount';
+    }
+  }
 }
 </script>
 
