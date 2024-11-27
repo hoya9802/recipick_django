@@ -19,7 +19,7 @@
     <nav class="custom-navbar">
         <div class="container">
             <ul class="nav-menu">
-            <li><a href="#">카테고리</a></li>
+            <li>카테고리</li>
             <li><a href="#">요리보기</a></li>
             <li><a href="#">재료 무료 나눔</a></li>
             <li><a href="#">요리 실험 일지</a></li>

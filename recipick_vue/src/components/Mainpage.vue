@@ -24,13 +24,19 @@
   <div class="bestrecipe-section">
     <h2>🎉어제의 Best 레시피</h2>
     <h4>best레시피 나열</h4>
-    <button @click="more">더보기</button>
+    <!-- <button @click="more">더보기</button> -->
+  </div>
+
+  <div class="ngrecipe-section">
+    <h2>💥어제의 NG 요리</h2>
+    <h4>어제의 NG 요리</h4>
+    <!-- <button @click="more">더보기</button> -->
   </div>
 
   <div class="recipenote-section">
     <h2>📋요리 실험 일지</h2>
     <h4>요리 실험 일지 나열</h4>
-    <button @click="more">더보기</button>
+    <!-- <button @click="more">더보기</button> -->
   </div>
 </template>
 
@@ -158,36 +164,16 @@ export default {
 }
 
 /* 베스트 레시피 */
-.bestrecipe-section {
+.bestrecipe-section,
+.ngrecipe-section,
+.recipenote-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 15px;
 }
-.bestrecipe-section h2 {
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: left;
-    width: 100%;
-}
-.bestrecipe-section button {
-    padding: 10px 20px;
-    font-size: 15px;
-    color: #fff;
-    background-color: black;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-/* 요리실험일지 */
-.recipenote-section{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 15px;
-}
+.bestrecipe-section h2,
+.ngrecipe-section h2,
 .recipenote-section h2 {
     font-size: 25px;
     font-weight: bold;
@@ -195,6 +181,8 @@ export default {
     text-align: left;
     width: 100%;
 }
+/* .bestrecipe-section button,
+.ngrecipe-section button,
 .recipenote-section button {
     padding: 10px 20px;
     font-size: 15px;
@@ -203,5 +191,5 @@ export default {
     border: none;
     border-radius: 20px;
     cursor: pointer;
-}
+} */
 </style>
