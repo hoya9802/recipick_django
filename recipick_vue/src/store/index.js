@@ -5,6 +5,7 @@ export default createStore({
     isAuthenticated: false,
     token: '',
     id: '',
+    isLoading: false
   },
   getters: {
   },
@@ -21,6 +22,9 @@ export default createStore({
       state.isAuthenticated = false;
       state.id = '';
     },
+    setIsLoading(state, status) {
+      state.isLoading = status
+    }
   },
   actions: {
   },

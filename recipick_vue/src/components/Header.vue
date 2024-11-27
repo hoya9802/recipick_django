@@ -8,7 +8,9 @@
     </div>
     <div class="header">
         <div class="header-logo">
-            <img src="@/assets/recipick1.png">
+            <router-link to="/main">
+                <img src="@/assets/recipick1.png">
+            </router-link>
         </div>
         <div class="header-right">
             <a href="">레시피 업로드</a>
@@ -20,7 +22,7 @@
         <div class="container">
             <ul class="nav-menu">
             <li>카테고리</li>
-            <li><a href="#">요리보기</a></li>
+            <li><router-link to="/dish-list">요리보기</router-link></li>
             <li><a href="#">재료 무료 나눔</a></li>
             <li><a href="#">요리 실험 일지</a></li>
             <li><a href="#">요리 지식인</a></li>
