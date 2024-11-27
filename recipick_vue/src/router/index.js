@@ -2,28 +2,38 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginAccount from '../views/LoginAccountView.vue';
 import Mainpage from '@/views/MainView.vue';
 import store from '@/store';
+import DishList from '@/views/DishListView.vue';
 
 const routes = [
-    {
-        path: '/',
-        name: 'loginaccount',
-        component: LoginAccount,
-        beforeEnter: (to, from, next) => {
-            if (store.state.isAuthenticated == true) {
-                next({ name: 'main' });
-            } else {
-                next();
-            }
-        },
-    },
-    {
-        path: '/main',
-        name: 'main',
-        component: Mainpage,
-        meta: {
-            requireLogin: true
-        }
-    },
+  {
+    path: '/',
+    name: 'loginaccount',
+    component: LoginAccount,
+    beforeEnter: (to, from, next) => {
+      if (store.state.isAuthenticated == true) {
+        next({name: 'main'});
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: '/main',
+    name: 'main',
+    component: Mainpage,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/dish-list',
+    name: 'DishList',
+    component: DishList,
+    meta: {
+      requireLogin: true
+    }
+  },
+
 ]
 
 const router = createRouter({

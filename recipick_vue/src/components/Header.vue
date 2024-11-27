@@ -9,7 +9,9 @@
 
     <div class="header">
         <div class="header-logo">
-            <img src="@/assets/recipick1.png">
+            <router-link to="/main">
+                <img src="@/assets/recipick1.png">
+            </router-link>
         </div>
         <div class="header-right">
             <a href="">레시피 업로드</a>
@@ -20,6 +22,7 @@
     <nav class="custom-navbar">
         <div class="container">
             <ul class="nav-menu">
+
                 <div class="category">
                     <span @mouseover="toggleDropdown">카테고리</span>
                     <ul v-if="dropdownOpen">
@@ -33,6 +36,7 @@
                 <li><a href="#">요리 실험 일지</a></li>
                 <li><a href="#">요리 지식인</a></li>
                 <li><a href="#">유통기한 알림</a></li>
+
             </ul>
         </div>
     </nav>
