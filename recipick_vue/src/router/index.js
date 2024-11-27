@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginAccount from '../views/LoginAccountView.vue';
 import Mainpage from '@/views/MainView.vue';
 import store from '@/store';
+import DishList from '@/views/DishListView.vue';
 
 const routes = [
   {
@@ -20,6 +21,14 @@ const routes = [
     path: '/main',
     name: 'main',
     component: Mainpage,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/dish-list',
+    name: 'DishList',
+    component: DishList,
     meta: {
       requireLogin: true
     }
