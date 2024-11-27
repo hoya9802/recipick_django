@@ -1,5 +1,4 @@
 <template>
-<Header></Header>
   <div class="welcom-recipick">
     <img src='@/assets/welcom-recipick.png'>
   </div>
