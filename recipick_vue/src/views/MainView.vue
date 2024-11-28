@@ -163,6 +163,7 @@ export default {
         },
     },
     mounted() {
+        document.title= 'Recipick'
         this.startAutoSlide();
         this.fetchBestRecipes();
         this.fetchNgRecipes();
@@ -265,7 +266,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: left;
     margin: 10px;
 }
 .bestrecipe-card,
@@ -278,7 +279,7 @@ export default {
     text-align: center;
 }
 .lab-card {
-    flex: 1 1 calc(33% - 10px); /* 5개의 카드가 한 줄에 고르게 배치 */
+    flex: 1 1 calc(33% - 10px); /* 3개의 카드가 한 줄에 고르게 배치 */
     max-width: calc(33% - 10px);
     box-sizing: border-box;
     border: 1px solid #ddd;
