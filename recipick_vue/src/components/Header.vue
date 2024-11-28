@@ -6,6 +6,7 @@
             <a href="">공지사항</a>
         </div>
     </div>
+
     <div class="header">
         <div class="header-logo">
             <router-link to="/main">
@@ -21,28 +22,47 @@
     <nav class="custom-navbar">
         <div class="container">
             <ul class="nav-menu">
-            <li>카테고리</li>
-            <li><router-link to="/dish-list">요리보기</router-link></li>
-            <li><a href="#">재료 무료 나눔</a></li>
-            <li><a href="#">요리 실험 일지</a></li>
-            <li><a href="#">요리 지식인</a></li>
-            <li><a href="#">유통기한 알림</a></li>
+
+                <div class="category">
+                    <span @mouseover="toggleDropdown">카테고리</span>
+                    <ul v-if="dropdownOpen">
+                        <li v-for="category in categories" :key="category.id">
+                            ◾ {{ category.name }}
+                        </li>
+                    </ul>
+                </div>
+                <li><router-link to="/recipe-list">요리보기</router-link></li>
+                <li><a href="#">재료 무료 나눔</a></li>
+                <li><a href="#">요리 실험 일지</a></li>
+                <li><a href="#">요리 지식인</a></li>
+                <li><a href="#">유통기한 알림</a></li>
+
             </ul>
         </div>
     </nav>
 </template>
 
 <script>
-import { setAuthToken } from '@/store/api';
+import apiClient, { setAuthToken } from '@/store/api';
 
-export default{
-    name : 'App',
+export default {
+    name: 'Header',
     data() {
-        return
+        return {
+            categories: [],
+            dropdownOpen: false,
+        }
     },
     computed: {
-        id(){
+        id() {
             return this.$store.state.id;
+        }
+    },
+    created() {
+        if (this.$route.name !== "loginaccount") {
+            this.fetchCategories();
+        } else {
+            console.log("fetchCategories skipped on route:", this.$route.name);
         }
     },
 
@@ -53,8 +73,36 @@ export default{
             this.$store.commit("removeToken");
             alert("로그아웃되었습니다.");
             this.$router.push("/");
+        },
+        async fetchCategories() {
+            const token = localStorage.getItem("authToken");
+            if (!token) {
+                return;
+            }
+
+            try {
+                const response = await apiClient.get("/categories/", {
+                    headers: {
+                        Authorization: `Token ${token}`,
+                    },
+                });
+                console.log("Fetched categories:", response.data);
+                this.categories = response.data;
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                alert("카테고리를 가져오지 못했습니다.");
+            }
+        },
+        toggleDropdown() {
+            this.dropdownOpen = !this.dropdownOpen;
+        },
+    },
+
+    watch: {
+        $route() {
+            this.dropdownOpen = false;
         }
-    }
+    },
 };
 </script>
 
@@ -72,7 +120,6 @@ export default{
     align-items: center;
     gap: 1px;
 }
-
 .top-section a {
     color: black;
     text-decoration: none;
@@ -80,12 +127,10 @@ export default{
     min-width: 80px;
     text-align: center;
 }
-
 .top-section a:first-child {
     margin-right: 4px;
     text-align: end;
 }
-
 .top-section button {
     background-color: white;
     border: 2px solid black;
@@ -139,7 +184,6 @@ export default{
     margin-left: auto;
     margin-right: auto;
 }
-
 .container {
     max-width: 100%;
     margin: 0 auto;
@@ -147,7 +191,6 @@ export default{
     justify-content: center;
     align-items: center;
 }
-
 .nav-menu {
     list-style: none;
     display: flex;
@@ -157,11 +200,61 @@ export default{
     justify-content: center;
     width: 100%;
 }
-
+.nav-menu span {
+    color: white;
+    font-weight: bold;
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    cursor: pointer;
+}
 .nav-menu a {
     text-decoration: none;
     color: white;
     font-weight: bold;
     font-size: clamp(0.8rem, 1vw, 1rem);
 }
+
+/* 카테고리 드롭다운 */
+.category {
+    position: relative;
+    display: inline-block;
+}
+.category ul {
+    position: absolute;
+    top: 140%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    width: 150px;
+    padding: 8px 0;
+    margin: 0;
+    list-style: none;
+    z-index: 1000;
+}
+.category ul.v-enter-active,
+.category ul.v-enter-to {
+    display: block;
+}
+
+/* Dropdown items */
+.category ul li {
+    padding: 8px 16px; /* 항목 간격 */
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.category ul li:hover {
+    background-color: #f0f0f0; /* 마우스 오버 시 배경색 */
+}
+
+/* 드롭다운 활성화 버튼 */
+.nav-menu span {
+    color: white;
+    font-weight: bold;
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
 </style>

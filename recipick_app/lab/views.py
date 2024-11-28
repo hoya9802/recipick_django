@@ -7,6 +7,7 @@ from drf_spectacular.utils import (
     OpenApiParameter
 )
 from drf_spectacular.types import OpenApiTypes
+from django.db.models import Count
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -80,6 +81,18 @@ class LabViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'], url_path='top-lablisted')
+    def top_listed_labs(self, request):
+        """
+        좋아요 수를 계산하여 상위 실험일지를 가져오는 메서드.
+        """
+        recipe_lab = Lab.objects.annotate(
+            likes_count=Count('lablikes')
+        ).order_by('-likes_count')[:3]
+
+        serializer = LabListSerializer(recipe_lab, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class LikeViewSet(viewsets.ModelViewSet):

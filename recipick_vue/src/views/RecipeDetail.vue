@@ -62,7 +62,7 @@ import apiClient from '@/store/api';
 import { Toast } from 'bootstrap';
 
 export default {
-  name: "DishDetailView",
+  name: "RecipeDetailView",
   data() {
     return {
       dish: null,

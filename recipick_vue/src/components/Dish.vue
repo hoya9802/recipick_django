@@ -1,11 +1,10 @@
 <template>
   <div class="dish-item">
-    <router-link :to="'/dish-list/' + dish.id">
+    <router-link :to="'/recipe-list/' + dish.id">
       <div class="post-header">
         <div class="profile"></div>
           <span class="profile-name">{{ dish.user.nick_name }} - </span>
-          <span class="profile-name" v-if="dish.user.level">{{ dish.user.level }}</span>
-          <span class="profile-name" v-else>초보 요리사</span>
+          <span class="profile-name">{{ dish.user.level }}</span>
         </div>
       <div class="post-body" :style="{ backgroundImage: `url(${dish.image})` }"></div>
       <div class="post-content">
