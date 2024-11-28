@@ -3,6 +3,7 @@ import LoginAccount from '../views/LoginAccountView.vue';
 import Mainpage from '@/views/MainView.vue';
 import store from '@/store';
 import DishList from '@/views/DishListView.vue';
+import DishDetail from '@/views/DishDetail.vue';
 
 const routes = [
   {
@@ -29,6 +30,14 @@ const routes = [
     path: '/dish-list',
     name: 'DishList',
     component: DishList,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/dish-list/:dish_id/',
+    name: 'DishDetail',
+    component: DishDetail,
     meta: {
       requireLogin: true
     }
