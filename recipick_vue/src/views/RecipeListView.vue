@@ -13,7 +13,7 @@ import apiClient from '@/store/api';
 import Dish from '@/components/Dish.vue';
 
 export default {
-    name: 'DishListView',
+    name: 'RecipeListView',
     data() {
         return {
             dishList: [],

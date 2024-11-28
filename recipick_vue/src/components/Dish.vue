@@ -1,15 +1,17 @@
 <template>
   <div class="dish-item">
-    <div class="post-header">
-      <div class="profile"></div>
-        <span class="profile-name">{{ dish.user.nick_name }} - </span>
-        <span class="profile-name">{{ dish.user.level }}</span>
+    <router-link :to="'/recipe-list/' + dish.id">
+      <div class="post-header">
+        <div class="profile"></div>
+          <span class="profile-name">{{ dish.user.nick_name }} - </span>
+          <span class="profile-name">{{ dish.user.level }}</span>
+        </div>
+      <div class="post-body" :style="{ backgroundImage: `url(${dish.image})` }"></div>
+      <div class="post-content">
+        <p><strong>{{ dish.name }}</strong></p>
+        <p>{{ dish.likes_count }} Likes {{ dish.dislikes_count }} NGs</p>
       </div>
-    <div class="post-body" :style="{ backgroundImage: `url(${dish.image})` }"></div>
-    <div class="post-content">
-      <p><strong>{{ dish.name }}</strong></p>
-      <p>{{ dish.likes_count }} Likes {{ dish.dislikes_count }} NGs</p>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -41,7 +43,7 @@ export default {
 }
 
 .post-header {
-  height: 30px;
+  height: 45px;
   padding: 10px;
 }
 
@@ -55,5 +57,10 @@ export default {
   padding-left: 15px;
   padding-right: 15px;
   font-size: 14px;
+}
+
+.dish-item a {
+  text-decoration: none;
+  color: black;
 }
 </style>

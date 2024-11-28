@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginAccount from '../views/LoginAccountView.vue';
 import Mainpage from '@/views/MainView.vue';
 import store from '@/store';
-import DishList from '@/views/DishListView.vue';
+import RecipeList from '@/views/RecipeListView.vue';
+import RecipeDetail from '@/views/RecipeDetail.vue';
 import Signup from '@/views/SignupView.vue';
 
 const routes = [
@@ -27,9 +28,17 @@ const routes = [
     }
   },
   {
-    path: '/dish-list',
-    name: 'DishList',
-    component: DishList,
+    path: '/recipe-list',
+    name: 'RecipeList',
+    component: RecipeList,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/recipe-list/:dish_id/',
+    name: 'RecipeDetail',
+    component: RecipeDetail,
     meta: {
       requireLogin: true
     }
@@ -47,7 +56,6 @@ const routes = [
       }
     },
   },
-
 ]
 
 const router = createRouter({
