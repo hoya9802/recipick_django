@@ -5,6 +5,8 @@ import store from '@/store';
 import RecipeList from '@/views/RecipeListView.vue';
 import RecipeDetail from '@/views/RecipeDetail.vue';
 import Signup from '@/views/SignupView.vue';
+import Mypage from '@/views/MypageView.vue';
+import Update from '@/views/UpdateView.vue';
 
 const routes = [
   {
@@ -54,6 +56,23 @@ const routes = [
       } else {
         next();
       }
+    },
+  },
+
+  {
+    path: '/mypage',
+    name: 'Mypage',
+    component: Mypage,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/mypage/update',
+    name: 'Update',
+    component: Update,
+    meta: {
+      requireLogin: true
     },
   },
 ]

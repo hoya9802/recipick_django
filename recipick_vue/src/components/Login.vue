@@ -57,7 +57,10 @@ export default {
             });
 
             const userId = userResponse.data.id;
+            const nickname = userResponse.data.nick_name;
+
             this.$store.commit("setId", userId);
+            this.$store.commit('setNickname', nickname);
 
             this.$router.push("/main");
             } catch (error) {

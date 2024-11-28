@@ -1,10 +1,21 @@
 <template>
     <div class="top">
         <div class="top-section">
-            <a href="">{{ id }} 님</a>
-            <button @click="logout">로그아웃</button>
+            <div class="id">
+                <span @click="idDropdown">{{ nickname }} 님 <img src="@/assets/icon.png" class="iconimage"></span>
+                <ul v-if="iddropdownOpen" class="id-dropdown">
+                    <li><router-link to="/mypage" @click.native="closeDropdown">마이페이지</router-link></li>
+                    <li><router-link to="/mypage/update" @click.native="closeDropdown">회원정보수정</router-link></li>
+                    <li @click="logout">로그아웃</li>
+                </ul>
+            </div>
             <a href="">공지사항</a>
+            <a href="">레시피 업로드</a>
         </div>
+            <div class="emo">
+                <a class="emo1">🧑🏻</a>
+                <a class="emo2">👽</a>
+            </div>
     </div>
 
     <div class="header">
@@ -14,8 +25,8 @@
             </router-link>
         </div>
         <div class="header-right">
-            <a href="">레시피 업로드</a>
-            <img src="@/assets/hearticon.png">
+
+
         </div>
     </div>
 
@@ -51,11 +62,13 @@ export default {
         return {
             categories: [],
             dropdownOpen: false,
+            iddropdownOpen: false,
         }
     },
     computed: {
-        id() {
-            return this.$store.state.id;
+        nickname() {
+            console.log("닉네임 상태:", this.$store.state.nick_name);
+            return this.$store.state.nick_name;
         }
     },
     created() {
@@ -96,6 +109,12 @@ export default {
         toggleDropdown() {
             this.dropdownOpen = !this.dropdownOpen;
         },
+        idDropdown(){
+            this.iddropdownOpen = !this.iddropdownOpen;
+        },
+        closeDropdown(){
+            this.iddropdownOpen = false;
+        }
     },
 
     watch: {
@@ -108,7 +127,7 @@ export default {
 
 <style scoped>
 .top {
-    width: 80%;
+    width: 88%;
     padding: 5px 30px;
     display: flex;
     justify-content: flex-end;
@@ -118,35 +137,87 @@ export default {
 .top-section {
     display: flex;
     align-items: center;
-    gap: 1px;
+    gap: 15px;
+    padding: 10; /* 내부 여백 제거 */
+    margin: 10;
 }
+.top-section span,
 .top-section a {
     color: black;
     text-decoration: none;
     font-size: 16px;
     min-width: 80px;
     text-align: center;
-}
-.top-section a:first-child {
-    margin-right: 4px;
-    text-align: end;
-}
-.top-section button {
-    background-color: white;
-    border: 2px solid black;
-    color: #6b6b6b;
-    border-radius: 20px;
     cursor: pointer;
-    padding: 3px 8px;
-    font-size: 16px;
+    margin-right: 5px;
+}
+.emo {
+    margin-left: 20px;
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+    padding: 0;
+}
+.emo1, .emo2 {
+    font-size: 20px;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    width: auto;
 }
 
+/* id 드롭다운 */
+.id {
+    position: relative;
+    display: inline-block;
+}
+.id ul{
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    width: 150px;
+    padding: 8px 0;
+    margin: 0;
+    list-style: none;
+    z-index: 1000;
+}
+.id ul.v-enter-active,
+.id ul.v-enter-to {
+    display: block;
+}
+.id ul li {
+    padding: 8px 16px;
+    font-size: 16px;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.id ul li:hover {
+    background-color: #f0f0f0;
+}
+.iconimage{
+    width: 15px;
+    height: 18px;
+}
+.heartimage {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+/* 레시픽 로고 */
 .header {
+    margin-top: 30px;
     justify-content: center;
     display: flex;
     align-items: center;
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 .header-logo {
     position: absolute;
@@ -157,23 +228,6 @@ export default {
     max-width: 230px;
     max-height: 180px;
     height: auto;
-}
-.header-right {
-    margin-left: auto;
-    margin-right: 20%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.header-right a {
-    text-decoration: none;
-    color: black;
-    font-size: 16px;
-}
-.header-right img {
-    max-width: 50px;
-    max-height: 50px;
-    cursor: pointer;
 }
 
 /* nav */
@@ -234,21 +288,16 @@ export default {
 .category ul.v-enter-to {
     display: block;
 }
-
-/* Dropdown items */
 .category ul li {
-    padding: 8px 16px; /* 항목 간격 */
+    padding: 8px 16px;
     font-size: 16px;
     color: black;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
-
 .category ul li:hover {
-    background-color: #f0f0f0; /* 마우스 오버 시 배경색 */
+    background-color: #f0f0f0;
 }
-
-/* 드롭다운 활성화 버튼 */
 .nav-menu span {
     color: white;
     font-weight: bold;

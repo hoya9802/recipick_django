@@ -5,6 +5,7 @@ export default createStore({
     isAuthenticated: false,
     token: '',
     id: '',
+    nick_name: '',
     isLoading: false
   },
   getters: {
@@ -12,6 +13,9 @@ export default createStore({
   mutations: {
     setId(state, id){
       state.id = id;
+    },
+    setNickname(state, nick_name){
+      state.nick_name = nick_name;
     },
     setToken(state, token) {
       state.token = token;
