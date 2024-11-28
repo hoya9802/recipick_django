@@ -42,7 +42,7 @@
                         </li>
                     </ul>
                 </div>
-                <li><router-link to="/dish-list">요리보기</router-link></li>
+                <li><router-link to="/recipe-list">요리보기</router-link></li>
                 <li><a href="#">재료 무료 나눔</a></li>
                 <li><a href="#">요리 실험 일지</a></li>
                 <li><a href="#">요리 지식인</a></li>
@@ -114,6 +114,12 @@ export default {
         },
         closeDropdown(){
             this.iddropdownOpen = false;
+        }
+    },
+
+    watch: {
+        $route() {
+            this.dropdownOpen = false;
         }
     },
 };

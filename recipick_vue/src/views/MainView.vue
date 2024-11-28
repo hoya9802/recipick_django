@@ -25,12 +25,15 @@
         <div class="black-bar"></div>
         <div class="bestrecipe-list">
             <div v-for="recipe in bestRecipes" :key="recipe.id" class="bestrecipe-card">
-                <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image" class="bestrecipe-image" />
-                <div class="bestrecipe-info">
-                    <h3>{{ recipe.name }}</h3>
-                    <p>🧑🏻: {{ recipe.likes_count }} 👽: {{ recipe.dislikes_count }}</p>
-                    <p>👩‍🍳 {{ recipe.user.nick_name }} - {{ recipe.user.level }}</p>
-                </div>
+                <router-link :to="'/recipe-list/' + recipe.id">
+                    <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image"
+                        class="bestrecipe-image" />
+                    <div class="bestrecipe-info">
+                        <h3>{{ recipe.name }}</h3>
+                        <p>🧑🏻: {{ recipe.likes_count }} 👽: {{ recipe.dislikes_count }}</p>
+                        <p>👩‍🍳 {{ recipe.user.nick_name }} - {{ recipe.user.level }}</p>
+                    </div>
+                </router-link>
             </div>
         </div>
     </div>
@@ -40,12 +43,15 @@
         <div class="black-bar"></div>
         <div class="ngrecipe-list">
             <div v-for="recipe in ngRecipes" :key="recipe.id" class="ngrecipe-card">
-                <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image" class="ngrecipe-image" />
-                <div class="ngrecipe-info">
-                    <h3>{{ recipe.name }}</h3>
-                    <p>👽: {{ recipe.dislikes_count }}</p>
-                    <p>👩‍🍳 {{ recipe.user.nick_name }} - {{ recipe.user.level }}</p>
-                </div>
+                <router-link :to="'/recipe-list/' + recipe.id">
+                    <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image"
+                        class="ngrecipe-image" />
+                    <div class="ngrecipe-info">
+                        <h3>{{ recipe.name }}</h3>
+                        <p>👽: {{ recipe.dislikes_count }}</p>
+                        <p>👩‍🍳 {{ recipe.user.nick_name }} - {{ recipe.user.level }}</p>
+                    </div>
+                </router-link>
             </div>
         </div>
     </div>
@@ -323,5 +329,10 @@ export default {
     height: 4px;
     background-color: rgb(0, 0, 0);
     margin: 5px 0;
+}
+.bestrecipe-card a,
+.ngrecipe-card a {
+  text-decoration: none;
+  color: black;
 }
 </style>

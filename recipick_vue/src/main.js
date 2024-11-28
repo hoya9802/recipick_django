@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import apiClient, { setAuthToken } from "@/store/api";
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const token = localStorage.getItem("authToken");
 if (token) {
