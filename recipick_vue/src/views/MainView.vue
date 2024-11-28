@@ -3,7 +3,10 @@
         <img src='@/assets/welcome-recipick.png'>
     </div>
 
-    <h2>📌Recipick의 메뉴 알기</h2>
+    <div class="menu-notice">
+        <span>📌 Recipick의 메뉴 알기</span>
+    </div>
+
     <div class="black-bar"></div>
 
     <div class="slider-container">
@@ -18,31 +21,29 @@
     </div>
 
     <div class="bestrecipe-section">
-        <h2>🎉 어제의 Best 레시피</h2>
+        <h2>🎉 Best 레시피</h2>
         <div class="black-bar"></div>
         <div class="bestrecipe-list">
             <div v-for="recipe in bestRecipes" :key="recipe.id" class="bestrecipe-card">
                 <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image" class="bestrecipe-image" />
                 <div class="bestrecipe-info">
                     <h3>{{ recipe.name }}</h3>
-                    <p>👍 좋아요: {{ recipe.likes_count }} 👎 NG: {{ recipe.dislikes_count }}</p>
+                    <p>🧑🏻: {{ recipe.likes_count }} 👽: {{ recipe.dislikes_count }}</p>
                     <p>👩‍🍳 {{ recipe.user.nick_name }} - {{ recipe.user.level }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-
-
     <div class="ngrecipe-section">
-        <h2>💥어제의 NG 요리</h2>
+        <h2>👽 지구인은 이해할 수 없는 음식</h2>
         <div class="black-bar"></div>
         <div class="ngrecipe-list">
             <div v-for="recipe in ngRecipes" :key="recipe.id" class="ngrecipe-card">
                 <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image" class="ngrecipe-image" />
                 <div class="ngrecipe-info">
                     <h3>{{ recipe.name }}</h3>
-                    <p>👎 NG: {{ recipe.dislikes_count }}</p>
+                    <p>👽: {{ recipe.dislikes_count }}</p>
                     <p>👩‍🍳 {{ recipe.user.nick_name }} - {{ recipe.user.level }}</p>
                 </div>
             </div>
@@ -50,14 +51,14 @@
     </div>
 
     <div class="lab-section">
-        <h2>📋요리 실험 일지</h2>
+        <h2>💡 요리의 재발견</h2>
         <div class="black-bar"></div>
         <div class="lab-list">
             <div v-for="lab in recipeLabs" :key="lab.id" class="lab-card">
                 <img :src="lab.image || require('@/assets/default-image.png')" alt="Lab Image" class="lab-image" />
                 <div class="lab-info">
                     <h3>{{ lab.title }}</h3>
-                    <p>🖤 좋아요 : {{ lab.likes_count }}</p>
+                    <p> 🔎: {{ lab.likes_count }}</p>
                     <p>👩‍🍳 {{ lab.user.nick_name }} - {{ lab.user.level }}</p>
                 </div>
             </div>
@@ -253,11 +254,13 @@ export default {
 .lab-section {
     margin-bottom: 200px;
 }
+.menu-notice,
 .bestrecipe-section h2,
 .ngrecipe-section h2,
 .lab-section h2 {
     font-size: 24px;
     font-weight: bold;
+    margin-left: 20px;
     margin-bottom: 20px;
 }
 .bestrecipe-list,
@@ -289,7 +292,7 @@ export default {
 .bestrecipe-image,
 .ngrecipe-image {
     width: 100%;
-    height: 300px;
+    height: 350px;
     object-fit: cover;
     margin-bottom: 5px;
 }
@@ -302,14 +305,14 @@ export default {
 .bestrecipe-info h3,
 .ngrecipe-info h3,
 .lab-info h3 {
-    font-size: 20px;
+    font-size: 25px;
     font-weight: bold;
     margin-bottom: 15px;
 }
 .bestrecipe-info p,
 .ngrecipe-info p,
 .lab-info p {
-    font-size: 14px;
+    font-size: 20px;
     margin: 5px 0;
     color: #555;
 }

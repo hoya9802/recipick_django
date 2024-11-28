@@ -4,11 +4,12 @@
         <img src="@/assets/signup.png" alt="Signup Image" />
 
         <form @submit.prevent="signupForm">
-            <input v-model="id" type="text" placeholder="아이디" required />
-            <input v-model="email" type="email" placeholder="이메일" required />
-            <input v-model="nick_name" type="text" placeholder="닉네임" required />
-            <input v-model="password" type="password" placeholder="비밀번호" required />
-            <input v-model="confirmPassword" type="password" placeholder="비밀번호 확인" required />
+            <input v-model="profileimage" type="text" placeholder="프로필 이미지" required />
+            <input v-model="id" type="text" placeholder="*아이디" required />
+            <input v-model="email" type="email" placeholder="*이메일" required />
+            <input v-model="nick_name" type="text" placeholder="*닉네임" required />
+            <input v-model="password" type="password" placeholder="*비밀번호" required />
+            <input v-model="confirmPassword" type="password" placeholder="*비밀번호 확인" required />
             <button type="submit">회원가입</button>
         </form>
 

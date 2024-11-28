@@ -4,6 +4,8 @@ import Mainpage from '@/views/MainView.vue';
 import store from '@/store';
 import DishList from '@/views/DishListView.vue';
 import Signup from '@/views/SignupView.vue';
+import Mypage from '@/views/MypageView.vue';
+import Update from '@/views/UpdateView.vue';
 
 const routes = [
   {
@@ -47,7 +49,22 @@ const routes = [
       }
     },
   },
-
+  {
+    path: '/mypage',
+    name: 'Mypage',
+    component: Mypage,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/mypage/update',
+    name: 'Update',
+    component: Update,
+    meta: {
+      requireLogin: true
+    },
+  },
 ]
 
 const router = createRouter({

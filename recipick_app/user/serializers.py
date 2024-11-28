@@ -51,6 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
 class MypageSerializer(serializers.ModelSerializer):
     profile_image = serializers.SerializerMethodField()
     level = serializers.CharField(source='level.name', read_only=True)
+    nick_name = serializers.CharField(read_only=True)
     recipes_count = serializers.SerializerMethodField()
     labs_count = serializers.SerializerMethodField()
     freemarkets_count = serializers.SerializerMethodField()
