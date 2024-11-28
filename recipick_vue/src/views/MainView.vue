@@ -1,119 +1,203 @@
 <template>
-  <div class="welcom-recipick">
-    <img src='@/assets/welcom-recipick.png'>
-  </div>
-
-  <h2>📌Recipick의 메뉴 알기</h2>
-
-  <div class="slider-container">
-    <div class="slider">
-      <div
-        class="slide"
-        v-for="(image, i) in banners"
-        :key="i"
-        :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
-      >
-        <img :src="image" alt="배너 이미지" />
-      </div>
+    <div class="welcome-recipick">
+        <img src='@/assets/welcome-recipick.png'>
     </div>
-    <button class="prev" @click="prevSlide">〈</button>
-    <button class="next" @click="nextSlide">〉</button>
-  </div>
 
-  <div class="bestrecipe-section">
-    <h2>🎉어제의 Best 레시피</h2>
-    <h4>best레시피 나열</h4>
-    <!-- <button @click="more">더보기</button> -->
-  </div>
+    <h2>📌Recipick의 메뉴 알기</h2>
+    <div class="black-bar"></div>
 
-  <div class="ngrecipe-section">
-    <h2>💥어제의 NG 요리</h2>
-    <h4>어제의 NG 요리</h4>
-    <!-- <button @click="more">더보기</button> -->
-  </div>
+    <div class="slider-container">
+        <div class="slider">
+            <div class="slide" v-for="(image, i) in banners" :key="i"
+                :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
+                <img :src="image" alt="배너 이미지" />
+            </div>
+        </div>
+        <button class="prev" @click="prevSlide">〈</button>
+        <button class="next" @click="nextSlide">〉</button>
+    </div>
 
-  <div class="recipenote-section">
-    <h2>📋요리 실험 일지</h2>
-    <h4>요리 실험 일지 나열</h4>
-    <!-- <button @click="more">더보기</button> -->
-  </div>
+    <div class="bestrecipe-section">
+        <h2>🎉 어제의 Best 레시피</h2>
+        <div class="black-bar"></div>
+        <div class="bestrecipe-list">
+            <div v-for="recipe in bestRecipes" :key="recipe.id" class="bestrecipe-card">
+                <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image" class="bestrecipe-image" />
+                <div class="bestrecipe-info">
+                    <h3>{{ recipe.name }}</h3>
+                    <p>👍 좋아요: {{ recipe.likes_count }} 👎 NG: {{ recipe.dislikes_count }}</p>
+                    <p>👩‍🍳 {{ recipe.user.nick_name }} - {{ recipe.user.level }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="ngrecipe-section">
+        <h2>💥어제의 NG 요리</h2>
+        <div class="black-bar"></div>
+        <div class="ngrecipe-list">
+            <div v-for="recipe in ngRecipes" :key="recipe.id" class="ngrecipe-card">
+                <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image" class="ngrecipe-image" />
+                <div class="ngrecipe-info">
+                    <h3>{{ recipe.name }}</h3>
+                    <p>👎 NG: {{ recipe.dislikes_count }}</p>
+                    <p>👩‍🍳 {{ recipe.user.nick_name }} - {{ recipe.user.level }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lab-section">
+        <h2>📋요리 실험 일지</h2>
+        <div class="black-bar"></div>
+        <div class="lab-list">
+            <div v-for="lab in recipeLabs" :key="lab.id" class="lab-card">
+                <img :src="lab.image || require('@/assets/default-image.png')" alt="Lab Image" class="lab-image" />
+                <div class="lab-info">
+                    <h3>{{ lab.title }}</h3>
+                    <p>🖤 좋아요 : {{ lab.likes_count }}</p>
+                    <p>👩‍🍳 {{ lab.user.nick_name }} - {{ lab.user.level }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
 import Header from '@/components/Header.vue';
+import apiClient from '@/store/api';
 
 export default {
-  data() {
-    return {
-      banners: [
-        require('@/assets/banner1.png'),
-        require('@/assets/banner2.png'),
-        require('@/assets/banner3.png'),
-        require('@/assets/banner4.png'),
-        require('@/assets/banner5.png'),
-      ],
-      currentIndex: 0,
-      intervalId: null,
-    };
-  },
-  components: {
-    Header,
-  },
-  methods: {
-    nextSlide() {
-      this.currentIndex = (this.currentIndex + 1) % this.banners.length;
+    data() {
+        return {
+            // Recipick의 메뉴 알기
+            banners: [
+                require('@/assets/banner1.png'),
+                require('@/assets/banner2.png'),
+                require('@/assets/banner3.png'),
+                require('@/assets/banner4.png'),
+                require('@/assets/banner5.png'),
+            ],
+            currentIndex: 0,
+            intervalId: null,
+
+            // 베스트 레시피
+            topRecipes: [],
+            ng5Recipes: [],
+            recipe3Labs: [],
+        };
     },
-    prevSlide() {
-      this.currentIndex =
-        (this.currentIndex - 1 + this.banners.length) % this.banners.length;
+    components: {
+        Header,
     },
-    startAutoSlide() {
-      this.intervalId = setInterval(() => {
-        this.nextSlide();
-      }, 5000);
+    computed: {
+        bestRecipes() {
+            return this.topRecipes.slice(0, 5);
+        },
+        ngRecipes() {
+            return this.ng5Recipes.slice(0, 5);
+        },
+        recipeLabs() {
+            return this.recipe3Labs.slice(0, 3);
+        }
     },
-    stopAutoSlide() {
-      if (this.intervalId) {
-        clearInterval(this.intervalId);
-        this.intervalId = null;
-      }
+    methods: {
+        // Recipick의 메뉴 알기
+        nextSlide() {
+            this.currentIndex = (this.currentIndex + 1) % this.banners.length;
+        },
+        prevSlide() {
+            this.currentIndex =
+                (this.currentIndex - 1 + this.banners.length) % this.banners.length;
+        },
+        startAutoSlide() {
+            this.intervalId = setInterval(() => {
+                this.nextSlide();
+            }, 5000);
+        },
+        stopAutoSlide() {
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+        },
+
+        // 베스트 레시피
+        async fetchBestRecipes() {
+            try {
+                const response = await apiClient.get("/recipes/top-ranked/");
+                this.topRecipes = response.data.map((recipe) => ({
+                    ...recipe,
+                    image: recipe.image ? `http://127.0.0.1:8000${recipe.image}` : null,
+                }));
+            } catch (error) {
+                console.error("레시피 데이터를 가져오는 중 오류 발생:", error);
+            }
+        },
+        // ng 레시피
+        async fetchNgRecipes() {
+            try {
+                const response = await apiClient.get("/recipes/top-nglisted/");
+                this.ng5Recipes = response.data.map((recipe) => ({
+                    ...recipe,
+                    image: recipe.image ? `http://127.0.0.1:8000${recipe.image}` : null,
+                }));
+            } catch (error) {
+                console.error("NG 요리 데이터를 가져오는 중 오류 발생:", error);
+            }
+        },
+        // 요리 실험 일지
+        async fetchRecipeLab() {
+            try {
+                const response = await apiClient.get("/labs/top-lablisted/");
+                this.recipe3Labs = response.data.map((lab) => ({
+                    ...lab,
+                    image: lab.image ? `http://127.0.0.1:8000${lab.image}` : null,
+                }));
+            } catch (error) {
+                console.error("요리 실험 일지 데이터를 가져오는 중 오류 발생:", error);
+            }
+        },
     },
-  },
-  mounted() {
-    this.startAutoSlide();
-  },
-  beforeDestroy() {
-    this.stopAutoSlide();
-  },
+    mounted() {
+        document.title= 'Recipick'
+        this.startAutoSlide();
+        this.fetchBestRecipes();
+        this.fetchNgRecipes();
+        this.fetchRecipeLab();
+    },
+    beforeDestroy() {
+        this.stopAutoSlide();
+    },
 };
 </script>
 
 <style scoped>
-.welcom-recipick img{
+.welcome-recipick img {
     width: 100%;
     height: auto;
     margin-bottom: 40px;
-
     display: block;
 }
 .slider-container {
     position: relative;
     width: 100%;
     max-width: 1520px;
-    margin: 0 auto;
+    margin: 40px auto;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 .slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
     width: 100%;
     height: 100%;
 }
-
 .slide {
     min-width: 100%;
     height: 100%;
@@ -122,14 +206,12 @@ export default {
     align-items: center;
     position: relative;
 }
-
 .slide img {
     width: 100%;
     height: auto;
     object-fit: contain;
     display: block;
 }
-
 .prev,
 .next {
     position: absolute;
@@ -147,48 +229,96 @@ export default {
     opacity: 0;
     visibility: hidden;
 }
-
 .prev {
     left: 10px;
 }
-
 .next {
     right: 10px;
 }
-
 .slider-container:hover .prev,
-    .slider-container:hover .next {
+.slider-container:hover .next {
     opacity: 1;
     visibility: visible;
 }
 
-/* 베스트 레시피 */
+/* 베스트 레시피, ng 레시피, 실험일지 */
 .bestrecipe-section,
 .ngrecipe-section,
-.recipenote-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 15px;
-}
-.bestrecipe-section h2,
-.ngrecipe-section h2,
-.recipenote-section h2 {
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 10px;
+.lab-section {
+    margin-top: 150px;
+    margin-bottom: 150px;
     text-align: left;
     width: 100%;
 }
-/* .bestrecipe-section button,
-.ngrecipe-section button,
-.recipenote-section button {
-    padding: 10px 20px;
-    font-size: 15px;
-    color: #fff;
-    background-color: black;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-} */
+.lab-section {
+    margin-bottom: 200px;
+}
+.bestrecipe-section h2,
+.ngrecipe-section h2,
+.lab-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.bestrecipe-list,
+.ngrecipe-list,
+.lab-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: left;
+    margin: 10px;
+}
+.bestrecipe-card,
+.ngrecipe-card {
+    flex: 1 1 calc(20% - 10px); /* 5개의 카드가 한 줄에 고르게 배치 */
+    max-width: calc(20% - 10px);
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+}
+.lab-card {
+    flex: 1 1 calc(33% - 10px); /* 3개의 카드가 한 줄에 고르게 배치 */
+    max-width: calc(33% - 10px);
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+}
+.bestrecipe-image,
+.ngrecipe-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+.lab-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+.bestrecipe-info h3,
+.ngrecipe-info h3,
+.lab-info h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.bestrecipe-info p,
+.ngrecipe-info p,
+.lab-info p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #555;
+}
+
+/* 블랙바 */
+.black-bar {
+    width: 100%;
+    height: 4px;
+    background-color: rgb(0, 0, 0);
+    margin: 5px 0;
+}
 </style>

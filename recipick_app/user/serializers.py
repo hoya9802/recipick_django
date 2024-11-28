@@ -27,14 +27,14 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):
-        # 비밀번호 암호화 처리
-        user = get_user_model()(
+        # UserManager의 create_user를 사용해 유저 생성
+        user = get_user_model().objects.create_user(
             id=validated_data['id'],
             email=validated_data['email'],
-            nick_name=validated_data['nick_name'],
+            password=validated_data['password'],
+            # create_user 내부에서 암호화 처리
+            nick_name=validated_data['nick_name']
         )
-        user.set_password(validated_data['password'])
-        user.save()
         return user
 
     def update(self, instance, validated_data):
