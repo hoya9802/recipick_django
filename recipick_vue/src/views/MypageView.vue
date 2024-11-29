@@ -62,9 +62,9 @@ export default{
     data() {
         return {
             user: {
+                profile_image: null,
                 nick_name: "",
                 level: "",
-                profile_image: null,
                 recipes_count: 0,
                 labs_count: 0,
                 freemarkets_count: 0,
