@@ -4,7 +4,7 @@
     </div>
 
     <div class="menu-notice">
-        <span>📌 Recipick의 메뉴 알기</span>
+        <p>📌 Recipick의 메뉴 알기</p>
     </div>
 
     <div class="black-bar"></div>
@@ -280,10 +280,11 @@ export default {
 .bestrecipe-section h2,
 .ngrecipe-section h2,
 .lab-section h2 {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     margin-left: 20px;
     margin-bottom: 20px;
+    text-align: left;
 }
 .bestrecipe-list,
 .ngrecipe-list,
@@ -343,7 +344,7 @@ export default {
 .black-bar {
     width: 100%;
     height: 4px;
-    background-color: rgb(0, 0, 0);
+    background-color: black;
     margin: 5px 0;
 }
 .bestrecipe-card a,

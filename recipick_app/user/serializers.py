@@ -10,6 +10,8 @@ from recipe.models import Recipe
 from lab.models import Lab
 from freemarket.models import Freemarket
 
+from django.db.models import Count, Q
+
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -55,6 +57,9 @@ class MypageSerializer(serializers.ModelSerializer):
     recipes_count = serializers.SerializerMethodField()
     labs_count = serializers.SerializerMethodField()
     freemarkets_count = serializers.SerializerMethodField()
+    likes_count = serializers.SerializerMethodField()
+    dislikes_count = serializers.SerializerMethodField()
+    lab_likes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()
@@ -65,6 +70,9 @@ class MypageSerializer(serializers.ModelSerializer):
             'recipes_count',
             'labs_count',
             'freemarkets_count',
+            'likes_count',
+            'dislikes_count',
+            'lab_likes_count',
         ]
 
     def get_profile_image(self, obj):
@@ -85,6 +93,24 @@ class MypageSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.IntegerField)
     def get_freemarkets_count(self, obj):
         return Freemarket.objects.filter(user=obj).count()
+
+    @extend_schema_field(serializers.IntegerField)
+    def get_likes_count(self, obj):
+        return Recipe.objects.filter(user=obj).aggregate(
+            total_likes=Count('likes', filter=Q(likes__rate=1))
+        )['total_likes'] or 0
+
+    @extend_schema_field(serializers.IntegerField)
+    def get_dislikes_count(self, obj):
+        return Recipe.objects.filter(user=obj).aggregate(
+            total_dislikes=Count('likes', filter=Q(likes__rate=-1))
+        )['total_dislikes'] or 0
+
+    @extend_schema_field(serializers.IntegerField)
+    def get_lab_likes_count(self, obj):
+        return Lab.objects.filter(user=obj).aggregate(
+            total_likes=Count('lablikes')
+        )['total_likes'] or 0
 
 
 class AuthTokenSerializer(serializers.Serializer):
