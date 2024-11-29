@@ -7,6 +7,9 @@ import RecipeDetail from '@/views/RecipeDetail.vue';
 import Signup from '@/views/SignupView.vue';
 import Mypage from '@/views/MypageView.vue';
 import Update from '@/views/UpdateView.vue';
+import FreeMarket from '@/views/FreeMarketView.vue';
+import MarketDetail from '@/views/MarketDetailVIew.vue';
+
 
 const routes = [
   {
@@ -33,6 +36,22 @@ const routes = [
     path: '/recipe-list',
     name: 'RecipeList',
     component: RecipeList,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/freemarket',
+    name: 'FreeMarket',
+    component: FreeMarket,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/freemarket/:market_id/',
+    name: 'MarketDetail',
+    component: MarketDetail,
     meta: {
       requireLogin: true
     }
