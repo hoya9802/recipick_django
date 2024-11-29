@@ -4,7 +4,11 @@
         <div class="profile-section">
             <img :src="user.profile_image || require('@/assets/default-profile.png')" alt="Profile Image"
                 class="profile-image" />
-            <h2>{{ user.nick_name }} - {{ user.level }}</h2>
+            <div class="nick-level-box">
+                <p class="nick-level">My Nickname - Level</p>
+                <div class="black-bar"></div>
+                <h2>{{ user.nick_name }} - {{ user.level }}</h2>
+            </div>
         </div>
 
         <!-- 내가 받은 총 개수 -->
@@ -13,13 +17,13 @@
             <div class="black-bar"></div>
             <div class="recations">
                 <div class="human">
-                    <p>🧑🏻 : {{ }}</p>
+                    <p>🧑🏻 : {{ user.likes_count }}</p>
                 </div>
                 <div class="alien">
-                    <p>👽 : {{ }}</p>
+                    <p>👽 : {{ user.dislikes_count}}</p>
                 </div>
                 <div class="magnifying glass">
-                    <p>🔎 : {{ }}</p>
+                    <p>🔎 : {{user.lab_likes_count }}</p>
                 </div>
             </div>
         </div>
@@ -29,26 +33,25 @@
             <p class="posts-title">My Post</p>
             <div class="black-bar"></div>
             <div class="posts">
-                <div>
-                    <p>레시피 : {{ user.recipes_count }}개</p>
+                <div class="post-row">
+                    <span class="post-label">레시피</span>
+                    <span class="post-value">{{ user.recipes_count || 0 }}개</span>
                 </div>
-                <div>
-                    <p>요리 실험일지 : {{ user.labs_count }}개</p>
+                <div class="post-row">
+                    <span class="post-label">요리 실험일지</span>
+                    <span class="post-value">{{ user.labs_count || 0 }}개</span>
                 </div>
-                <div>
-                    <p>재료 나눔 : {{ user.freemarkets_count }}개</p>
+                <div class="post-row">
+                    <span class="post-label">재료 나눔</span>
+                    <span class="post-value">{{ user.freemarkets_count || 0 }}개</span>
                 </div>
             </div>
-
         </div>
 
-        <!-- 회원정보수정, 회원탈퇴 -->
-        <div class="actions-section">
-            <button @click="goToEditProfile" class="btn btn-primary">
+        <!-- 회원정보수정 -->
+        <div class="update-profile">
+            <button @click="goToUpdateProfile">
                 회원정보 수정
-            </button>
-            <button @click="deleteAccount" class="btn btn-danger">
-                회원 탈퇴
             </button>
         </div>
     </div>
@@ -68,32 +71,25 @@ export default{
                 recipes_count: 0,
                 labs_count: 0,
                 freemarkets_count: 0,
+                likes_count: 0,
+                dislikes_count: 0,
+                lab_likes_count: 0,
             },
         };
     },
     methods: {
         async fetchMypageData() {
             try {
-                const response = await apiClient.get("/user/mypage/me/");
+                const response = await apiClient.get("/user/mypage/");
                 this.user = response.data;
             } catch (err) {
                 console.error("마이페이지 데이터를 가져오지 못했습니다.", err);
             }
         },
-        goToEditProfile() {
-            this.$router.push("/mypage/update"); // 프로필 수정 페이지로 이동
+        goToUpdateProfile() {
+            this.$router.push("/mypage/update");
         },
-        async deleteAccount() {
-            if (confirm("정말로 회원 탈퇴를 진행하시겠습니까?")) {
-                try {
-                    await apiClient.delete("/user/mypage/me/");
-                    alert("회원 탈퇴가 완료되었습니다. 회원가입 페이지로 이동합니다.");
-                    this.$router.push("/signup"); // 탈퇴 후 회원가입 페이지로 이동
-                } catch (err) {
-                    console.error("회원 탈퇴 중 문제가 발생했습니다.", err);
-                }
-            }
-        },
+
     },
     mounted() {
         document.title = '마이페이지 - Recipick'
@@ -106,24 +102,28 @@ export default{
 <style scoped>
 .mypage-container {
     max-width: 600px;
-    margin: 30px auto;
+    margin: 17px auto;
     text-align: center;
     padding: 20px;
     border: 1px solid #d6d6d6;
-    border-radius: 10px;
     background-color: white;
 }
 
+/* 프로필 */
 .profile-section {
+    margin-top: 12px;
     margin-bottom: 20px;
 }
-
 .profile-image {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
+}
+.profile-section h2 {
+    margin-top: 10px;
+    font-size: 23px;
 }
 
 /* 블랙바 */
@@ -135,16 +135,13 @@ export default{
 }
 
 /* 리액션 */
-.recations-counts-section {
+.nick-level-box,
+.recations-counts-section,
+.posts-counts-section {
     justify-content: space-around;
-    flex-direction: column; /* 세로 정렬 */
-    align-items: flex-start; /* 텍스트 왼쪽 정렬 */
-    margin-bottom: 20px;
-    padding: 15px; /* 내부 여백 추가 */
-    border: 2px solid #ccc; /* 테두리 색상 및 두께 설정 */
-    border-radius: 10px; /* 모서리를 둥글게 처리 (옵션) */
-    background-color: #f9f9f9;
+    padding: 15px;
 }
+.nick-level,
 .reactions-title,
 .posts-title {
     font-size: 20px;
@@ -156,28 +153,40 @@ export default{
     display: flex;
     justify-content: space-around;
     margin-top: 10px;
+    font-size: 18px;
 }
 
 /* 포스트 */
-.posts-counts-section {
-    justify-content: space-around;
-    flex-direction: column; /* 세로 정렬 */
-    align-items: flex-start; /* 텍스트 왼쪽 정렬 */
-    margin-bottom: 20px;
-    padding: 15px; /* 내부 여백 추가 */
-    border: 2px solid #ccc; /* 테두리 색상 및 두께 설정 */
-    border-radius: 10px; /* 모서리를 둥글게 처리 (옵션) */
-    background-color: #f9f9f9;
-}
 .posts {
     margin-top: 10px;
-    margin-left: 15px;
     text-align: left;
+    font-size: 18px;
+}
+.post-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 16px;
+    margin-left: 100px;
+    margin-right: 150px;
+}
+.post-label {
+    font-weight: bold;
+}
+.post-value {
+    text-align: right;
+    color: #555;
 }
 
-/* 회원정보 수정, 탈퇴 */
-.actions-section {
-    display: flex;
-    justify-content: space-around;
+/* 회원정보 수정 */
+.update-profile button {
+    margin: 0px auto;
+    width: 130px;
+    padding: 8px;
+    color: white;
+    background-color: black;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 17px;
 }
 </style>

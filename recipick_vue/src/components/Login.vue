@@ -86,14 +86,12 @@ export default {
     height: 100%;
     margin-top: 50px;
 }
-
 .login-box img {
     margin-top: 30px;
     max-width: 230px;
     width: 90%;
     height: auto;
 }
-
 input {
     width: 70%;
     margin-bottom: 15px;
@@ -103,7 +101,6 @@ input {
     background: #fafafa;
     font-size: 100%;
 }
-
 button {
     width: 80%;
     padding: 13px;
@@ -116,7 +113,6 @@ button {
     cursor: pointer;
     margin-bottom: 10px;
 }
-
 a {
     text-decoration-line: none;
     color: black;

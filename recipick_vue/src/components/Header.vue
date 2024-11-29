@@ -126,7 +126,7 @@ export default {
 
 <style scoped>
 .top {
-    width: 88%;
+    width: 1800px;
     padding: 5px 30px;
     display: flex;
     justify-content: flex-end;

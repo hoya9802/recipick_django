@@ -16,7 +16,6 @@ if (token) {
     .then((response) => {
       store.commit("setId", response.data.id);
       store.commit("setNickname", response.data.nick_name);
-      store.commit("setLevel", response.data.level);
     })
     .catch(() => {
       console.error("사용자 정보를 가져오지 못했습니다.");
