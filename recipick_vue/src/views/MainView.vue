@@ -11,9 +11,11 @@
 
     <div class="slider-container">
         <div class="slider">
-            <div class="slide" v-for="(image, i) in banners" :key="i"
+            <div class="slide" v-for="(banner, i) in banners" :key="i"
                 :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
-                <img :src="image" alt="Banner Image" />
+                <router-link :to="banner.link">
+                    <img :src="banner.image" alt="배너 이미지" />
+                </router-link>
             </div>
         </div>
         <button class="prev" @click="prevSlide">〈</button>
@@ -80,13 +82,27 @@ import apiClient from '@/store/api';
 export default {
     data() {
         return {
-            // Recipick의 메뉴 알기
             banners: [
-                require('@/assets/banner1.png'),
-                require('@/assets/banner2.png'),
-                require('@/assets/banner3.png'),
-                require('@/assets/banner4.png'),
-                require('@/assets/banner5.png'),
+                {
+                    image: require('@/assets/banner1.png'),
+                    link: '/freemarket'
+                },
+                {
+                    image: require('@/assets/banner2.png'),
+                    link: '/#'
+                },
+                {
+                    image: require('@/assets/banner3.png'),
+                    link: '/#'
+                },
+                {
+                    image: require('@/assets/banner4.png'),
+                    link: '/#'
+                },
+                {
+                    image: require('@/assets/banner5.png'),
+                    link: '/#'
+                },
             ],
             currentIndex: 0,
             intervalId: null,

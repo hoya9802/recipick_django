@@ -1,64 +1,61 @@
 <template>
   <div v-if="dish" class="dish-detail mb-5">
     <div class="row">
-        <div class="col-md-8">
-            <figure class="mb-4 dish-image">
-                <img v-bind:src="dish.image" class="img-fluid">
-            </figure>
-        </div>
-        <div class="col-md-4">
-            <h1 class="title"><strong>{{ dish.name }}</strong></h1>
-            <p><strong>카테고리: </strong>{{ dish.category }}</p>
+      <div class="col-md-8">
+        <figure class="mb-4 dish-image">
+          <img v-bind:src="dish.image" class="img-fluid">
+        </figure>
+      </div>
+      <div class="col-md-4">
+        <ProfileHeader :user="dish.user"/>
+        <h1 class="title"><strong>{{ dish.name }}</strong></h1>
+        <p><strong>카테고리: </strong>{{ dish.category }}</p>
 
-            <h2 class="subtitle">Information</h2>
-            <h4>재료: </h4>
-            <p>
-                {{ dish.ingredients.map(ing => ing.name).join(', ') }}
-            </p>
-            <p><strong>{{ dish.serving }} 인분</strong></p>
-            <p><strong>요리시간: {{ dish.time_minutes }}</strong></p>
-            <p>
-                <strong v-if="dish.link">참고링크: {{ dish.link }}</strong>
-                <strong v-else>참고링크: 없음</strong>
-            </p>
+        <h2 class="subtitle">Information</h2>
+        <h4>재료: </h4>
+        <p>
+          {{ dish.ingredients.map(ing => ing.name).join(', ') }}
+        </p>
+        <p><strong>{{ dish.serving }} 인분</strong></p>
+        <p><strong>요리시간: {{ dish.time_minutes }}</strong></p>
+        <p>
+          <strong v-if="dish.link">참고링크: {{ dish.link }}</strong>
+          <strong v-else>참고링크: 없음</strong>
+        </p>
 
-            <div class="mt-4">
-                <button @click="handleLike" class="btn btn-success me-2">
-                    👍 좋아요 ({{ dish.likes_count }})
-                </button>
-                <button @click="handleDislike" class="btn btn-danger">
-                    👎 싫어요 ({{ dish.dislikes_count }})
-                </button>
-            </div>
+        <div class="mt-4">
+          <button @click="handleLike" class="btn btn-success me-2">
+            👍 좋아요 ({{ dish.likes_count }})
+          </button>
+          <button @click="handleDislike" class="btn btn-danger">
+            👎 싫어요 ({{ dish.dislikes_count }})
+          </button>
         </div>
+      </div>
     </div>
     <div>
-        <h2 class="subtitle">Description</h2>
-        {{ dish.description }}
-        {{ cur }}
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            <div
-            class="toast align-items-center text-white border-0"
-            :class="toastClass"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-            ref="toast"
-            >
-            <div class="d-flex">
-                <div class="toast-body">
-                {{ toastMessage }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <h2 class="subtitle">Description</h2>
+      {{ dish.description }}
+      {{ cur }}
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast align-items-center text-white border-0" :class="toastClass" role="alert" aria-live="assertive"
+          aria-atomic="true" ref="toast">
+          <div class="d-flex">
+            <div class="toast-body">
+              {{ toastMessage }}
             </div>
-            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+              aria-label="Close"></button>
+          </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import apiClient from '@/store/api';
+import ProfileHeader from '@/components/ProfileHeader.vue';
 import { Toast } from 'bootstrap';
 
 export default {
@@ -133,6 +130,9 @@ export default {
   },
   created() {
     this.fetchDishData();
+  },
+  components: {
+    ProfileHeader: ProfileHeader,
   }
 }
 </script>
