@@ -13,7 +13,7 @@
         <div class="slider">
             <div class="slide" v-for="(image, i) in banners" :key="i"
                 :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
-                <img :src="image" alt="배너 이미지" />
+                <img :src="image" alt="Banner Image" />
             </div>
         </div>
         <button class="prev" @click="prevSlide">〈</button>
@@ -327,7 +327,7 @@ export default {
 .black-bar {
     width: 100%;
     height: 4px;
-    background-color: rgb(0, 0, 0);
+    background-color: black;
     margin: 5px 0;
 }
 .bestrecipe-card a,

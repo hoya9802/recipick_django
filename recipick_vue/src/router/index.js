@@ -58,7 +58,6 @@ const routes = [
       }
     },
   },
-
   {
     path: '/mypage',
     name: 'Mypage',

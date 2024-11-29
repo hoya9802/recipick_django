@@ -67,7 +67,6 @@ export default {
     },
     computed: {
         nickname() {
-            console.log("닉네임 상태:", this.$store.state.nick_name);
             return this.$store.state.nick_name;
         }
     },
@@ -131,6 +130,7 @@ export default {
     padding: 5px 30px;
     display: flex;
     justify-content: flex-end;
+    margin-top: 10px;
     margin-right: 8%;
     background-color: white;
 }

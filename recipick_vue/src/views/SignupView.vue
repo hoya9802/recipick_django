@@ -4,7 +4,6 @@
         <img src="@/assets/signup.png" alt="Signup Image" />
 
         <form @submit.prevent="signupForm">
-            <input v-model="profileimage" type="text" placeholder="프로필 이미지" required />
             <input v-model="id" type="text" placeholder="*아이디" required />
             <input v-model="email" type="email" placeholder="*이메일" required />
             <input v-model="nick_name" type="text" placeholder="*닉네임" required />
@@ -114,5 +113,6 @@ export default {
     margin-top: 20px;
     margin-bottom: 30px;
     display: block;
+    font-weight: bold;
 }
 </style>
