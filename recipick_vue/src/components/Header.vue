@@ -12,32 +12,29 @@
             <a href="">공지사항</a>
             <a href="">레시피 업로드</a>
         </div>
-            <div class="emo">
-                <a class="emo1">🧑🏻</a>
-                <a class="emo2">👽</a>
-            </div>
+        <div class="emo">
+            <a class="emo1">🧑🏻</a>
+            <a class="emo2">👽</a>
+        </div>
     </div>
-
-    <div class="header">
-        <div class="header-logo">
-            <router-link to="/main">
-                <img src="@/assets/recipick1.png">
-            </router-link>
-        </div>
-        <div class="header-right">
-
-
-        </div>
+    <div class="logo header">
+        <router-link to="/main">
+            <img src="@/assets/recipick1.png" class="logo">
+        </router-link>
     </div>
 
     <nav class="custom-navbar">
         <div class="container">
             <ul class="nav-menu">
-
                 <div class="category">
-                    <span @mouseover="toggleDropdown">카테고리</span>
+                    <span @click="toggleDropdown">카테고리</span>
                     <ul v-if="dropdownOpen">
-                        <li v-for="category in categories" :key="category.id">
+                        <li
+                            v-for="category in categories"
+                            :key="category.id"
+                            @click="fetchRecipes(category.id)"
+                            class="category-drop-menu"
+                        >
                             ◾ {{ category.name }}
                         </li>
                     </ul>
@@ -47,7 +44,6 @@
                 <li><a href="#">요리 실험 일지</a></li>
                 <li><a href="#">요리 지식인</a></li>
                 <li><a href="#">유통기한 알림</a></li>
-
             </ul>
         </div>
     </nav>
@@ -85,6 +81,15 @@ export default {
             this.$store.commit("removeToken");
             alert("로그아웃되었습니다.");
             this.$router.push("/");
+        },
+        async fetchRecipes(category_id) {
+            try {
+                const response = await apiClient.get(`/categories/${category_id}/recipes/`);
+                this.$store.commit("setRecipes", response.data);
+                this.$router.push(`/category/${category_id}`);
+            } catch (error) {
+                console.error("Failed to fetch recipes:", error);
+            }
         },
         async fetchCategories() {
             const token = localStorage.getItem("authToken");
@@ -126,20 +131,17 @@ export default {
 
 <style scoped>
 .top {
-    width: 1800px;
+    width: 100%;
     padding: 5px 30px;
     display: flex;
     justify-content: flex-end;
     margin-top: 10px;
-    margin-right: 8%;
     background-color: white;
 }
 .top-section {
     display: flex;
     align-items: center;
     gap: 15px;
-    padding: 10; /* 내부 여백 제거 */
-    margin: 10;
 }
 .top-section span,
 .top-section a {
@@ -211,22 +213,24 @@ export default {
 }
 
 /* 레시픽 로고 */
-.header {
-    margin-top: 30px;
-    justify-content: center;
+.logo header {
+    position: relative;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.logo {
+    margin: 0 auto;
+    display: block;
+    justify-content: center;
     align-items: center;
     position: relative;
-    margin-bottom: 50px;
-}
-.header-logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-.header-logo img {
+    left: auto;
+    transform: none;
     max-width: 230px;
-    max-height: 180px;
+    max-height: 100px;
+    width: auto;
     height: auto;
 }
 
@@ -237,6 +241,7 @@ export default {
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
 }
 .container {
     max-width: 100%;
@@ -298,12 +303,14 @@ export default {
 .category ul li:hover {
     background-color: #f0f0f0;
 }
-.nav-menu span {
+.category span {
     color: white;
     font-weight: bold;
     font-size: clamp(0.8rem, 1vw, 1rem);
     cursor: pointer;
     transition: color 0.2s ease;
 }
-
+.category-drop-menu {
+    text-align: left;
+}
 </style>

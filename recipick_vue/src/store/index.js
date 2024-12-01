@@ -6,7 +6,8 @@ export default createStore({
     token: '',
     id: '',
     nick_name: '',
-    isLoading: false
+    isLoading: false,
+    recipes: [],
   },
   getters: {
   },
@@ -28,7 +29,10 @@ export default createStore({
     },
     setIsLoading(state, status) {
       state.isLoading = status
-    }
+    },
+    setRecipes(state, recipes) {
+      state.recipes = recipes;
+    },
   },
   actions: {
   },

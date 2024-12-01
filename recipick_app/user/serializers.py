@@ -14,12 +14,16 @@ from django.db.models import Count, Q
 
 
 class UserSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(write_only=True, required=False)
+    password2 = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = get_user_model()
         fields = [
             'id',
             'password',
+            'password1',
+            'password2',
             'nick_name',
             'email',
             'profile_image',
@@ -29,23 +33,29 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):
-        # UserManager의 create_user를 사용해 유저 생성
         user = get_user_model().objects.create_user(
             id=validated_data['id'],
             email=validated_data['email'],
             password=validated_data['password'],
-            # create_user 내부에서 암호화 처리
             nick_name=validated_data['nick_name']
         )
         return user
 
     def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
+        password1 = validated_data.pop('password1', None)
+        password2 = validated_data.pop('password2', None)
+
         user = super().update(instance, validated_data)
 
-        if password:  # password가 validated_data에 있을 경우
-            user.set_password(password)  # 해싱하여 저장
+        if password1 and password2:
+            if password1 != password2:
+                raise serializers.ValidationError(
+                    {"password": "비밀번호가 일치하지 않습니다."}
+                )
+            user.set_password(password1)
             user.save()
+
+        print(f"비밀번호 변경 완료: {user.check_password(password1)}")
 
         return user
 
@@ -144,7 +154,7 @@ class ProfileImageSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ['profile_image']
 
-        def validate(self, data):
-            if not data.get('profile_image'):
+        def validate(self, attrs):
+            if not attrs.get('profile_image'):
                 raise serializers.ValidationError("프로필 이미지를 추가해주세요.")
-            return data
+            return attrs

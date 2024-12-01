@@ -45,7 +45,7 @@ class ManageUserViewSet(viewsets.ModelViewSet):
         return self.request.user
 
     @action(detail=False,
-            methods=['GET', 'PUT', 'PATCH', 'DELETE'],
+            methods=['GET', 'PUT', 'PATCH'],
             url_path='me', name='me')
     def me(self, request):
         """현재 사용자 정보 반환 및 수정/삭제"""
@@ -57,9 +57,9 @@ class ManageUserViewSet(viewsets.ModelViewSet):
 
         elif request.method in ['PUT', 'PATCH']:
             serializer = self.get_serializer(
-                            user,
-                            data=request.data,
-                            partial=(request.method == 'PATCH')
+                user,
+                data=request.data,
+                partial=(request.method == 'PATCH')
             )
             if serializer.is_valid():
                 serializer.save()
@@ -67,9 +67,36 @@ class ManageUserViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
 
-        elif request.method == 'DELETE':
-            user.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+    @action(
+        detail=False, methods=['POST'],
+        url_path='delete',
+        name='delete'
+    )
+    def delete(self, request):
+        """비밀번호 확인 후 회원 탈퇴"""
+        user = self.get_object()
+        password = request.data.get('password')
+
+        # 비밀번호가 제공되지 않았을 경우
+        if not password:
+            return Response(
+                {"error": "비밀번호를 입력해주세요."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 비밀번호 검증
+        if not user.check_password(password):
+            return Response(
+                {"error": "비밀번호가 일치하지 않습니다."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 비밀번호가 일치하면 계정 삭제
+        user.delete()
+        return Response(
+            {"message": "회원 탈퇴가 완료되었습니다."},
+            status=status.HTTP_204_NO_CONTENT
+        )
 
     @action(methods=['POST'],
             detail=False,

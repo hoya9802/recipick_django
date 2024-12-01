@@ -16,7 +16,6 @@ urlpatterns = [
             'get': 'me',
             'put': 'update',
             'patch': 'partial_update',
-            'delete': 'destroy'
         }),
         name='me'
     ),
@@ -24,5 +23,10 @@ urlpatterns = [
         'mypage/me/profile',
         views.ManageUserViewSet.as_view({'post': 'profile'}),
         name='profile'
+    ),
+    path(
+        'mypage/delete/',
+        views.ManageUserViewSet.as_view({'post': 'delete'}),
+        name='delete'
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

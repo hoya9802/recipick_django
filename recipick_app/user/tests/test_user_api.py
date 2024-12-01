@@ -13,6 +13,7 @@ from rest_framework import status
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
+DELETE_URL = reverse('user:delete')
 PROFILE_URL = reverse('user:profile')
 TEMP_MEDIA_ROOT = tempfile.mkdtemp()  # 임시 미디어 디렉토리 생성
 
@@ -164,17 +165,21 @@ class PrivateUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_update_user_profile(self):
-        payload = {'password': 'newpassword123'}
+        payload = {
+            "password1": "newpassword123",
+            "password2": "newpassword123",
+        }
 
         res = self.client.patch(ME_URL, payload)
 
         self.user.refresh_from_db()
-        self.assertTrue(self.user.check_password(payload['password']))
+        self.assertTrue(self.user.check_password(payload['password1']))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_user_delete_success(self):
         # 회원탈퇴가 제대로 되었는지 확인
-        res = self.client.delete(ME_URL)
+        payload = {'password': 'testpass123'}
+        res = self.client.post(DELETE_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         user_exists = get_user_model().objects.filter(id=self.user.id).exists()
