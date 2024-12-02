@@ -33,7 +33,7 @@ const routes = [
     }
   },
   {
-    path: '/recipe-list',
+    path: '/recipes',
     name: 'RecipeList',
     component: RecipeList,
     meta: {
@@ -57,7 +57,7 @@ const routes = [
     }
   },
   {
-    path: '/recipe-list/:dish_id/',
+    path: '/recipes/:dish_id/',
     name: 'RecipeDetail',
     component: RecipeDetail,
     meta: {

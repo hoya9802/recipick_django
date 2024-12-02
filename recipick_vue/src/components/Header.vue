@@ -39,7 +39,7 @@
                         </li>
                     </ul>
                 </div>
-                <li><router-link to="/recipe-list">요리보기</router-link></li>
+                <li><router-link to="/recipes">요리보기</router-link></li>
                 <li><router-link to="/freemarket">재료 무료 나눔</router-link></li>
                 <li><a href="#">요리 실험 일지</a></li>
                 <li><a href="#">요리 지식인</a></li>
