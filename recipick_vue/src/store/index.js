@@ -6,7 +6,7 @@ export default createStore({
     token: '',
     id: '',
     nick_name: '',
-    isLoading: false
+    isLoading: false,
   },
   getters: {
   },
@@ -28,7 +28,7 @@ export default createStore({
     },
     setIsLoading(state, status) {
       state.isLoading = status
-    }
+    },
   },
   actions: {
   },

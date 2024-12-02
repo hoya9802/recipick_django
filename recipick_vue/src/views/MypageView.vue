@@ -118,6 +118,7 @@ export default{
     width: 150px;
     height: 150px;
     border-radius: 50%;
+    border: 1px solid #d6d6d6;
     object-fit: cover;
     margin-bottom: 10px;
 }
@@ -184,7 +185,7 @@ export default{
     width: 130px;
     padding: 8px;
     color: white;
-    background-color: black;
+    background-color: #5c5c5c;
     border-radius: 10px;
     font-weight: bold;
     font-size: 17px;

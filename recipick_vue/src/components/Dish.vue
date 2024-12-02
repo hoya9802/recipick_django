@@ -1,6 +1,6 @@
 <template>
   <div class="dish-item">
-    <router-link :to="'/recipe-list/' + dish.id">
+    <router-link :to="'/recipes/' + dish.id">
       <div class="post-header">
         <div class="profile"></div>
           <span class="profile-name">{{ dish.user.nick_name }} - </span>
@@ -9,7 +9,7 @@
       <div class="post-body" :style="{ backgroundImage: `url(${dish.image})` }"></div>
       <div class="post-content">
         <p><strong>{{ dish.name }}</strong></p>
-        <p>{{ dish.likes_count }} Likes {{ dish.dislikes_count }} NGs</p>
+        <p>🧑🏻: {{ dish.likes_count }} 👽: {{ dish.dislikes_count }}</p>
       </div>
     </router-link>
   </div>

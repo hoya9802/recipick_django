@@ -9,7 +9,7 @@ import Mypage from '@/views/MypageView.vue';
 import Update from '@/views/UpdateView.vue';
 import FreeMarket from '@/views/FreeMarketView.vue';
 import MarketDetail from '@/views/MarketDetailVIew.vue';
-
+import CategoryView from '@/views/CategoryView.vue';
 
 const routes = [
   {
@@ -33,7 +33,7 @@ const routes = [
     }
   },
   {
-    path: '/recipe-list',
+    path: '/recipes',
     name: 'RecipeList',
     component: RecipeList,
     meta: {
@@ -57,7 +57,7 @@ const routes = [
     }
   },
   {
-    path: '/recipe-list/:dish_id/',
+    path: '/recipes/:dish_id/',
     name: 'RecipeDetail',
     component: RecipeDetail,
     meta: {
@@ -92,6 +92,15 @@ const routes = [
     meta: {
       requireLogin: true
     },
+  },
+  {
+    path: '/category/:category_id',
+    name: 'CategoryView',
+    component: CategoryView,
+    props: true,
+    meta: {
+      requireLogin: true
+    }
   },
 ]
 
