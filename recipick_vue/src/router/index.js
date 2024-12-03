@@ -10,6 +10,8 @@ import Update from '@/views/UpdateView.vue';
 import FreeMarket from '@/views/FreeMarketView.vue';
 import MarketDetail from '@/views/MarketDetailVIew.vue';
 import CategoryView from '@/views/CategoryView.vue';
+import LabsView from '@/views/LabsView.vue';
+import LabsDetail from '@/views/LabsDetail.vue';
 
 const routes = [
   {
@@ -101,6 +103,23 @@ const routes = [
     meta: {
       requireLogin: true
     }
+  },
+  {
+    path: '/labs',
+    name: 'LabsView',
+    component: LabsView,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/labs/:lab_id',
+    name: 'LabsDetail',
+    component: LabsDetail,
+    meta: {
+      requireLogin: true
+    },
+    props: true,
   },
 ]
 

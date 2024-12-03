@@ -55,8 +55,6 @@ class UserSerializer(serializers.ModelSerializer):
             user.set_password(password1)
             user.save()
 
-        print(f"비밀번호 변경 완료: {user.check_password(password1)}")
-
         return user
 
 
