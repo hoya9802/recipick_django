@@ -23,6 +23,7 @@ urlpatterns = [
     path('api/', include('lab.urls')),
     path('api/', include('freemarket.urls')),
     path('api/', include('notification.urls')),
+    path('api/', include('chef_ai.urls')),
 ]
 
 if settings.DEBUG:
