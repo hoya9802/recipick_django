@@ -11,10 +11,10 @@ export default createStore({
   getters: {
   },
   mutations: {
-    setId(state, id){
+    setId(state, id) {
       state.id = id;
     },
-    setNickname(state, nick_name){
+    setNickname(state, nick_name) {
       state.nick_name = nick_name;
     },
     setToken(state, token) {
