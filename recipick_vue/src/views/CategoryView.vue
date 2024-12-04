@@ -24,6 +24,7 @@ export default {
         };
     },
     mounted() {
+        document.title= '카테고리 - Recipick'
         this.getDishList(this.category_id);
     },
     methods: {
