@@ -9,7 +9,7 @@
                     <li @click="logout">로그아웃</li>
                 </ul>
             </div>
-            <a href="">공지사항</a>
+            <router-link to="/notice" class="notice">공지사항</router-link>
             <a href="">레시피 업로드</a>
         </div>
         <div class="emo">
@@ -27,7 +27,7 @@
         <div class="container">
             <ul class="nav-menu">
                 <div class="category">
-                    <span @click="toggleDropdown">카테고리</span>
+                    <a @click="toggleDropdown" class="category-title">카테고리</a>
                     <ul v-if="dropdownOpen">
                         <li
                             v-for="category in categories"
@@ -42,8 +42,8 @@
                 <li><router-link to="/recipes">요리보기</router-link></li>
                 <li><router-link to="/freemarket">재료 무료 나눔</router-link></li>
                 <li><router-link to="/labs">요리 실험 일지</router-link></li>
-                <li><a href="#">요리 지식인</a></li>
-                <li><a href="#">유통기한 알림</a></li>
+                <li><router-link to="/help">요리 지식인</router-link></li>
+                <li><router-link to="/expirations">유통기한 알림</router-link></li>
             </ul>
         </div>
     </nav>
@@ -144,7 +144,8 @@ export default {
     gap: 15px;
 }
 .top-section span,
-.top-section a {
+.top-section a,
+.notice {
     color: black;
     text-decoration: none;
     font-size: 16px;
@@ -254,21 +255,16 @@ export default {
     list-style: none;
     display: flex;
     gap: clamp(10px, 12vw, 150px);
-    margin: 0;
+    margin: 0px 10%;
     padding: 0;
-    justify-content: center;
+    justify-content: space-around;
     width: 100%;
-}
-.nav-menu span {
-    color: white;
-    font-weight: bold;
-    font-size: clamp(0.8rem, 1vw, 1rem);
-    cursor: pointer;
 }
 .nav-menu a {
     text-decoration: none;
     color: white;
     font-weight: bold;
+    font-size: 17px;
     font-size: clamp(0.8rem, 1vw, 1rem);
 }
 
@@ -303,7 +299,7 @@ export default {
 .category ul li:hover {
     background-color: #f0f0f0;
 }
-.category span {
+.category a {
     color: white;
     font-weight: bold;
     font-size: clamp(0.8rem, 1vw, 1rem);

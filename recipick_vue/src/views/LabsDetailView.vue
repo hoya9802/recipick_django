@@ -19,7 +19,8 @@
             <section class="lab-content-section">
                 <p class="lab-content-title">Ingredients</p>
                 <div class="black-bar"></div>
-                <p class="content">{{ lab.ingredients?.map(ingredient => ingredient.name).join(", ") || "재료없음" }}</p>
+                <p class="content">{{ lab.ingredients?.map(ingredient => ingredient.name).join(", ") || "재료없음" }}
+                </p>
                 <div class="lab-description">
                     <p class="lab-content-title">Description</p>
                     <div class="black-bar"></div>
@@ -29,7 +30,6 @@
 
             <button @click="goBack" class="back-btn">목록</button>
         </div>
-
         <div v-else>
             <p>데이터를 불러오는 중입니다...</p>
         </div>
@@ -40,7 +40,7 @@
 import apiClient from "@/store/api";
 
 export default {
-    name: "LabDetailPage",
+    name: "LabsDetailView",
     data() {
         return {
             lab: null,
@@ -50,18 +50,12 @@ export default {
         const lab_id = this.$route.params.lab_id;
         await this.fetchLabDetail(lab_id);
     },
-    watch: {
-        lab(newLab) {
-            if (newLab && newLab.title) {
-                document.title = `${newLab.title} - Recipick`;
-            }
-        },
-    },
     methods: {
         async fetchLabDetail(lab_id) {
             try {
                 const response = await apiClient.get(`/labs/${lab_id}/`);
                 this.lab = response.data;
+                document.title = `${this.lab.title} - Recipick`;
             } catch (error) {
                 console.error("실험일지 상세 정보를 가져오는 중 오류 발생:", error);
                 alert("실험일지 상세 정보를 불러오지 못했습니다.");
@@ -80,6 +74,7 @@ export default {
     align-items: center;
     padding: 40px 30px;
     background-color: #fafafa;
+
 }
 .lab-detail-header {
     text-align: center;
@@ -91,7 +86,6 @@ export default {
     color: black;
     margin-bottom: 30px;
 }
-
 .lab-meta {
     display: flex;
     justify-content: center;
@@ -101,21 +95,18 @@ export default {
     margin-bottom: 20px;
     font-size: 17px;
 }
-
 .lab-image-container {
     width: 100%;
     max-width: 900px;
     margin-bottom: 40px;
     text-align: center;
 }
-
 .lab-image {
     width: 100%;
     height: auto;
     object-fit: contain;
     border: 1px solid #ddd;
 }
-
 .lab-content-section {
     width: 100%;
     max-width: 900px;

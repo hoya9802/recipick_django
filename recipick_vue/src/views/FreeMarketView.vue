@@ -1,11 +1,19 @@
 <template>
-<div class="dish-container">
-    <div class="dish-grid">
-        <div v-for="market in marketList" :key="market.id" class="post">
-            <MarketBox :market="market"/>
-        </div>
+  <div class="market-container">
+    <img src="@/assets/freemarket.png" class="freemarketimage">
+    <div class="market-grid">
+      <div v-for="market in paginatedMarket" :key="market.id" class="post">
+        <MarketBox :market="market" />
+      </div>
     </div>
-</div>
+
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+      <button :disabled="currentPage === 1" @click="goToPreviousPage">이전</button>
+      <span>{{ currentPage }} / {{ totalPages }}</span>
+      <button :disabled="currentPage === totalPages" @click="goToNextPage">다음</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -17,7 +25,19 @@ export default {
     data() {
         return {
             marketList: [],
+            currentPage: 1,
+            itemsPerPage: 12,
         }
+    },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.marketList.length / this.itemsPerPage);
+        },
+        paginatedMarket() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = this.currentPage * this.itemsPerPage;
+            return this.marketList.slice(start, end);
+        },
     },
     mounted() {
         this.getMarketList()
@@ -31,7 +51,17 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        }
+        },
+        goToPreviousPage() {
+            if (this.currentPage > 1) {
+                this.currentPage -= 1;
+            }
+        },
+        goToNextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage += 1;
+            }
+        },
     },
     components: {
         MarketBox: MarketBox,
@@ -39,42 +69,76 @@ export default {
 }
 </script>
 
-<style>
-.dish-container {
+<style scoped>
+.market-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
+  background-color: white;
 }
 
-.dish-grid {
+.market-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2vw;
-  padding: 2vw;
+  gap: 20px;
+  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
 }
 
 .post {
-  width: 100%;
+  background-color: white;
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
-
+.post:hover {
+    transform: scale(1.02);
+}
 @media (max-width: 1024px) {
-  .dish-grid {
+  .market-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .dish-grid {
+  .market-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .dish-grid {
+  .market-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* 페이지네이션 */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination button {
+    padding: 5px 10px;
+    background-color: #575757;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    font-size: 16px;
 }
 </style>

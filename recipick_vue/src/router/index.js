@@ -11,7 +11,13 @@ import FreeMarket from '@/views/FreeMarketView.vue';
 import MarketDetail from '@/views/MarketDetailVIew.vue';
 import CategoryView from '@/views/CategoryView.vue';
 import LabsView from '@/views/LabsView.vue';
-import LabsDetail from '@/views/LabsDetail.vue';
+import LabsDetail from '@/views/LabsDetailView.vue';
+import NoticeView from '@/views/NoticeView.vue';
+import NoticeDetailView from '@/views/NoticeDetailView.vue';
+import Expirations from '@/views/ExpirationsView.vue';
+import ExpirationsDetail from '@/views/ExpirationsDetailView.vue';
+import Help from '@/views/HelpView.vue';
+import HelpDetail from '@/views/HelpDetail.vue';
 
 const routes = [
   {
@@ -120,6 +126,54 @@ const routes = [
       requireLogin: true
     },
     props: true,
+  },
+  {
+    path: '/notice',
+    name: 'NoticeView',
+    component: NoticeView,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/notice/:id',
+    name: 'NoticeDetailView',
+    component: NoticeDetailView,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/expirations',
+    name: 'Expirations',
+    component: Expirations,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/expirations/:id',
+    name: 'ExpirationsDetail',
+    component: ExpirationsDetail,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/help',
+    name: 'Help',
+    component: Help,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/help/:id',
+    name: 'HelpDetail',
+    component: HelpDetail,
+    meta: {
+      requireLogin: true
+    },
   },
 ]
 
