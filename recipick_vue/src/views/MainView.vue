@@ -330,7 +330,7 @@ export default {
 .lab-info h3 {
     font-size: 25px;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin: 15px;
 }
 .bestrecipe-info p,
 .ngrecipe-info p,

@@ -1,4 +1,5 @@
 <template>
+    <img src="@/assets/mypage.png" class="mypageimage">
     <div class="mypage-container">
         <!-- 프로필 -->
         <div class="profile-section">
@@ -100,6 +101,9 @@ export default{
 </script>
 
 <style scoped>
+.mypageimage {
+    margin-top: 20px;
+}
 .mypage-container {
     max-width: 600px;
     margin: 17px auto;
@@ -186,6 +190,7 @@ export default{
     padding: 8px;
     color: white;
     background-color: #5c5c5c;
+    border: none;
     border-radius: 10px;
     font-weight: bold;
     font-size: 17px;

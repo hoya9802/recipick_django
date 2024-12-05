@@ -102,7 +102,7 @@ input {
     font-size: 100%;
 }
 button {
-    width: 80%;
+    width: 70%;
     padding: 13px;
     color: white;
     background-color: black;

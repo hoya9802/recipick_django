@@ -1,30 +1,32 @@
 <template>
-  <div class="dish-item">
-    <div class="post-header">
-      <div class="profile"></div>
-      <span class="profile-name">{{ dish.user.nick_name }} - {{ dish.user.level }}</span>
+    <div class="help-item">
+        <div class="post-header">
+            <div class="profile"></div>
+            <span class="profile-name">{{ help.user.nick_name }} - {{ help.user.level }}</span>
+        </div>
+        <router-link :to="'/help/' + help.id" class="post-link">
+            <div class="post-body" :style="{ backgroundImage: `url(${help.image})` }"></div>
+            <div class="post-content">
+                <p class="text-center fs-6">{{ help.title }}</p>
+            </div>
+        </router-link>
     </div>
-    <router-link :to="'/recipes/' + dish.id" class="post-link">
-      <div class="post-body" :style="{ backgroundImage: `url(${dish.image})` }"></div>
-      <div class="post-content">
-        <p>{{ dish.name }}</p>
-        <p>🧑🏻: {{ dish.likes_count }} 👽: {{ dish.dislikes_count }}</p>
-      </div>
-    </router-link>
-  </div>
 </template>
 
 <script>
 export default {
-    name: 'DishComponent',
+    name: 'HelpBox',
     props: {
-        dish: {},
-    }
-}
+        help: {
+            type: Object,
+            required: true,
+        },
+    },
+};
 </script>
 
 <style scoped>
-.dish-item {
+.help-item {
     display: flex;
     flex-direction: column;
     align-items: center;
