@@ -1,4 +1,5 @@
 <template>
+    <img src="@/assets/update.png" class="updateimage">
     <div class="update">
         <div class="box">
             <label for="id">ID</label>
@@ -89,7 +90,7 @@
 
 </template>
 
-  <script>
+<script>
 import apiClient from "@/store/api";
 
 export default {
@@ -263,6 +264,9 @@ export default {
 </script>
 
 <style scoped>
+.updateimage {
+    margin-top: 20px;
+}
 .update {
     max-width: 700px;
     margin: 17px auto;

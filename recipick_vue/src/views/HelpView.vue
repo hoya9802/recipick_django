@@ -1,8 +1,10 @@
 <template>
-    <div class="category-recipes-container">
-        <img src="@/assets/category.png" class="categoryimage">
-        <div class="dish-grid">
-            <Dish v-for="dish in paginatedDishList" :key="dish.id" :dish="dish" class="dish-item" />
+    <div class="help-container">
+        <img src="@/assets/help.png" class="helpimage">
+        <div class="help-grid">
+            <div v-for="help in paginatedHelps" :key="help.id" class="help-card" @click="goToHelpDetail(help.id)">
+                <HelpBox :help="help"/>
+            </div>
         </div>
 
         <!-- 페이지네이션 -->
@@ -15,45 +17,40 @@
 </template>
 
 <script>
-import Dish from "@/components/Dish.vue";
 import apiClient from "@/store/api";
+import HelpBox from "@/components/HelpBox.vue"
 
 export default {
-    name: "CategoryRecipesView",
-    props: {
-        category_id: {
-            type: String,
-            required: true,
-        },
-    },
+    name: "Helps",
     data() {
         return {
-            dishList: [],
+            helps: [],
             currentPage: 1,
             itemsPerPage: 12,
         };
     },
     computed: {
         totalPages() {
-            return Math.ceil(this.dishList.length / this.itemsPerPage);
+            return Math.ceil(this.helps.length / this.itemsPerPage);
         },
-        paginatedDishList() {
+        paginatedHelps() {
             const start = (this.currentPage - 1) * this.itemsPerPage;
             const end = this.currentPage * this.itemsPerPage;
-            return this.dishList.slice(start, end);
+            return this.helps.slice(start, end);
         },
     },
-    mounted() {
-        document.title= '카테고리 - Recipick'
-        this.getDishList(this.category_id);
+    created() {
+        this.fetchHelps();
     },
     methods: {
-        async getDishList(category_id) {
+        async fetchHelps() {
             try {
-                const response = await apiClient.get(`/categories/${category_id}/recipes/`);
-                this.dishList = response.data;
+                const response = await apiClient.get("/helps/?all=true");
+                this.helps = response.data;
+                document.title = '요리 지식인 - Recipick';
             } catch (error) {
-                console.error("Failed to fetch recipes:", error);
+                console.error("지식인 글을 불러오는 중 오류 발생:", error);
+                alert("지식인 글을 불러오지 못했습니다.");
             }
         },
         goToPreviousPage() {
@@ -66,57 +63,45 @@ export default {
                 this.currentPage += 1;
             }
         },
-    },
-    components: {
-        Dish,
-    },
-    watch: {
-        category_id: {
-            immediate: true,
-            handler(newCategoryId) {
-                this.getDishList(newCategoryId);
-            },
+        goToHelpDetail(id) {
+            this.$router.push(`/help/${id}`);
         },
     },
-
+    components: {
+        HelpBox: HelpBox,
+    }
 };
 </script>
 
 <style scoped>
-.category-recipes-container {
+.help-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    background-color: white;
 }
-.no-recipes {
-    text-align: center;
-    font-size: 16px;
-    color: #999;
-}
-.dish-grid {
+
+.help-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    padding: 20px 0;
+    width: 100%;
+    max-width: 1200px;
 }
 
-@media (max-width: 1024px) {
-    .dish-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+.help-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.help-card:hover {
+    transform: scale(1.02);
 }
 
-@media (max-width: 768px) {
-    .dish-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 480px) {
-    .dish-grid {
-        grid-template-columns: 1fr;
-    }
-}
 /* 페이지네이션 */
 .pagination {
     margin-top: 20px;

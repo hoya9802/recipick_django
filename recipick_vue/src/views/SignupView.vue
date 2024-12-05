@@ -94,7 +94,7 @@ export default {
     font-size: 100%;
 }
 .signup-box button {
-    width: 78%;
+    width: 70%;
     padding: 13px;
     color: white;
     background-color: black;

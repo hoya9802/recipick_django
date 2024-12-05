@@ -1,70 +1,97 @@
 <template>
-    <div class="dish-item">
-      <router-link :to="'/freemarket/' + market.id">
-        <div class="post-header">
-          <div class="profile"></div>
-            <span class="profile-name">{{ market.user.nick_name }} - </span>
-            <span class="profile-name">{{ market.user.level }}</span>
-          </div>
-        <div class="post-body" :style="{ backgroundImage: `url(${market.image})` }"></div>
-        <div class="post-content">
-          <p class="text-center fs-6"><strong>{{ market.name }}</strong></p>
-          <p class="text-center"><strong>지역명 / {{ market.days_ago }}</strong></p>
-          <div class="text-center fs-5">
-            <p v-if="market.is_shared === false"><strong>무료 나눔</strong></p>
-            <p v-else><strong>나눔 완료</strong></p>
-          </div>
-        </div>
-      </router-link>
+  <div class="market-item">
+    <div class="post-header">
+      <div class="profile"></div>
+      <span class="profile-name">{{ market.user.nick_name }} - {{ market.user.level }} </span>
     </div>
-  </template>
+  </div>
+  <router-link :to="'/freemarket/' + market.id" class="post-link">
+    <div class="post-body" :style="{ backgroundImage: `url(${market.image})` }"></div>
+    <div class="post-content">
+      <p class="text-center fs-6">{{ market.name }}</p>
+      <p class="text-center">지역명 / {{ market.days_ago }}</p>
+      <div class="text-center fs-5">
+        <p v-if="market.is_shared === false">무료 나눔</p>
+        <p v-else>나눔 완료</p>
+      </div>
+    </div>
+  </router-link>
+</template>
 
-  <script>
-  export default {
-      name: 'MarketComponent',
-      props: {
-          market: {},
-      }
+<script>
+export default {
+  name: 'MarketComponent',
+  props: {
+    market: {},
   }
-  </script>
+}
+</script>
 
-  <style scoped>
-  .profile {
-    background-image: url("https://picsum.photos/100?random=0");
-    width: 30px;
-    height: 30px;
-    background-size: 100%;
-    border-radius: 50%;
-    float: left;
-  }
+<style scoped>
+.market-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
 
-  .profile-name {
-    display: block;
-    float: left;
-    padding-left: 10px;
-    padding-top: 7px;
-    font-size: 14px;
-  }
+.post-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+}
 
-  .post-header {
-    height: 45px;
-    padding: 10px;
-  }
+.profile {
+  background-image: url("https://picsum.photos/100?random=0");
+  width: 30px;
+  height: 30px;
+  background-size: cover;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 
-  .post-body {
-    height: 150px;
-    background-position: center;
-    background-size: cover;
-  }
+.profile-name {
+  font-size: 14px;
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: black;
+}
 
-  .post-content {
-    padding-left: 15px;
-    padding-right: 15px;
-    font-size: 14px;
-  }
+.post-body {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-size: cover;
+  background-position: center;
+  border-top: 1px solid #ddd;
+}
 
-  .dish-item a {
-    text-decoration: none;
-    color: black;
-  }
-  </style>
+.post-content {
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+}
+
+.post-content p {
+  color: black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  font-size: 17px !important;
+  margin: 0;
+}
+
+.post-link {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+</style>

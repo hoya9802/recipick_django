@@ -36,7 +36,7 @@ export default {
 }
 
 .logo-image img {
-  margin-top: 30px;
+  margin-top: 50px;
   max-width: 250px;
   height: auto;
 }

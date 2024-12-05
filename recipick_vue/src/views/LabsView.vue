@@ -1,7 +1,8 @@
 <template>
     <div class="lab-container">
+        <img src="@/assets/lab.png" class="labimage">
         <div v-if="labs.length > 0" class="lab-list">
-            <div v-for="lab in labs" :key="lab.id" class="lab-card" @click="goToLabDetail(lab.id)">
+            <div v-for="lab in paginatedLabs" :key="lab.id" class="lab-card" @click="goToLabDetail(lab.id)">
                 <div class="lab-image-container">
                     <img v-if="lab.image" :src="lab.image" alt="Lab" class="lab-image" />
                 </div>
@@ -22,6 +23,13 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <button :disabled="currentPage === 1" @click="goToPreviousPage">이전</button>
+                <span>{{ currentPage }} / {{ totalPages }}</span>
+                <button :disabled="currentPage === totalPages" @click="goToNextPage">다음</button>
+            </div>
         </div>
         <p v-else>실험 일지가 없습니다.</p>
     </div>
@@ -31,10 +39,12 @@
 import apiClient from "@/store/api";
 
 export default {
-    name: 'LabList',
+    name: 'LabsView',
     data() {
         return {
             labs: [],
+            currentPage: 1,
+            itemsPerPage: 5,
         };
     },
     mounted() {
@@ -42,6 +52,16 @@ export default {
     },
     created() {
         this.fetchAllLabs();
+    },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.labs.length / this.itemsPerPage);
+        },
+        paginatedLabs() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = this.currentPage * this.itemsPerPage;
+            return this.labs.slice(start, end);
+        },
     },
     methods: {
         async fetchAllLabs() {
@@ -51,6 +71,16 @@ export default {
             } catch (error) {
                 console.error('요리 실험 일지를 가져오는 중 오류 발생:', error);
                 alert('실험 일지를 불러오지 못했습니다.');
+            }
+        },
+        goToPreviousPage() {
+            if (this.currentPage > 1) {
+                this.currentPage -= 1;
+            }
+        },
+        goToNextPage() {
+            if (this.currentPage < this.totalPages) {
+                this.currentPage += 1;
             }
         },
         goToLabDetail(lab_id) {
@@ -65,7 +95,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 40px;
+    padding: 20px;
 }
 .lab-list {
     display: flex;
@@ -153,4 +183,27 @@ export default {
     margin: 3px 0;
 }
 
+/* 페이지네이션 */
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.pagination button {
+    padding: 5px 10px;
+    background-color: #575757;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.pagination span {
+    font-size: 16px;
+}
 </style>
