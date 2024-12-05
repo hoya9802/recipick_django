@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'lab.apps.LabConfig',
     'freemarket.apps.FreemarketConfig',
     'notification.apps.NotificationConfig',
+    'chef_ai.apps.ChefAiConfig',
 ]
 
 CORS_ALLOWED_ORIGINS = [
