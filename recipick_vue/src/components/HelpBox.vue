@@ -1,7 +1,8 @@
 <template>
     <div class="help-item">
         <div class="post-header">
-            <div class="profile"></div>
+            <div v-if="help.user.profile_image" class="profile" :style="{ backgroundImage: `url(${help.user.profile_image})` }"></div>
+            <div v-else class="profile"></div>
             <span class="profile-name">{{ help.user.nick_name }} - {{ help.user.level }}</span>
         </div>
         <router-link :to="'/help/' + help.id" class="post-link">
@@ -44,7 +45,7 @@ export default {
     width: 100%;
 }
 .profile {
-    background-image: url("https://picsum.photos/100?random=0");
+    background-image: url("@/assets/default-profile.png");
     width: 30px;
     height: 30px;
     background-size: cover;

@@ -1,7 +1,8 @@
 <template>
   <div class="market-item">
     <div class="post-header">
-      <div class="profile"></div>
+      <div v-if="market.user.profile_image" class="profile" :style="{ backgroundImage: `url(${market.user.profile_image})` }"></div>
+      <div v-else class="profile"></div>
       <span class="profile-name">{{ market.user.nick_name }} - {{ market.user.level }} </span>
     </div>
   </div>
@@ -48,7 +49,7 @@ export default {
 }
 
 .profile {
-  background-image: url("https://picsum.photos/100?random=0");
+  background-image: url("@/assets/default-profile.png");
   width: 30px;
   height: 30px;
   background-size: cover;
