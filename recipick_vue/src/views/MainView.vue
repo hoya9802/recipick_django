@@ -101,7 +101,7 @@ export default {
                 },
                 {
                     image: require('@/assets/banner5.png'),
-                    link: '/#'
+                    link: '/generator'
                 },
             ],
             currentIndex: 0,

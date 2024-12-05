@@ -19,7 +19,7 @@ def generate_recipe(ingredients):
     output = pipe(
         input_text,
         max_length=1024,
-        temperature=0.5,
+        temperature=0.7,
         do_sample=True,
         truncation=True
     )[0]["generated_text"]
@@ -34,7 +34,6 @@ if __name__ == "__main__":
         "cabbage",
         "soy sauce",
         "sesame seeds",
-        "honey"
     ]
     result = generate_recipe(test_ingredients)
     print(json.dumps(result, indent=2))

@@ -12,6 +12,8 @@ import MarketDetail from '@/views/MarketDetailVIew.vue';
 import CategoryView from '@/views/CategoryView.vue';
 import LabsView from '@/views/LabsView.vue';
 import LabsDetail from '@/views/LabsDetail.vue';
+import RecipeGenerateView from '@/views/RecipeGenerateView.vue';
+
 
 const routes = [
   {
@@ -120,6 +122,14 @@ const routes = [
       requireLogin: true
     },
     props: true,
+  },
+  {
+    path: '/generator',
+    name: 'RecipeGenerateView',
+    component: RecipeGenerateView,
+    meta: {
+      requireLogin: true
+    }
   },
 ]
 
