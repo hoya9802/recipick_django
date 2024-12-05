@@ -9,6 +9,7 @@ services:
     volumes:
       - ./recipick_app:/recipick_app
       - rp-static-data:/vol/web
+      - huggingface-cache:/vol/cache
     command: >
       sh -c "python manage.py wait_for_db &&
              python manage.py migrate &&
@@ -19,6 +20,7 @@ services:
       - DB_NAME=rpdb
       - DB_USER=rpteam
       - DB_PASS=passkey
+      - HF_MODEL_NAME=Ashikan/dut-recipe-generator
     depends_on:
       - db
 
@@ -34,3 +36,4 @@ services:
 volumes:
   rp-db-data:
   rp-static-data:
+  huggingface-cache:

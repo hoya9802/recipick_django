@@ -11,6 +11,7 @@ import FreeMarket from '@/views/FreeMarketView.vue';
 import MarketDetail from '@/views/MarketDetailVIew.vue';
 import CategoryView from '@/views/CategoryView.vue';
 import LabsView from '@/views/LabsView.vue';
+import RecipeGenerateView from '@/views/RecipeGenerateView.vue';
 import LabsDetail from '@/views/LabsDetailView.vue';
 import NoticeView from '@/views/NoticeView.vue';
 import NoticeDetailView from '@/views/NoticeDetailView.vue';
@@ -19,6 +20,7 @@ import ExpirationsDetail from '@/views/ExpirationsDetailView.vue';
 import Help from '@/views/HelpView.vue';
 import HelpDetail from '@/views/HelpDetail.vue';
 import MarketWrite from '@/views/MarketWriteView.vue';
+
 
 const routes = [
   {
@@ -137,6 +139,9 @@ const routes = [
     props: true,
   },
   {
+    path: '/generator',
+    name: 'RecipeGenerateView',
+    component: RecipeGenerateView,
     path: '/notice',
     name: 'NoticeView',
     component: NoticeView,
