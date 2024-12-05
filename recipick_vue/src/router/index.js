@@ -18,6 +18,7 @@ import Expirations from '@/views/ExpirationsView.vue';
 import ExpirationsDetail from '@/views/ExpirationsDetailView.vue';
 import Help from '@/views/HelpView.vue';
 import HelpDetail from '@/views/HelpDetail.vue';
+import MarketWrite from '@/views/MarketWriteView.vue';
 
 const routes = [
   {
@@ -60,6 +61,14 @@ const routes = [
     path: '/freemarket/:market_id/',
     name: 'MarketDetail',
     component: MarketDetail,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/freemarket/write',
+    name: 'MarketWrite',
+    component: MarketWrite,
     meta: {
       requireLogin: true
     }

@@ -1,6 +1,12 @@
 <template>
   <div class="market-container">
     <img src="@/assets/freemarket.png" class="freemarketimage">
+
+    <!-- 글쓰기 버튼 -->
+    <div class="write-post-button">
+      <button @click="goToWritePage">업로드 하기</button>
+    </div>
+
     <div class="market-grid">
       <div v-for="market in paginatedMarket" :key="market.id" class="post">
         <MarketBox :market="market" />
@@ -62,6 +68,9 @@ export default {
                 this.currentPage += 1;
             }
         },
+        goToWritePage() {
+            this.$router.push("/freemarket/write");
+        }
     },
     components: {
         MarketBox: MarketBox,
