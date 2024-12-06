@@ -1,6 +1,13 @@
 <template>
   <div class="market-container">
     <img src="@/assets/freemarket.png" class="freemarketimage">
+
+    <!-- 글쓰기 버튼 -->
+    <div class="write-post-button">
+      <button class="post-button" @click="goToWritePage">업로드 하기</button>
+    </div>
+
+    <!-- 마켓 리스트 -->
     <div class="market-grid">
       <div v-for="market in paginatedMarket" :key="market.id" class="post">
         <MarketBox :market="market" />
@@ -62,6 +69,9 @@ export default {
                 this.currentPage += 1;
             }
         },
+        goToWritePage() {
+            this.$router.push("/freemarket/write");
+        }
     },
     components: {
         MarketBox: MarketBox,
@@ -78,6 +88,29 @@ export default {
   background-color: white;
 }
 
+/* 업로드하기 버튼 */
+.write-post-button {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 30px;
+  position: relative;
+}
+.post-button {
+  margin: 8px;
+  padding: 4px;
+  width: 120px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #bbbbbb;
+  border-radius: 50px;
+  background-color: white;
+  color: #5a5a5a;
+}
+
+/* 마켓 리스트 */
 .market-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

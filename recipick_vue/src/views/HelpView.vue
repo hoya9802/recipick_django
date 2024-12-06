@@ -1,9 +1,16 @@
 <template>
     <div class="help-container">
         <img src="@/assets/help.png" class="helpimage">
+
+        <!-- 글쓰기 버튼 -->
+        <div class="write-post-button">
+            <button class="post-button" @click="goToWritePage">업로드 하기</button>
+        </div>
+
+        <!-- 요리지식인 -->
         <div class="help-grid">
             <div v-for="help in paginatedHelps" :key="help.id" class="help-card" @click="goToHelpDetail(help.id)">
-                <HelpBox :help="help"/>
+                <HelpBox :help="help" />
             </div>
         </div>
 
@@ -19,6 +26,7 @@
 <script>
 import apiClient from "@/store/api";
 import HelpBox from "@/components/HelpBox.vue"
+import defaultImage from "@/assets/default-image.png";
 
 export default {
     name: "Helps",
@@ -46,7 +54,10 @@ export default {
         async fetchHelps() {
             try {
                 const response = await apiClient.get("/helps/?all=true");
-                this.helps = response.data;
+                this.helps = response.data.map((help) => ({
+                    ...help,
+                    image: help.image || defaultImage,
+                }));
                 document.title = '요리 지식인 - Recipick';
             } catch (error) {
                 console.error("지식인 글을 불러오는 중 오류 발생:", error);
@@ -66,6 +77,9 @@ export default {
         goToHelpDetail(id) {
             this.$router.push(`/help/${id}`);
         },
+        goToWritePage() {
+            this.$router.push("/help/write");
+        }
     },
     components: {
         HelpBox: HelpBox,
@@ -82,6 +96,29 @@ export default {
     background-color: white;
 }
 
+/* 업로드하기 버튼 */
+.write-post-button {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 30px;
+  position: relative;
+}
+.post-button {
+  margin: 8px;
+  padding: 4px;
+  width: 120px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #bbbbbb;
+  border-radius: 50px;
+  background-color: white;
+  color: #5a5a5a;
+}
+
+/* 요리지식인 */
 .help-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

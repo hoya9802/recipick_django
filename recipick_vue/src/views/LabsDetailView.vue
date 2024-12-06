@@ -19,7 +19,8 @@
             <section class="lab-content-section">
                 <p class="lab-content-title">Ingredients</p>
                 <div class="black-bar"></div>
-                <p class="content">{{ lab.ingredients?.map(ingredient => ingredient.name).join(", ") || "재료없음" }}
+                <p class="content">
+                    {{ lab.ingredients?.map(ingredient => ingredient.name).join(", ") || "재료 없음" }}
                 </p>
                 <div class="lab-description">
                     <p class="lab-content-title">Description</p>
@@ -55,6 +56,7 @@ export default {
             try {
                 const response = await apiClient.get(`/labs/${lab_id}/`);
                 this.lab = response.data;
+                console.log(response.data); //나중에삭제
                 document.title = `${this.lab.title} - Recipick`;
             } catch (error) {
                 console.error("실험일지 상세 정보를 가져오는 중 오류 발생:", error);

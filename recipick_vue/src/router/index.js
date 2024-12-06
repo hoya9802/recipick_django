@@ -19,7 +19,10 @@ import Expirations from '@/views/ExpirationsView.vue';
 import ExpirationsDetail from '@/views/ExpirationsDetailView.vue';
 import Help from '@/views/HelpView.vue';
 import HelpDetail from '@/views/HelpDetail.vue';
-
+import MarketWrite from '@/views/MarketWriteView.vue';
+import LabsWrite from '@/views/LabsWriteView.vue';
+import RecipeWrite from '@/views/RecipeWriteView.vue';
+import HelpWrite from '@/views/HelpWriteView.vue';
 
 const routes = [
   {
@@ -67,9 +70,25 @@ const routes = [
     }
   },
   {
+    path: '/freemarket/write',
+    name: 'MarketWrite',
+    component: MarketWrite,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
     path: '/recipes/:dish_id/',
     name: 'RecipeDetail',
     component: RecipeDetail,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/recipes/write',
+    name: 'RecipeWrite',
+    component: RecipeWrite,
     meta: {
       requireLogin: true
     }
@@ -130,9 +149,19 @@ const routes = [
     props: true,
   },
   {
+    path: '/labs/write',
+    name: 'LabsWrite',
+    component: LabsWrite,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
     path: '/generator',
     name: 'RecipeGenerateView',
     component: RecipeGenerateView,
+  },
+  {
     path: '/notice',
     name: 'NoticeView',
     component: NoticeView,
@@ -179,6 +208,14 @@ const routes = [
     meta: {
       requireLogin: true
     },
+  },
+  {
+    path: '/help/write',
+    name: 'HelpWrite',
+    component: HelpWrite,
+    meta: {
+      requireLogin: true
+    }
   },
 ]
 
