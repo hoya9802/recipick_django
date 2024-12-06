@@ -249,10 +249,6 @@ form {
     background-color: #cccccc;
     cursor: not-allowed;
 }
-
-.ingredients {
-    margin: 20px 0;
-}
 select {
     width: 100%;
     padding: 10px;
