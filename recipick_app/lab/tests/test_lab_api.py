@@ -16,7 +16,10 @@ from rest_framework.test import APIClient
 from core.models import Level
 from recipe.models import Ingredient
 from lab.models import Lab, Like
-from recipe.tests.test_recipe_api import create_user
+from recipe.tests.test_recipe_api import (
+    create_user,
+    PrivateExtraApiTests
+)
 
 from lab.serializers import (
     LabListSerializer,
@@ -466,3 +469,17 @@ class ImageUploadTests(TestCase):
         res = self.client.post(url, payload, format='multipart')
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class PrivateExtraLabApiTests(PrivateExtraApiTests):
+    """요리 실험일지 API에 대한 추가 테스트"""
+
+    def test_get_lab_with_profile_image(self):
+        """실험일지 안에 유저 프로필 이미지가 잘 반환되는지 테스트"""
+        create_lab(user=self.user)
+        res = self.client.get(LAB_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        res = res.data[0]
+        self.assertIn('profile_image', res['user'])
+        self.assertTrue(os.path.exists(self.user.profile_image.path))

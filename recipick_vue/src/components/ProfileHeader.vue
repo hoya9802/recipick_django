@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="profile-container">
-            <div class="profile"></div>
+            <div v-if="user.profile_image" class="profile" :style="{ backgroundImage: `url(${user.profile_image})` }"></div>
+            <div v-else class="profile"></div>
             <div class="name-container">
                 <span class="profile-name">{{ user.nick_name }} - </span>
                 <span class="profile-name">{{ user.level }}</span>
@@ -27,7 +28,7 @@ export default {
 }
 
 .profile {
-    background-image: url("https://picsum.photos/100?random=0");
+    background-image: url("@/assets/default-profile.png");
     width: 50px;
     height: 50px;
     background-size: 100%;

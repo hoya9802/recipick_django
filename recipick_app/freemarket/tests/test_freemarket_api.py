@@ -21,7 +21,10 @@ from freemarket.serializers import (
     FreemarketSerializer,
     FreemarketListSerializer
 )
-from recipe.tests.test_recipe_api import create_user
+from recipe.tests.test_recipe_api import (
+    create_user,
+    PrivateExtraApiTests
+)
 
 
 FREEMARKET_URL = reverse('freemarket:freemarket-list')
@@ -52,7 +55,7 @@ def create_freemarket(user, **params):
     return freemarket
 
 
-class PublicHelpAPITests(TestCase):
+class PublicFreeMarketAPITests(TestCase):
     """인증받지 못한 유저에 대한 요청 테스트"""
     def setUp(self):
         self.client = APIClient()
@@ -63,7 +66,7 @@ class PublicHelpAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateHelpAPITests(TestCase):
+class PrivateFreeMarketAPITests(TestCase):
     """인증받은 유저에 대한 API 요청 테스트"""
 
     def setUp(self):
@@ -354,3 +357,17 @@ class ImageUploadTests(TestCase):
         res = self.client.post(url, payload, format='multipart')
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class PrivateExtraFreeMarketApiTests(PrivateExtraApiTests):
+    """무료나눔 API에 대한 추가 테스트"""
+
+    def test_get_freemarket_with_profile_image(self):
+        """무료나눔 안에 유저 프로필 이미지가 잘 반환되는지 테스트"""
+        create_freemarket(user=self.user)
+        res = self.client.get(FREEMARKET_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        res = res.data[0]
+        self.assertIn('profile_image', res['user'])
+        self.assertTrue(os.path.exists(self.user.profile_image.path))
