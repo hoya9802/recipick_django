@@ -97,6 +97,11 @@ export default {
         },
         async submitPost() {
             try {
+                if (!this.image) {
+                    alert("이미지를 선택해주세요.");
+                    console.warn("이미지가 업로드되지 않았습니다.");
+                    return;
+                }
                 const formData = new FormData();
                 Object.entries(this.formData).forEach(([key, value]) => {
                     formData.append(key, value);

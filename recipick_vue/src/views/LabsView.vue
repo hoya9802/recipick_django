@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="lab-details">
-                        <p>사용 재료 : {{ lab.ingredients.map(ingredient => ingredient.name).join(", ") }}</p>
+                        <p>사용 재료 : {{ lab.ingredients.map(ingredient => ingredient.name).join(", ") || "재료 없음" }}</p>
                         <p>Update : {{ lab.modify_dt }}</p>
                     </div>
                 </div>
@@ -76,6 +76,7 @@ export default {
                 const response = await apiClient.get('/labs/?all=true');
                 this.labs = response.data;
                 console.log(response.data); //나중에삭제
+
             } catch (error) {
                 console.error('요리 실험 일지를 가져오는 중 오류 발생:', error);
                 alert('실험 일지를 불러오지 못했습니다.');

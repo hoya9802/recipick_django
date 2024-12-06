@@ -10,24 +10,10 @@
 
             <!-- 이미지 업로드 -->
             <div class="image-upload-container">
-                <input id="recipe-image" class="image" type="file" @change="handleFileUpload" accept="image/*" />
+                <input id="image-upload" class="image" type="file" @change="handleFileUpload" accept="image/*" />
                 <!-- 미리보기 -->
-                <img v-if="previewImage" :src="previewImage" alt="Recipe Preview" class="image-preview" />
+                <img v-if="previewImage" :src="previewImage" alt="Image Preview" class="image-preview" />
             </div>
-
-            <!-- <div class="ingredients">
-                <div class="ingredient-grid">
-                    <div v-for="(ingredient, index) in ingredients" :key="index" class="ingredient-item">
-                        <input v-model="ingredients[index].name" placeholder="재료 이름" required
-                            class="ingredient-input" />
-                        <button type="button" @click="removeIngredient(index)" class="remove-ingredient">X</button>
-                    </div>
-                </div>
-                <button type="button" @click="addIngredient" :disabled="ingredients.length >= 30"
-                    class="add-ingredient">
-                    + 재료 추가
-                </button>
-            </div> -->
 
             <div class="ingredients">
                 <select id="ingredients" v-model="selectedIngredients" multiple>
@@ -37,7 +23,6 @@
                 </select>
                 <p v-if="selectedIngredients.length === 0">재료를 선택하세요.</p>
             </div>
-
 
             <div class="actions">
                 <button class="cancel" type="button" @click="$router.back()">취소</button>
@@ -58,8 +43,8 @@ export default {
                 title: "",
                 description: "",
             },
-            ingredients: [], // 재료 목록
-            selectedIngredients: [], // 선택된 재료
+            ingredients: [],
+            selectedIngredients: [],
             image: null,
             previewImage: null,
         };
@@ -85,23 +70,39 @@ export default {
             }
         },
         async submitPost() {
+            if (!this.image) {
+                alert("이미지를 선택해주세요.");
+                console.warn("이미지가 업로드되지 않았습니다.");
+                return;
+            }
             try {
-                const formData = new FormData();
-                Object.entries(this.formData).forEach(([key, value]) => {
-                    formData.append(key, value);
+                const response = await apiClient.post("/labs/", {
+                    title: this.formData.title,
+                    description: this.formData.description,
+                    ingredients: this.selectedIngredients.map(ingredient => ({ name: ingredient.name })),
                 });
-                formData.append("ingredients", JSON.stringify(this.selectedIngredients.map(ingredient => ({ name: ingredient.name })))
-            );
-                if (this.image) formData.append("image", this.image);
 
-                await apiClient.post("/labs/", formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
-                });
+                const id = response.data.id;
+
+                await this.uploadImage(id);
+
                 this.$router.push("/labs");
             } catch (error) {
-                console.error(error);
+                console.error("등록하는 과정에서 오류 발생:", error);
             }
         },
+        async uploadImage(id) {
+            try {
+                const formData = new FormData();
+                formData.append("image", this.image);
+
+                await apiClient.post(`/labs/${id}/upload-image/`, formData, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                });
+            } catch (error) {
+                console.error("이미지가 업로드 되지 않았습니다.:", error);
+            }
+        }
     },
         mounted() {
         this.fetchIngredients();
@@ -209,57 +210,4 @@ select {
     font-size: 16px;
 }
 
-/* 재료 추가 버튼 및 제거 버튼 */
-/* .ingredients {
-    margin-top: 15px;
-}
-.ingredient-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
-}
-.ingredient-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.ingredient-input {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 16px;
-}
-.add-ingredient {
-    display: block;
-    margin: 10px auto;
-    background-color: #658aee;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.add-ingredient:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.remove-ingredient {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.remove-ingredient:hover {
-    background-color: #d63333;
-} */
 </style>
