@@ -1,6 +1,13 @@
 <template>
   <div class="dish-container">
     <img src="@/assets/recipe.png" class="recipeimage">
+
+    <!-- 글쓰기 버튼 -->
+    <div class="write-post-button">
+      <button class="post-button" @click="goToWritePage">업로드 하기</button>
+    </div>
+
+    <!-- 레시피 리스트 -->
     <div class="dish-grid">
       <div v-for="dish in paginatedDishList" :key="dish.id" class="post">
         <Dish :dish="dish" />
@@ -62,6 +69,9 @@ export default {
             this.currentPage += 1;
           }
         },
+        goToWritePage() {
+            this.$router.push("/recipes/write");
+        }
     },
     components: {
         Dish: Dish,
@@ -71,31 +81,44 @@ export default {
 
 <style scoped>
 .dish-container {
-  /* 추가 */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
   background-color: white;
 }
+/* 업로드하기 버튼 */
+.write-post-button {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 30px;
+  position: relative;
+}
+.post-button {
+  margin: 8px;
+  padding: 4px;
+  width: 120px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #bbbbbb;
+  border-radius: 50px;
+  background-color: white;
+  color: #5a5a5a;
+}
 
+/* 레시피 리스트 */
 .dish-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  /* gap: 2vw;
-  padding: 2vw;
-  max-width: 1200px;
-  margin: 0 auto; */
   gap: 20px;
   width: 100%;
   max-width: 1200px;
 }
 
 .post {
-  /* width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden; */
   background-color: white;
   border: 1px solid #ddd;
   border-radius: 8px;

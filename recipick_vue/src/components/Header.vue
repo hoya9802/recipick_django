@@ -10,7 +10,7 @@
                 </ul>
             </div>
             <router-link to="/notice" class="notice">공지사항</router-link>
-            <a href="">레시피 업로드</a>
+            <router-link to="/recipes/write" class="write">레시피 업로드</router-link>
         </div>
         <div class="emo">
             <a class="emo1">🧑🏻</a>

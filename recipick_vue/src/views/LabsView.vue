@@ -1,6 +1,13 @@
 <template>
     <div class="lab-container">
         <img src="@/assets/lab.png" class="labimage">
+
+        <!-- 글쓰기 버튼 -->
+        <div class="write-post-button">
+            <button class="post-button" @click="goToWritePage">업로드 하기</button>
+        </div>
+
+        <!-- 실험일지 -->
         <div v-if="labs.length > 0" class="lab-list">
             <div v-for="lab in paginatedLabs" :key="lab.id" class="lab-card" @click="goToLabDetail(lab.id)">
                 <div class="lab-image-container">
@@ -68,6 +75,7 @@ export default {
             try {
                 const response = await apiClient.get('/labs/?all=true');
                 this.labs = response.data;
+                console.log(response.data); //나중에삭제
             } catch (error) {
                 console.error('요리 실험 일지를 가져오는 중 오류 발생:', error);
                 alert('실험 일지를 불러오지 못했습니다.');
@@ -86,6 +94,9 @@ export default {
         goToLabDetail(lab_id) {
             this.$router.push(`/labs/${lab_id}`);
         },
+        goToWritePage() {
+            this.$router.push("/labs/write");
+        }
     },
 };
 </script>
@@ -97,6 +108,30 @@ export default {
     align-items: center;
     padding: 20px;
 }
+
+/* 업로드하기 버튼 */
+.write-post-button {
+  width: 100%;
+  max-width: 950px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 30px;
+  position: relative;
+}
+.post-button {
+  margin: 8px;
+  padding: 4px;
+  width: 120px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #bbbbbb;
+  border-radius: 50px;
+  background-color: white;
+  color: #5a5a5a;
+}
+
+/* 실험일지 */
 .lab-list {
     display: flex;
     flex-direction: column;
