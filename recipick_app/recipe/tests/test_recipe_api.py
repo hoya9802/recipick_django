@@ -59,6 +59,15 @@ def create_user(id='user', nick_name='user1', email='test@example.com'):
     )
 
 
+def create_temp_image():
+    """임시 이미지를 생성하는 함수"""
+    temp_file = tempfile.NamedTemporaryFile(suffix='.jpg', delete=True)
+    image = Image.new('RGB', (100, 100), color='red')
+    image.save(temp_file, format='JPEG')
+    temp_file.seek(0)
+    return temp_file
+
+
 class PublicRecipeAPITests(TestCase):
     """인증받지 못한 유저에 대한 요청 테스트"""
 
@@ -587,3 +596,40 @@ class ImageUploadTests(TestCase):
         res = self.client.post(url, payload, format='multipart')
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class PrivateExtraApiTests(TestCase):
+    """추가적인 API 테스트를 위한 기본 셋업 클래스"""
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = create_user()
+
+        temp_image = create_temp_image()
+        self.user.profile_image.save(
+            'profile.jpg',
+            temp_image,
+            save=True
+        )
+        temp_image.close()
+
+        self.client.force_authenticate(user=self.user)
+
+    def tearDown(self):
+        """테스트 완료 후 생성된 이미지 파일 삭제"""
+        if self.user.profile_image:
+            self.user.profile_image.delete()
+
+
+class PrivateExtraRecipeApiTests(PrivateExtraApiTests):
+    """레시피 API에 대한 추가 테스트"""
+
+    def test_get_recipe_with_profile_image(self):
+        """레시피 안에 유저 프로필 이미지가 잘 반환되는지 테스트"""
+        create_recipe(user=self.user)
+        res = self.client.get(RECIPE_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        res = res.data[0]
+        self.assertIn('profile_image', res['user'])
+        self.assertTrue(os.path.exists(self.user.profile_image.path))

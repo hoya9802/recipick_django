@@ -20,7 +20,10 @@ from help.serializers import (
     HelpSerializer,
     HelpListSerializer
 )
-from recipe.tests.test_recipe_api import create_user
+from recipe.tests.test_recipe_api import (
+    create_user,
+    PrivateExtraApiTests
+)
 
 
 HELP_URL = reverse('help:help-list')
@@ -338,3 +341,17 @@ class ImageUploadTests(TestCase):
         res = self.client.post(url, payload, format='multipart')
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class PrivateExtraHelpApiTests(PrivateExtraApiTests):
+    """지식인 API에 대한 추가 테스트"""
+
+    def test_get_help_with_profile_image(self):
+        """지식인 안에 유저 프로필 이미지가 잘 반환되는지 테스트"""
+        create_help(user=self.user)
+        res = self.client.get(HELP_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        res = res.data[0]
+        self.assertIn('profile_image', res['user'])
+        self.assertTrue(os.path.exists(self.user.profile_image.path))

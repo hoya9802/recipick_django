@@ -1,7 +1,8 @@
 <template>
   <div class="dish-item">
     <div class="post-header">
-      <div class="profile"></div>
+      <div v-if="dish.user.profile_image" class="profile" :style="{ backgroundImage: `url(${dish.user.profile_image})` }"></div>
+      <div v-else class="profile"></div>
       <span class="profile-name">{{ dish.user.nick_name }} - {{ dish.user.level }}</span>
     </div>
     <router-link :to="'/recipes/' + dish.id" class="post-link">
@@ -42,10 +43,11 @@ export default {
     width: 100%;
 }
 .profile {
-    background-image: url("https://picsum.photos/100?random=0");
+    background-image: url("@/assets/default-profile.png");
     width: 30px;
     height: 30px;
     background-size: cover;
+    background-position: center;
     border-radius: 50%;
     flex-shrink: 0;
 }
