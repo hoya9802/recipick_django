@@ -21,7 +21,7 @@ class Report(models.Model):
                 related_name='reported_user',
                 default=None
     )
-    url = models.CharField(max_length=255)
+    url = models.URLField()
     create_dt = models.DateField(auto_now_add=True)
     detail = models.TextField(blank=False)
     status = models.ForeignKey(
