@@ -21,5 +21,4 @@ if (token) {
       console.error("사용자 정보를 가져오지 못했습니다.");
     });
 }
-
 createApp(App).use(store).use(router).mount('#app')

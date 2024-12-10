@@ -169,7 +169,7 @@ export default {
                     image: recipe.image ? `http://127.0.0.1:8000${recipe.image}` : null,
                 }));
             } catch (error) {
-                console.error("NG 요리 데이터를 가져오는 중 오류 발생:", error);
+                console.error("지구인은 이해할 수 없는 음식 데이터를 가져오는 중 오류 발생:", error);
             }
         },
         // 요리 실험 일지

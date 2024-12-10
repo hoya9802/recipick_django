@@ -4,8 +4,7 @@
             <div v-if="user.profile_image" class="profile" :style="{ backgroundImage: `url(${user.profile_image})` }"></div>
             <div v-else class="profile"></div>
             <div class="name-container">
-                <span class="profile-name">{{ user.nick_name }} - </span>
-                <span class="profile-name">{{ user.level }}</span>
+                <span class="profile-name">{{ user.nick_name }} - {{ user.level }}</span>
             </div>
         </div>
     </div>

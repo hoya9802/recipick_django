@@ -21,7 +21,7 @@ class NicknameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['nick_name', 'level', 'profile_image']
+        fields = ['id', 'nick_name', 'level', 'profile_image']
 
 
 class CategorySerializer(serializers.ModelSerializer):

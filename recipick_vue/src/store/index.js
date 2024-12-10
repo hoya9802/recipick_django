@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    isAuthenticated: false,
+    isAuthenticated: '',
     token: '',
     id: '',
     nick_name: '',
@@ -22,7 +22,7 @@ export default createStore({
       state.isAuthenticated = true;
     },
     removeToken(state) {
-      state.token = '';
+      state.token = null;
       state.isAuthenticated = false;
       state.id = '';
     },

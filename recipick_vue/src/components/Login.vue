@@ -36,8 +36,8 @@ export default {
         };
     },
     mounted() {
-        document.title = 'Recipick'
-    },
+      document.title = 'Recipick'
+  },
     methods: {
         async loginForm(){
             try {

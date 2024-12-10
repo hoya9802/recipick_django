@@ -43,6 +43,7 @@
                 <li><router-link to="/freemarket">재료 무료 나눔</router-link></li>
                 <li><router-link to="/labs">요리 실험 일지</router-link></li>
                 <li><router-link to="/help">요리 지식인</router-link></li>
+                <li><router-link to="/generator">AI 추천 레시피</router-link></li>
                 <li><router-link to="/expirations">유통기한 알림</router-link></li>
             </ul>
         </div>
@@ -195,7 +196,7 @@ export default {
 }
 .id ul li {
     padding: 8px 16px;
-    font-size: 16px;
+    font-size: 14px;
     color: black;
     cursor: pointer;
     transition: background-color 0.2s ease;
@@ -254,7 +255,7 @@ export default {
 .nav-menu {
     list-style: none;
     display: flex;
-    gap: clamp(10px, 12vw, 150px);
+    gap: clamp(5px, 5vw, 50px);
     margin: 0px 10%;
     padding: 0;
     justify-content: space-around;
@@ -264,8 +265,10 @@ export default {
     text-decoration: none;
     color: white;
     font-weight: bold;
-    font-size: 17px;
-    font-size: clamp(0.8rem, 1vw, 1rem);
+    font-size: 16px;
+    font-size: clamp(0.8rem, 0.9vw, 1rem);
+    padding: 5px 10px; /* 상하좌우 여백 최소화 */
+    white-space: nowrap;
 }
 
 /* 카테고리 드롭다운 */
