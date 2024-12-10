@@ -1,3 +1,6 @@
+import os
+import logging
+
 from django.urls import reverse
 from django.test import SimpleTestCase, TestCase
 
@@ -6,6 +9,11 @@ from rest_framework.test import APIClient
 
 from chef_ai.main import generate_recipe
 from recipe.tests.test_recipe_api import create_user
+
+
+# 테스트 시작 전에 환경 변수와 로깅 레벨 설정
+os.environ['TRANSFORMERS_VERBOSITY'] = 'error'
+logging.getLogger("transformers").setLevel(logging.ERROR)
 
 
 AICHEF_URL = reverse('chef_ai:generate-recipe')
@@ -18,7 +26,7 @@ class AIGenerationTest(SimpleTestCase):
 
         try:
             result = generate_recipe(ingredients)
-            # 결과가 JSON 형식인지 확인
+
             self.assertIn('title', result)
             self.assertIn('ingredients', result)
             self.assertIn('method', result)

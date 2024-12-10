@@ -59,7 +59,6 @@ class LabListSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients', [])
-        print("Received ingredients:", ingredients)
         lab = Lab.objects.create(**validated_data)
 
         if ingredients:
