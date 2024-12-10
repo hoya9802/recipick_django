@@ -113,11 +113,11 @@ export default {
     border-radius: 8px;
 }
 .help-content {
-    margin: 0 auto 50px; /* 아래 섹션과 간격 */
+    margin: 0 auto 50px;
     padding: 20px;
-    border: 1px solid #ddd; /* 병합 방지 */
+    border: 1px solid #ddd;
     border-radius: 8px;
-    overflow: hidden; /* 마진 병합 방지 */
+    overflow: hidden;
 }
 
 .help-comment {
@@ -125,8 +125,8 @@ export default {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    overflow: hidden; /* 마진 병합 방지 */
-    clear: both; /* 질문 섹션과의 시각적 분리 */
+    overflow: hidden;
+    clear: both;
 }
 .help-content h2,
 .help-comment h2{
@@ -136,10 +136,10 @@ export default {
 }
 .help-content p {
     font-size: 18px;
-    line-height: 1.6; /* 읽기 쉽게 줄 간격 조정 */
+    line-height: 1.6;
     text-align: left;
-    max-height: 400px; /* 최대 높이 제한 */
-    overflow-y: auto; /* 질문이 너무 길 경우 스크롤 추가 */
+    max-height: 400px;
+    overflow-y: auto;
 }
 .help-comment p{
     font-size: 18px;
