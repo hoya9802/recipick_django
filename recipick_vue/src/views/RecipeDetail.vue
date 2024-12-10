@@ -20,10 +20,10 @@
         </div>
         <div class="black-bar"></div>
 
-        <p class="ingredient">
-        <p class="ingredient-title">재료</p>
-        <p class="ingredients"> : {{ dish.ingredients.map(ing => ing.name).join(', ') }}</p>
-        </p>
+        <div class="ingredient">
+          <p class="ingredient-title">재료</p>
+          <p class="ingredients"> : {{ dish.ingredients.map(ing => ing.name).join(', ') }}</p>
+        </div>
 
         <div class="black-bar"></div>
         <div class="url-section">
