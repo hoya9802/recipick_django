@@ -25,6 +25,8 @@ import RecipeWrite from '@/views/RecipeWriteView.vue';
 import HelpWrite from '@/views/HelpWriteView.vue';
 import ChatRoom from '@/views/ChatRoomView.vue';
 import ChatListView from '@/views/ChatListView.vue'
+import FindId from '@/views/FindIdView.vue';
+import ResetPassword from '@/views/ResetPasswordView.vue';
 
 const routes = [
   {
@@ -231,7 +233,17 @@ const routes = [
     path: '/chat/list',
     name: 'ChatList',
     component: ChatListView
-  }
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword,
+  },
+  {
+    path: '/find-id',
+    name: 'FindId',
+    component: FindId,
+  },
 ]
 
 const router = createRouter({

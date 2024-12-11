@@ -29,4 +29,12 @@ urlpatterns = [
         views.ManageUserViewSet.as_view({'post': 'delete'}),
         name='delete'
     ),
+    path(
+        'find-id/',
+        views.AccountViewSet.as_view({'post': 'find_id'}),
+        name='find_id'),
+    path(
+        'reset-password/',
+        views.AccountViewSet.as_view({'post': 'reset_password'}),
+        name='reset_password'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -18,8 +18,8 @@
             <button type="submit">로그인</button>
         </form>
 
-        <a href="">아이디 찾기 / </a>
-        <a href="">비밀번호 찾기 / </a>
+        <a @click.prevent="goToFind">아이디 찾기 / </a>
+        <a @click.prevent="goToReset">비밀번호 찾기 / </a>
         <a @click.prevent="goToSignup">회원가입</a>
     </div>
 </template>
@@ -72,6 +72,12 @@ export default {
         },
         goToSignup() {
             this.$router.push('/signup');
+        },
+        goToFind() {
+            this.$router.push('/find-id');
+        },
+        goToReset() {
+            this.$router.push('/reset-password');
         },
     },
 };
