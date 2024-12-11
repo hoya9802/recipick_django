@@ -89,15 +89,15 @@ export default {
                 },
                 {
                     image: require('@/assets/banner2.png'),
-                    link: '/#'
+                    link: '/labs'
                 },
                 {
                     image: require('@/assets/banner3.png'),
-                    link: '/#'
+                    link: '/help'
                 },
                 {
                     image: require('@/assets/banner4.png'),
-                    link: '/#'
+                    link: '/expirations'
                 },
                 {
                     image: require('@/assets/banner5.png'),
