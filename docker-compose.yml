@@ -20,9 +20,16 @@ services:
       - DB_NAME=rpdb
       - DB_USER=rpteam
       - DB_PASS=passkey
+      - REDIS_HOST=redis
       - HF_MODEL_NAME=Ashikan/dut-recipe-generator
     depends_on:
       - db
+      - redis
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
 
   db:
     image: postgres:13-alpine

@@ -54,6 +54,9 @@
             <button @click="goToUpdateProfile">
                 회원정보 수정
             </button>
+            <button @click="goToChatList" class="chat-list-btn">
+                채팅 목록
+            </button>
         </div>
     </div>
 </template>
@@ -90,7 +93,12 @@ export default{
         goToUpdateProfile() {
             this.$router.push("/mypage/update");
         },
-
+        goToChatList() {
+            this.$router.push({
+                path: "/chat/list",
+                query: { id: this.user.id }
+            });
+        },
     },
     mounted() {
         document.title = '마이페이지 - Recipick'
@@ -184,8 +192,14 @@ export default{
 }
 
 /* 회원정보 수정 */
-.update-profile button {
-    margin: 0px auto;
+.update-profile {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.update-profile button,
+.chat-list-btn {
     width: 130px;
     padding: 8px;
     color: white;

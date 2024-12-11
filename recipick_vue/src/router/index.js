@@ -23,6 +23,8 @@ import MarketWrite from '@/views/MarketWriteView.vue';
 import LabsWrite from '@/views/LabsWriteView.vue';
 import RecipeWrite from '@/views/RecipeWriteView.vue';
 import HelpWrite from '@/views/HelpWriteView.vue';
+import ChatRoom from '@/views/ChatRoomView.vue';
+import ChatListView from '@/views/ChatListView.vue'
 import FindId from '@/views/FindIdView.vue';
 import ResetPassword from '@/views/ResetPasswordView.vue';
 import Like from '@/views/LikeView.vue';
@@ -220,6 +222,19 @@ const routes = [
     meta: {
       requireLogin: true
     }
+  },
+  {
+    path: '/chat',
+    name: 'ChatRoom',
+    component: ChatRoom,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/chat/list',
+    name: 'ChatList',
+    component: ChatListView
   },
   {
     path: '/reset-password',

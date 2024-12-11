@@ -159,7 +159,14 @@ export default {
       }
     },
     handleContact() {
-      window.location.href = `mailto:${this.market.user_email}`;
+      this.$router.push({
+        name: 'ChatRoom',
+        query: {
+          shop_user_id: this.market.user.id,
+          visitor_user_id: this.currentUser.id,
+          current_user: this.currentUser.id,
+        }
+      });
     },
     formatDescription(description) {
     // 줄바꿈 문자를 <br> 태그로 변환
