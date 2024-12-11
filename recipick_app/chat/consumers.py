@@ -3,30 +3,35 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import ChatRoom, Message
 
+
 class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         try:
-            self.room_id = self.scope['url_route']['kwargs']['room_id'] # URL 경로에서 방 ID를 추출합니다.
+            self.room_id = self.scope['url_route']['kwargs']['room_id']
 
-            if not await self.check_room_exists(self.room_id): # 방이 존재하는지 확인합니다.
+            if not await self.check_room_exists(self.room_id):
                 raise ValueError('채팅방이 존재하지 않습니다.')
 
-            group_name = self.get_group_name(self.room_id) # 방 ID를 사용하여 그룹 이름을 얻습니다.
+            group_name = self.get_group_name(self.room_id)
 
-            await self.channel_layer.group_add(group_name, self.channel_name) # 현재 채널을 그룹에 추가합니다.
-            await self.accept()# WebSocket 연결을 수락합니다.
+            await self.channel_layer.group_add(group_name, self.channel_name)
+            # WebSocket 연결을 수락합니다.
+            await self.accept()
 
-        except ValueError as e: # 값 오류가 있을 경우 (예: 방이 존재하지 않음), 오류 메시지를 보내고 연결을 종료합니다.
+        except ValueError as e:
             await self.send_json({'error': str(e)})
             await self.close()
 
     async def disconnect(self, close_code):
         try:
-            group_name = self.get_group_name(self.room_id) # 방 ID를 사용하여 그룹 이름을 얻습니다.
-            await self.channel_layer.group_discard(group_name, self.channel_name) # 현재 채널을 그룹에서 제거합니다.
+            group_name = self.get_group_name(self.room_id)
+            await self.channel_layer.group_discard(
+                group_name,
+                self.channel_name
+            )
 
-        except Exception as e: # 일반 예외를 처리합니다 (예: 오류 기록).
+        except Exception:
             pass
 
     async def receive_json(self, content):
@@ -35,8 +40,8 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             print('여기는 오냐?')
             message = content['message']
             sender_id = content['sender_id']
-            shop_user_id = content.get('shop_user_id')  # email 대신 id로 변경
-            visitor_user_id = content.get('visitor_user_id')  # email 대신 id로 변경
+            shop_user_id = content.get('shop_user_id')
+            visitor_user_id = content.get('visitor_user_id')
 
             # 두 ID가 모두 제공되었는지 확인합니다.
             if not shop_user_id or not visitor_user_id:
@@ -72,7 +77,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
             # 추출된 메시지와 발신자 이메일을 JSON으로 전송합니다.
             await self.send_json({'message': message, 'sender_id': sender_id})
-        except Exception as e:
+        except Exception:
             # 일반 예외를 처리하여 오류 메시지를 보냅니다.
             await self.send_json({'error': '메시지 전송 실패'})
 

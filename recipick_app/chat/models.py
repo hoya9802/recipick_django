@@ -18,8 +18,12 @@ class ChatRoom(models.Model):
     class Meta:
         unique_together = ('shop_user', 'visitor_user')
 
+
 class Message(models.Model):
-    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name="messages")
+    room = models.ForeignKey(
+        ChatRoom, on_delete=models.CASCADE,
+        related_name="messages"
+    )
     sender_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
