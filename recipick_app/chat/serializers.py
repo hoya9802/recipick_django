@@ -59,3 +59,20 @@ class ChatRoomSerializer(serializers.ModelSerializer):
     # visitor_user의 이메일을 반환하는 메소드입니다.
     def get_visitor_user_id(self, obj):
         return obj.visitor_user.id
+
+
+class ChatRoomListSerializer(serializers.ModelSerializer):
+    shop_user_id = serializers.SerializerMethodField()
+    visitor_user_id = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ChatRoom
+        fields = ['id', 'shop_user_id', 'visitor_user_id']
+
+        # shop_user의 이메일을 반환하는 메소드입니다.
+    def get_shop_user_id(self, obj):
+        return obj.shop_user.id
+
+    # visitor_user의 이메일을 반환하는 메소드입니다.
+    def get_visitor_user_id(self, obj):
+        return obj.visitor_user.id

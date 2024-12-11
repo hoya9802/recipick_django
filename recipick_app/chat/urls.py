@@ -10,4 +10,5 @@ urlpatterns = [
         views.MessageListView.as_view(),
         name='chat_messages'
     ),
+    path('chatrooms/', views.ChatRoomUsersListView.as_view(), name='chat_room_list'),
 ]

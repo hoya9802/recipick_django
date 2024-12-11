@@ -2,7 +2,11 @@ from django.contrib.auth import get_user_model
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .models import ChatRoom, Message
-from .serializers import ChatRoomSerializer, MessageSerializer
+from .serializers import (
+    ChatRoomSerializer,
+    MessageSerializer,
+    ChatRoomListSerializer
+)
 from rest_framework.exceptions import ValidationError
 from django.http import Http404
 
@@ -127,3 +131,10 @@ class MessageListView(generics.ListAPIView):
             raise Http404('해당 room_id로 메시지를 찾을 수 없습니다.')
 
         return queryset
+
+
+class ChatRoomUsersListView(generics.ListAPIView):
+    serializer_class = ChatRoomListSerializer
+
+    def get_queryset(self):
+        return ChatRoom.objects.all().order_by('-timestamp')

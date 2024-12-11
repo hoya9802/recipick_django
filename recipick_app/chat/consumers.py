@@ -5,7 +5,7 @@ from .models import ChatRoom, Message
 
 
 class ChatConsumer(AsyncJsonWebsocketConsumer):
-
+    print('내가 보인다면 너는 redis를 쓸 수 있는 것이다하하하하핳')
     async def connect(self):
         try:
             self.room_id = self.scope['url_route']['kwargs']['room_id']
@@ -37,7 +37,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
     async def receive_json(self, content):
         try:
             # 수신된 JSON에서 필요한 정보를 추출합니다.
-            print('여기는 오냐?')
+            print('여기까지는 오는걸..까...?')
             message = content['message']
             sender_id = content['sender_id']
             shop_user_id = content.get('shop_user_id')
@@ -57,12 +57,12 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             group_name = self.get_group_name(self.room_id)
             # 수신된 메시지를 데이터베이스에 저장합니다.
             await self.save_message(room, sender_id, message)
-            print('저장이 안되는듯.')
+            print('오류가 가고 드뎌 희망이 오는군요')
             # 메시지를 전체 그룹에 전송합니다.
             await self.channel_layer.group_send(group_name, {
                 'type': 'chat_message',
                 'message': message,
-                'sender_id': sender_id  # 발신자 아이디 정보 추가
+                'sender_id': sender_id
             })
 
         except ValueError as e:
@@ -104,7 +104,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         # 발신자 이메일과 메시지 텍스트가 제공되었는지 확인합니다.
         if not sender_id or not message_text:
             raise ValueError("발신자 아이디 및 메시지 텍스트가 필요합니다.")
-        print(room, sender_id, message_text)
+
         User = get_user_model()
         sender = User.objects.get(id=sender_id)
         # 메시지를 생성하고 데이터베이스에 저장합니다.
