@@ -23,13 +23,6 @@
         </router-link>
     </div>
 
-    <div class="recipe-list">
-        <div v-for="recipe in displayedRecipes" :key="recipe.id" class="recipe-card">
-            <h3>{{ recipe.name }}</h3>
-            <img :src="recipe.image" alt="recipe image" />
-        </div>
-    </div>
-
     <nav class="custom-navbar">
         <div class="container">
             <ul class="nav-menu">
@@ -55,7 +48,6 @@
 
 <script>
 import apiClient, { setAuthToken } from '@/store/api';
-import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'Header',
@@ -64,18 +56,11 @@ export default {
             categories: [],
             dropdownOpen: false,
             iddropdownOpen: false,
-            currentView: 'liked',
         }
     },
     computed: {
         nickname() {
             return this.$store.state.nick_name;
-        },
-        ...mapState('likes', ['likedRecipes', 'dislikedRecipes']),
-        displayedRecipes() {
-            return this.currentView === 'liked'
-                ? this.likedRecipes
-                : this.dislikedRecipes;
         },
     },
     created() {
@@ -131,18 +116,13 @@ export default {
         closeDropdown() {
             this.iddropdownOpen = false;
         },
-        ...mapActions('likes', ['fetchLikedRecipes', 'fetchDislikedRecipes']),
         showLikedRecipes() {
-            this.currentView = 'liked';
-            this.fetchLikedRecipes();
+            this.$router.push("/user-like");
         },
         showDislikedRecipes() {
-            this.currentView = 'disliked';
-            this.fetchDislikedRecipes();
+            this.$router.push("/user-dislike")
         },
-        mounted() {
-            this.fetchLikedRecipes(); // 기본적으로 좋아요한 레시피 로드
-        },
+
     },
 
     watch: {

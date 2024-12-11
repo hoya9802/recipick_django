@@ -25,6 +25,8 @@ import RecipeWrite from '@/views/RecipeWriteView.vue';
 import HelpWrite from '@/views/HelpWriteView.vue';
 import FindId from '@/views/FindIdView.vue';
 import ResetPassword from '@/views/ResetPasswordView.vue';
+import Like from '@/views/LikeView.vue';
+import DisLike from '@/views/DisLikeView.vue';
 
 const routes = [
   {
@@ -228,6 +230,16 @@ const routes = [
     path: '/find-id',
     name: 'FindId',
     component: FindId,
+  },
+  {
+    path: '/user-dislike',
+    name: 'DisLike',
+    component: DisLike,
+  },
+  {
+    path: '/user-like',
+    name: 'Like',
+    component: Like,
   },
 ]
 
