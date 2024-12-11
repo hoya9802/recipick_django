@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/', include('freemarket.urls')),
     path('api/', include('notification.urls')),
     path('api/', include('chef_ai.urls')),
+    path('api/', include('chat.urls')),
 ]
 
 if settings.DEBUG:
