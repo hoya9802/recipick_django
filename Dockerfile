@@ -28,6 +28,9 @@ RUN python -m venv /py && \
     libharfbuzz-dev \
     libfribidi-dev \
     libwebp-dev \
+    libssl-dev \
+    libffi-dev \
+    pkg-config \
     && /py/bin/pip install -r /tmp/requirements.txt && \
     if [ $DEV = "true" ]; then /py/bin/pip install -r /tmp/requirements.dev.txt; fi && \
     rm -rf /var/lib/apt/lists/* && \

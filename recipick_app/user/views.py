@@ -19,6 +19,114 @@ from user.serializers import (
     MypageSerializer,
     ProfileImageSerializer
 )
+# gmail api
+import json
+from rest_framework.viewsets import ViewSet
+from .gmail import send_email
+import random
+import string
+from django.contrib.auth.hashers import make_password
+
+
+class AccountViewSet(ViewSet):
+    @action(detail=False, methods=['post'])
+    def find_id(self, request):
+        token_path = 'user/secrets/token.json'
+
+        # Step 1: token.json 파일 읽기
+        try:
+            with open(token_path, 'r') as token_file:
+                json.load(token_file)
+        except FileNotFoundError:
+            return Response(
+                {"error": "token.json 파일을 찾을 수 없습니다."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        except json.JSONDecodeError:
+            return Response(
+                {"error": "token.json 파일을 파싱할 수 없습니다."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        # Step 2: 이메일 입력 확인
+        email = request.data.get('email')
+        if not email:
+            return Response(
+                {"error": "Email is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Step 3: 이메일로 유저 확인 및 이메일 전송
+        try:
+            user = User.objects.get(email=email)
+            send_email(
+                to_email=email,
+                subject="Recipick - Id",
+                body=f"아이디는 {user.id} 입니다.",
+            )
+            return Response(
+                {"message": f"아이디를 {email}로 전송했습니다."},
+                status=status.HTTP_200_OK
+            )
+        except User.DoesNotExist:
+            return Response(
+                {"error": "입력하신 이메일로 가입된 아이디는 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    def reset_password(self, request):
+        # Step 1: 이메일 입력 확인
+        email = request.data.get('email')
+        if not email:
+            return Response(
+                {"error": "Email is required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Step 2: 사용자 확인
+            user = User.objects.get(email=email)
+
+            # Step 3: 임시 비밀번호 생성
+            temporary_password = ''.join(
+                random.choices(string.ascii_letters + string.digits, k=8)
+            )
+
+            # Step 4: 비밀번호 암호화 후 저장
+            user.password = make_password(temporary_password)
+            user.save()
+
+            # Step 5: 이메일로 임시 비밀번호 전송 (Gmail API 사용)
+            send_email(
+                to_email=email,
+                subject="Recipick - Password",
+                body=(
+                    f"임시 비밀번호는 {temporary_password} 입니다.\n"
+                    "로그인 후 반드시 비밀번호를 수정해주세요."
+                ),
+            )
+
+            return Response(
+                {"message": f"임시 비밀번호를 {email}로 전송하였습니다."},
+                status=status.HTTP_200_OK
+            )
+
+        except User.DoesNotExist:
+            return Response(
+                {"error": "입력하신 이메일로 가입된 계정이 없습니다."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class CreateUserView(generics.CreateAPIView):
