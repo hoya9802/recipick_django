@@ -5,7 +5,7 @@ from .models import ChatRoom, Message
 
 
 class ChatConsumer(AsyncJsonWebsocketConsumer):
-    print('내가 보인다면 너는 redis를 쓸 수 있는 것이다하하하하핳')
+
     async def connect(self):
         try:
             self.room_id = self.scope['url_route']['kwargs']['room_id']
