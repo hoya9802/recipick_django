@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'channels',
+    'daphne',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
     'freemarket.apps.FreemarketConfig',
     'notification.apps.NotificationConfig',
     'chef_ai.apps.ChefAiConfig',
+    'chat.apps.ChatConfig',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -90,7 +93,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'recipick_app.wsgi.application'
-
+ASGI_APPLICATION = 'recipick_app.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -161,4 +164,13 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
+}
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
 }

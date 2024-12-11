@@ -23,6 +23,7 @@ import MarketWrite from '@/views/MarketWriteView.vue';
 import LabsWrite from '@/views/LabsWriteView.vue';
 import RecipeWrite from '@/views/RecipeWriteView.vue';
 import HelpWrite from '@/views/HelpWriteView.vue';
+import ChatRoom from '@/views/ChatRoomView.vue';
 
 const routes = [
   {
@@ -213,6 +214,14 @@ const routes = [
     path: '/help/write',
     name: 'HelpWrite',
     component: HelpWrite,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/chat',
+    name: 'ChatRoom',
+    component: ChatRoom,
     meta: {
       requireLogin: true
     }
