@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import apiClient from '@/store/api';
 
 export default createStore({
   state: {
@@ -7,6 +8,8 @@ export default createStore({
     id: '',
     nick_name: '',
     isLoading: false,
+    likedRecipes: [],
+    dislikedRecipes: [],
   },
   getters: {
   },
@@ -29,8 +32,22 @@ export default createStore({
     setIsLoading(state, status) {
       state.isLoading = status
     },
+    setLikedRecipes(state, recipes) {
+      state.likedRecipes = recipes;
+    },
+    setDislikedRecipes(state, recipes) {
+      state.dislikedRecipes = recipes;
+    },
   },
   actions: {
+    async fetchLikedRecipes({ commit }) {
+      const response = await apiClient.get('/likengs/user-liked/');
+      commit('setLikedRecipes', response.data);
+    },
+    async fetchDislikedRecipes({ commit }) {
+      const response = await apiClient.get('/likengs/user-disliked/');
+      commit('setDislikedRecipes', response.data);
+    },
   },
   modules: {
   }

@@ -13,8 +13,8 @@
             <router-link to="/recipes/write" class="write">레시피 업로드</router-link>
         </div>
         <div class="emo">
-            <a class="emo1">🧑🏻</a>
-            <a class="emo2">👽</a>
+            <a class="emo1" @click="showLikedRecipes">🧑🏻</a>
+            <a class="emo2" @click="showDislikedRecipes">👽</a>
         </div>
     </div>
     <div class="logo header">
@@ -23,18 +23,21 @@
         </router-link>
     </div>
 
+    <div class="recipe-list">
+        <div v-for="recipe in displayedRecipes" :key="recipe.id" class="recipe-card">
+            <h3>{{ recipe.name }}</h3>
+            <img :src="recipe.image" alt="recipe image" />
+        </div>
+    </div>
+
     <nav class="custom-navbar">
         <div class="container">
             <ul class="nav-menu">
                 <div class="category">
                     <a @click="toggleDropdown" class="category-title">카테고리</a>
                     <ul v-if="dropdownOpen">
-                        <li
-                            v-for="category in categories"
-                            :key="category.id"
-                            @click="fetchRecipes(category.id)"
-                            class="category-drop-menu"
-                        >
+                        <li v-for="category in categories" :key="category.id" @click="fetchRecipes(category.id)"
+                            class="category-drop-menu">
                             ◾ {{ category.name }}
                         </li>
                     </ul>
@@ -52,6 +55,7 @@
 
 <script>
 import apiClient, { setAuthToken } from '@/store/api';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     name: 'Header',
@@ -60,12 +64,19 @@ export default {
             categories: [],
             dropdownOpen: false,
             iddropdownOpen: false,
+            currentView: 'liked',
         }
     },
     computed: {
         nickname() {
             return this.$store.state.nick_name;
-        }
+        },
+        ...mapState('likes', ['likedRecipes', 'dislikedRecipes']),
+        displayedRecipes() {
+            return this.currentView === 'liked'
+                ? this.likedRecipes
+                : this.dislikedRecipes;
+        },
     },
     created() {
         if (this.$route.name !== "loginaccount") {
@@ -114,12 +125,24 @@ export default {
         toggleDropdown() {
             this.dropdownOpen = !this.dropdownOpen;
         },
-        idDropdown(){
+        idDropdown() {
             this.iddropdownOpen = !this.iddropdownOpen;
         },
-        closeDropdown(){
+        closeDropdown() {
             this.iddropdownOpen = false;
-        }
+        },
+        ...mapActions('likes', ['fetchLikedRecipes', 'fetchDislikedRecipes']),
+        showLikedRecipes() {
+            this.currentView = 'liked';
+            this.fetchLikedRecipes();
+        },
+        showDislikedRecipes() {
+            this.currentView = 'disliked';
+            this.fetchDislikedRecipes();
+        },
+        mounted() {
+            this.fetchLikedRecipes(); // 기본적으로 좋아요한 레시피 로드
+        },
     },
 
     watch: {
@@ -139,11 +162,13 @@ export default {
     margin-top: 10px;
     background-color: white;
 }
+
 .top-section {
     display: flex;
     align-items: center;
     gap: 15px;
 }
+
 .top-section span,
 .top-section a,
 .notice {
@@ -155,6 +180,7 @@ export default {
     cursor: pointer;
     margin-right: 5px;
 }
+
 .emo {
     margin-left: 20px;
     display: flex;
@@ -164,7 +190,9 @@ export default {
     width: auto;
     padding: 0;
 }
-.emo1, .emo2 {
+
+.emo1,
+.emo2 {
     font-size: 20px;
     text-decoration: none;
     margin: 0;
@@ -178,7 +206,8 @@ export default {
     position: relative;
     display: inline-block;
 }
-.id ul{
+
+.id ul {
     position: absolute;
     top: 110%;
     left: 0;
@@ -190,10 +219,12 @@ export default {
     list-style: none;
     z-index: 1000;
 }
+
 .id ul.v-enter-active,
 .id ul.v-enter-to {
     display: block;
 }
+
 .id ul li {
     padding: 8px 16px;
     font-size: 14px;
@@ -201,13 +232,16 @@ export default {
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 .id ul li:hover {
     background-color: #f0f0f0;
 }
-.iconimage{
+
+.iconimage {
     width: 15px;
     height: 18px;
 }
+
 .heartimage {
     width: 25px;
     height: 25px;
@@ -222,6 +256,7 @@ export default {
     align-items: center;
     width: 100%;
 }
+
 .logo {
     margin: 0 auto;
     display: block;
@@ -245,6 +280,7 @@ export default {
     margin-right: auto;
     display: flex;
 }
+
 .container {
     max-width: 100%;
     margin: 0 auto;
@@ -252,6 +288,7 @@ export default {
     justify-content: center;
     align-items: center;
 }
+
 .nav-menu {
     list-style: none;
     display: flex;
@@ -261,13 +298,15 @@ export default {
     justify-content: space-around;
     width: 100%;
 }
+
 .nav-menu a {
     text-decoration: none;
     color: white;
     font-weight: bold;
     font-size: 16px;
     font-size: clamp(0.8rem, 0.9vw, 1rem);
-    padding: 5px 10px; /* 상하좌우 여백 최소화 */
+    padding: 5px 10px;
+    /* 상하좌우 여백 최소화 */
     white-space: nowrap;
 }
 
@@ -276,6 +315,7 @@ export default {
     position: relative;
     display: inline-block;
 }
+
 .category ul {
     position: absolute;
     top: 140%;
@@ -288,10 +328,12 @@ export default {
     list-style: none;
     z-index: 1000;
 }
+
 .category ul.v-enter-active,
 .category ul.v-enter-to {
     display: block;
 }
+
 .category ul li {
     padding: 8px 16px;
     font-size: 16px;
@@ -299,9 +341,11 @@ export default {
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 .category ul li:hover {
     background-color: #f0f0f0;
 }
+
 .category a {
     color: white;
     font-weight: bold;
@@ -309,7 +353,14 @@ export default {
     cursor: pointer;
     transition: color 0.2s ease;
 }
+
 .category-drop-menu {
     text-align: left;
+}
+
+.recipe-card {
+  border: 1px solid #ccc;
+  margin: 10px;
+  padding: 10px;
 }
 </style>
