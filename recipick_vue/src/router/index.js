@@ -24,6 +24,7 @@ import LabsWrite from '@/views/LabsWriteView.vue';
 import RecipeWrite from '@/views/RecipeWriteView.vue';
 import HelpWrite from '@/views/HelpWriteView.vue';
 import ChatRoom from '@/views/ChatRoomView.vue';
+import ChatListView from '@/views/ChatListView.vue'
 
 const routes = [
   {
@@ -226,6 +227,11 @@ const routes = [
       requireLogin: true
     }
   },
+  {
+    path: '/chat/list',
+    name: 'ChatList',
+    component: ChatListView
+  }
 ]
 
 const router = createRouter({

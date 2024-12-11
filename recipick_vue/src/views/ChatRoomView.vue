@@ -1,15 +1,9 @@
 <template>
     <div class="chat-container">
-        <!-- 유저 선택 버튼 -->
-        <div class="user-buttons">
-            <button @click="loginAsUser('admin')" class="login-btn">User 1</button>
-            <button @click="loginAsUser('test1')" class="login-btn">User 2</button>
-        </div>
         <!-- 채팅창 -->
         <div class="chat-box">
             <!-- 채팅 메시지 영역 -->
             <div class="chat-messages" ref="chatMessages">
-                {{ messages }}
                 <div v-for="(message, index) in messages" :key="index" class="message"
                     :class="message.sender_id === currentUserId ? 'sent' : 'received'">
                     <div class="message-content">
@@ -33,12 +27,23 @@ export default {
     name: 'ChatRoomView',
     data() {
         return {
+            shopUserId: null,
             currentUserId: null,
             visitorUserId: null,
             currentRoomId: null,
             socket: null,
             messages: [],
             messageInput: ''
+        }
+    },
+    created() {
+        // URL 쿼리 파라미터에서 사용자 정보 가져오기
+        const { shop_user_id, visitor_user_id, current_user } = this.$route.query;
+        if (shop_user_id && visitor_user_id) {
+            this.shopUserId = shop_user_id;     // 마켓 글 작성자
+            this.visitorUserId = visitor_user_id;  // 현재 로그인한 사용자
+            this.currentUserId = current_user;
+            this.openOrCreateRoom();
         }
     },
     methods: {
@@ -59,7 +64,7 @@ export default {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        shop_user_id: this.currentUserId,
+                        shop_user_id: this.shopUserId,
                         visitor_user_id: this.visitorUserId
                     })
                 });
@@ -97,7 +102,7 @@ export default {
                 const messagePayload = {
                     sender_id: this.currentUserId,
                     message: this.messageInput,
-                    shop_user_id: this.currentUserId,
+                    shop_user_id: this.shopUserId,
                     visitor_user_id: this.visitorUserId
                 };
 
