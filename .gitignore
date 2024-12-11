@@ -51,6 +51,10 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# JSON 파일 제외
+user/secrets/credentials.json
+user/secrets/token.json
+
 # Translations
 *.mo
 *.pot

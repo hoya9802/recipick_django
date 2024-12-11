@@ -23,6 +23,8 @@ import MarketWrite from '@/views/MarketWriteView.vue';
 import LabsWrite from '@/views/LabsWriteView.vue';
 import RecipeWrite from '@/views/RecipeWriteView.vue';
 import HelpWrite from '@/views/HelpWriteView.vue';
+import FindId from '@/views/FindIdView.vue';
+import ResetPassword from '@/views/ResetPasswordView.vue';
 
 const routes = [
   {
@@ -216,6 +218,16 @@ const routes = [
     meta: {
       requireLogin: true
     }
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword,
+  },
+  {
+    path: '/find-id',
+    name: 'FindId',
+    component: FindId,
   },
 ]
 
