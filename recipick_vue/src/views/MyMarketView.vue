@@ -3,7 +3,7 @@
         <div>
             <img src="@/assets/mymarket.png" class="mymarket">
             <div v-for="freemarket in paginatedMyfreemarkets" :key="freemarket.id" class="freemarket-item">
-                <router-link :to="`/freemarkets/${freemarket.id}`" class="freemarket-content">
+                <router-link :to="`/freemarket/${freemarket.id}`" class="freemarket-content">
                     <img v-if="freemarket.image" :src="freemarket.image" alt="freemarket Image" class="freemarket-image" />
                     <div class="freemarket-info">
                         <h3>{{ freemarket.name }}</h3>

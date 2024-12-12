@@ -1,5 +1,8 @@
 <template>
     <div>
+        <h2 class="ingredient-title" v-if="ingredientName">
+            "{{ ingredientName }}" 재료를 사용한 레시피
+        </h2>
         <div class="dish-container">
             <div class="dish-grid">
                 <div v-for="dish in dishList" :key="dish.id" class="post">
@@ -46,11 +49,13 @@ export default {
         return {
             dishList: [],
             labList: [],
-            ingredientId: null
+            ingredientId: null,
+            ingredientName: null
         }
     },
     mounted() {
         this.ingredientId = this.$route.params.ingredient_id;
+        this.ingredientName = this.$route.query.name;
         this.getByIngredient(this.ingredientId);
     },
     methods: {
@@ -62,7 +67,7 @@ export default {
                 console.log(lab_response)
                 this.dishList = dish_response.data;
                 this.labList = lab_response.data;
-                document.title = '결과 - Recipick';
+                document.title = `${this.ingredientName} - Recipick`;
             } catch (error) {
                 console.log(error);
             }
@@ -192,5 +197,11 @@ export default {
   align-items: center;
   padding: 20px;
   background-color: white;
+}
+.ingredient-title {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 24px;
+  color: #333;
 }
 </style>

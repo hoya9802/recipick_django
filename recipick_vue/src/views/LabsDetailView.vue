@@ -22,7 +22,13 @@
                 <p class="lab-ingredients-title">Ingredients</p>
                 <div class="black-bar"></div>
                 <span v-for="ing in lab.ingredients" :key="ing.id">
-                    <router-link :to="'/ingredients/' + ing.id" class="ingredient-link ingredients">
+                    <router-link 
+                    :to="{ 
+                            path: '/ingredients/' + ing.id,
+                            query: { name: ing.name }
+                        }" 
+                        class="ingredient-link ingredients"
+                    >
                         {{ ing.name }}
                     </router-link>{{ index < lab.ingredients.length - 1 ? ', ' : '' }}
                 </span>

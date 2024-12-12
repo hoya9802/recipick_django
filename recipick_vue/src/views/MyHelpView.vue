@@ -3,7 +3,7 @@
         <div>
             <img src="@/assets/myhelp.png" class="myhelp">
             <div v-for="help in paginatedMyHelps" :key="help.id" class="help-item">
-                <router-link :to="`/helps/${help.id}`" class="help-content">
+                <router-link :to="`/help/${help.id}`" class="help-content">
                     <img v-if="help.image" :src="help.image" alt="Help Image" class="help-image" />
                     <img v-else src="@/assets/default-image.png" alt="Default Image" class="help-image" />
                     <div class="help-info">
