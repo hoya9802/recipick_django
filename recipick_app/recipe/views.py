@@ -171,6 +171,30 @@ class LikeNgViewSet(viewsets.ModelViewSet):
             serializer = self.get_serializer(like_ng)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=['GET'], url_path='user-liked')
+    def user_liked_recipes(self, request):
+        """
+        사용자가 좋아요한 레시피를 반환하는 메서드.
+        """
+        liked_recipes = Recipe.objects.filter(
+            likes__rater=request.user,
+            likes__rate=1
+        ).distinct()
+        serializer = RecipeListSerializer(liked_recipes, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['GET'], url_path='user-disliked')
+    def user_disliked_recipes(self, request):
+        """
+        사용자가 싫어요한 레시피를 반환하는 메서드.
+        """
+        disliked_recipes = Recipe.objects.filter(
+            likes__rater=request.user,
+            likes__rate=-1
+        ).distinct()
+        serializer = RecipeListSerializer(disliked_recipes, many=True)
+        return Response(serializer.data)
+
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """db에서 재료들을 관리하기 위한 ViewSet"""
