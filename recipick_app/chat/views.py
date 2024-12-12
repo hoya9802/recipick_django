@@ -9,6 +9,9 @@ from .serializers import (
 )
 from rest_framework.exceptions import ValidationError
 from django.http import Http404
+from django.db.models import Q
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 # 사용자 정의 예외 클래스, 예외 발생 시 즉각적인 HTTP 응답을 위해 사용됩니다.
@@ -135,6 +138,14 @@ class MessageListView(generics.ListAPIView):
 
 class ChatRoomUsersListView(generics.ListAPIView):
     serializer_class = ChatRoomListSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return ChatRoom.objects.all().order_by('-timestamp')
+        # 현재 로그인한 사용자 가져오기
+        current_user = self.request.user
+        # shop_user 또는 visitor_user가 현재 사용자인 채팅방을 필터링
+        return ChatRoom.objects.filter(
+            Q(shop_user=current_user) |
+            Q(visitor_user=current_user)
+        ).order_by('-timestamp')

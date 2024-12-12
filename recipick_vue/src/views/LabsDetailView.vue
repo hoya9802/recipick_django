@@ -21,9 +21,11 @@
             <div class="lab-ingredients">
                 <p class="lab-ingredients-title">Ingredients</p>
                 <div class="black-bar"></div>
-                <p class="ingredients">
-                    {{ lab.ingredients?.map(ingredient => ingredient.name).join(", ") || "재료 없음" }}
-                </p>
+                <span v-for="ing in lab.ingredients" :key="ing.id">
+                    <router-link :to="'/ingredients/' + ing.id" class="ingredient-link ingredients">
+                        {{ ing.name }}
+                    </router-link>{{ index < lab.ingredients.length - 1 ? ', ' : '' }}
+                </span>
             </div>
 
             <div class="lab-description">

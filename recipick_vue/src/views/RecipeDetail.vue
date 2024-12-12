@@ -22,7 +22,12 @@
 
         <div class="ingredient">
           <p class="ingredient-title">재료</p>
-          <p class="ingredients"> : {{ dish.ingredients.map(ing => ing.name).join(', ') }}</p>
+          <span class="ingredients">: </span>
+          <span v-for="(ing, index) in dish.ingredients" :key="ing.id">
+            <router-link :to="'/ingredients/' + ing.id" class="ingredient-link ingredients">
+                {{ ing.name }}
+              </router-link>{{ index < dish.ingredients.length - 1 ? ', ' : '' }}
+          </span>
         </div>
 
         <div class="black-bar"></div>
@@ -403,4 +408,12 @@ export default {
   z-index: 1050; /* Toast가 다른 요소 위로 표시되도록 설정 */
 }
 
+.ingredient-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.ingredient-link:hover {
+  text-decoration: underline;
+}
 </style>

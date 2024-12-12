@@ -27,6 +27,7 @@ import ChatRoom from '@/views/ChatRoomView.vue';
 import ChatListView from '@/views/ChatListView.vue'
 import FindId from '@/views/FindIdView.vue';
 import ResetPassword from '@/views/ResetPasswordView.vue';
+import ByIngredientView from '@/views/ByIngredientView.vue';
 import Like from '@/views/LikeView.vue';
 import DisLike from '@/views/DisLikeView.vue';
 import MyHelp from '@/views/MyHelpView.vue';
@@ -95,6 +96,14 @@ const routes = [
     path: '/recipes/:dish_id/',
     name: 'RecipeDetail',
     component: RecipeDetail,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/ingredients/:ingredient_id/',
+    name: 'ByIngredientView',
+    component: ByIngredientView,
     meta: {
       requireLogin: true
     }

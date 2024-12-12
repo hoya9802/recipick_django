@@ -5,10 +5,9 @@
             <div v-for="room in chatRooms" :key="room.id"
                  class="chat-room-item" @click="enterChatRoom(room)">
                 <div class="chat-info">
-                    <div class="chat-user">상대방: {{ room.opponent_id }}</div>
-                    <div class="last-message">{{ room.latest_message || '메시지가 없습니다.' }}</div>
+                    <div class="chat-user">판매자: {{ room.shop_user_id }} | 구매자: {{ room.visitor_user_id }}</div>
+                    <div class="last-message">마지막 메시지: {{ room.latest_message}}</div>
                 </div>
-                <div class="chat-arrow">→</div>
             </div>
         </div>
         <div v-else class="no-chats">
@@ -24,29 +23,39 @@ export default {
     name: 'ChatListView',
     data() {
         return {
-            chatRooms: []
+            chatRooms: [],
+            currentUser: null
         }
     },
-    async created() {
-        await this.fetchChatRooms();
+    mounted() {
+        this.getCurrentUser();
+        this.getChatRoomList();
     },
     methods: {
-        async fetchChatRooms() {
+        async getCurrentUser() {
             try {
-                const userId = this.$route.query.id;
-                const response = await fetch(`http://127.0.0.1:8000/api/rooms/?id=2`);
-                const data = await response.json();
-                this.chatRooms = data;
+                const response = await apiClient.get('/user/mypage/me/');
+                this.currentUser = response.data;
             } catch (error) {
-                console.error('채팅방 목록을 불러오는데 실패했습니다:', error);
+                console.error('사용자 정보를 불러오는데 실패했습니다:', error);
+            }
+        },
+        async getChatRoomList() {
+            try {
+                const response = await apiClient.get('/chatrooms')
+                this.chatRooms = response.data;
+                document.title = '채팅방 목록 - Recipick';
+            } catch (error) {
+                console.log(error);
             }
         },
         enterChatRoom(room) {
             this.$router.push({
-                path: '/chat/room',
+                name: 'ChatRoom',
                 query: {
                     shop_user_id: room.shop_user_id,
-                    visitor_user_id: room.visitor_user_id
+                    visitor_user_id: room.visitor_user_id,
+                    current_user: this.currentUser.id
                 }
             });
         }

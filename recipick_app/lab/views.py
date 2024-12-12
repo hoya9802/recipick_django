@@ -1,6 +1,7 @@
 """
 Views for the lab APIs.
 """
+from django.http import Http404
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
@@ -9,12 +10,13 @@ from drf_spectacular.utils import (
 from drf_spectacular.types import OpenApiTypes
 from django.db.models import Count
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from recipe.models import Ingredient
 from lab.models import Lab, Like
 from .serializers import (
     LabSerializer,
@@ -122,3 +124,23 @@ class LikeViewSet(viewsets.ModelViewSet):
             )
             serializer = self.get_serializer(like)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class LabByIngredientView(generics.ListAPIView):
+    """특정 재료를 포함하는 레시피를 가져오는 View"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = LabListSerializer
+
+    def list(self, request, *args, **kwargs):
+        ingredient_id = self.kwargs.get('ingredient_id')
+
+        try:
+            Ingredient.objects.get(id=ingredient_id)
+        except Lab.DoesNotExist:
+            raise Http404('존재하지 않는 재료입니다.')
+
+        labs = Lab.objects.filter(ingredients__id=ingredient_id)
+
+        serializer = self.get_serializer(labs, many=True)
+        return Response(serializer.data)

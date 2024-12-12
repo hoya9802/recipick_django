@@ -10,7 +10,8 @@ from .views import (
     CategoryListView,
     RecipesByCategoryListView,
     LikeNgViewSet,
-    IngredientViewSet
+    IngredientViewSet,
+    RecipeByIngredientView,
 )
 
 
@@ -29,4 +30,9 @@ urlpatterns = [
         RecipesByCategoryListView.as_view(),
         name='recipe-list-by-category'
     ),
+    path(
+        'ingredients/<int:ingredient_id>/recipes/',
+        RecipeByIngredientView.as_view(),
+        name='recipe-list-by-ingredient'
+        )
 ]
