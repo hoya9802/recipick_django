@@ -7,7 +7,8 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     LabViewSet,
-    LikeViewSet
+    LikeViewSet,
+    LabByIngredientView,
 )
 
 
@@ -19,4 +20,9 @@ app_name = 'lab'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path(
+        'ingredients/<int:ingredient_id>/labs/',
+        LabByIngredientView.as_view(),
+        name='lab-list-by-ingredient'
+    ),
 ]

@@ -181,3 +181,23 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return self.queryset.order_by('name')
+
+
+class RecipeByIngredientView(generics.ListAPIView):
+    """특정 재료를 포함하는 레시피를 가져오는 View"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = RecipeListSerializer
+
+    def list(self, request, *args, **kwargs):
+        ingredient_id = self.kwargs.get('ingredient_id')
+
+        try:
+            ingredient = Ingredient.objects.get(id=ingredient_id)
+        except Ingredient.DoesNotExist:
+            raise Http404('존재하지 않는 재료입니다.')
+
+        recipes = Recipe.objects.filter(ingredients__id=ingredient_id)
+
+        serializer = self.get_serializer(recipes, many=True)
+        return Response(serializer.data)

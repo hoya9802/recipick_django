@@ -20,7 +20,6 @@
             </div>
         </div>
     </div>
-    {{ currentRoomId }}
 </template>
 
 <script>

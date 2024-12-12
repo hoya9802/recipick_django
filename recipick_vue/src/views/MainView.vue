@@ -27,7 +27,7 @@
         <div class="black-bar"></div>
         <div class="bestrecipe-list">
             <div v-for="recipe in bestRecipes" :key="recipe.id" class="bestrecipe-card">
-                <router-link :to="'/recipe-list/' + recipe.id">
+                <router-link :to="'/recipes/' + recipe.id">
                     <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image"
                         class="bestrecipe-image" />
                     <div class="bestrecipe-info">
@@ -45,7 +45,7 @@
         <div class="black-bar"></div>
         <div class="ngrecipe-list">
             <div v-for="recipe in ngRecipes" :key="recipe.id" class="ngrecipe-card">
-                <router-link :to="'/recipe-list/' + recipe.id">
+                <router-link :to="'/recipes/' + recipe.id">
                     <img :src="recipe.image || require('@/assets/default-image.png')" alt="Recipe Image"
                         class="ngrecipe-image" />
                     <div class="ngrecipe-info">
@@ -63,12 +63,14 @@
         <div class="black-bar"></div>
         <div class="lab-list">
             <div v-for="lab in recipeLabs" :key="lab.id" class="lab-card">
-                <img :src="lab.image || require('@/assets/default-image.png')" alt="Lab Image" class="lab-image" />
-                <div class="lab-info">
-                    <h3>{{ lab.title }}</h3>
-                    <p> 🔎: {{ lab.likes_count }}</p>
-                    <p>👩‍🍳 {{ lab.user.nick_name }} - {{ lab.user.level }}</p>
-                </div>
+                <router-link :to="'/labs/' + lab.id">
+                    <img :src="lab.image || require('@/assets/default-image.png')" alt="Lab Image" class="lab-image" />
+                    <div class="lab-info">
+                        <h3>{{ lab.title }}</h3>
+                        <p> 🔎: {{ lab.likes_count }}</p>
+                        <p>👩‍🍳 {{ lab.user.nick_name }} - {{ lab.user.level }}</p>
+                    </div>
+                </router-link>
             </div>
         </div>
     </div>
@@ -186,7 +188,7 @@ export default {
         },
     },
     mounted() {
-        document.title= 'Recipick'
+        document.title = 'Recipick'
         this.startAutoSlide();
         this.fetchBestRecipes();
         this.fetchNgRecipes();
@@ -205,6 +207,7 @@ export default {
     margin-bottom: 40px;
     display: block;
 }
+
 .slider-container {
     position: relative;
     width: 100%;
@@ -215,12 +218,14 @@ export default {
     justify-content: center;
     align-items: center;
 }
+
 .slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
     width: 100%;
     height: 100%;
 }
+
 .slide {
     min-width: 100%;
     height: 100%;
@@ -229,12 +234,14 @@ export default {
     align-items: center;
     position: relative;
 }
+
 .slide img {
     width: 100%;
     height: auto;
     object-fit: contain;
     display: block;
 }
+
 .prev,
 .next {
     position: absolute;
@@ -252,12 +259,15 @@ export default {
     opacity: 0;
     visibility: hidden;
 }
+
 .prev {
     left: 10px;
 }
+
 .next {
     right: 10px;
 }
+
 .slider-container:hover .prev,
 .slider-container:hover .next {
     opacity: 1;
@@ -273,9 +283,11 @@ export default {
     text-align: left;
     width: 100%;
 }
+
 .lab-section {
     margin-bottom: 200px;
 }
+
 .menu-notice,
 .bestrecipe-section h2,
 .ngrecipe-section h2,
@@ -286,6 +298,7 @@ export default {
     margin-bottom: 20px;
     text-align: left;
 }
+
 .bestrecipe-list,
 .ngrecipe-list,
 .lab-list {
@@ -295,23 +308,28 @@ export default {
     justify-content: left;
     margin: 10px;
 }
+
 .bestrecipe-card,
 .ngrecipe-card {
-    flex: 1 1 calc(20% - 10px); /* 5개의 카드가 한 줄에 고르게 배치 */
+    flex: 1 1 calc(20% - 10px);
+    /* 5개의 카드가 한 줄에 고르게 배치 */
     max-width: calc(20% - 10px);
     box-sizing: border-box;
     border: 1px solid #ddd;
     padding: 20px;
     text-align: center;
 }
+
 .lab-card {
-    flex: 1 1 calc(33% - 10px); /* 3개의 카드가 한 줄에 고르게 배치 */
+    flex: 1 1 calc(33% - 10px);
+    /* 3개의 카드가 한 줄에 고르게 배치 */
     max-width: calc(33% - 10px);
     box-sizing: border-box;
     border: 1px solid #ddd;
     padding: 20px;
     text-align: center;
 }
+
 .bestrecipe-image,
 .ngrecipe-image {
     width: 100%;
@@ -319,12 +337,14 @@ export default {
     object-fit: cover;
     margin-bottom: 5px;
 }
+
 .lab-image {
     width: 100%;
     height: 300px;
     object-fit: cover;
     margin-bottom: 5px;
 }
+
 .bestrecipe-info h3,
 .ngrecipe-info h3,
 .lab-info h3 {
@@ -332,6 +352,7 @@ export default {
     font-weight: bold;
     margin: 15px;
 }
+
 .bestrecipe-info p,
 .ngrecipe-info p,
 .lab-info p {
@@ -347,9 +368,11 @@ export default {
     background-color: black;
     margin: 5px 0;
 }
+
 .bestrecipe-card a,
-.ngrecipe-card a {
-  text-decoration: none;
-  color: black;
+.ngrecipe-card a,
+.lab-card a {
+    text-decoration: none;
+    color: black;
 }
 </style>

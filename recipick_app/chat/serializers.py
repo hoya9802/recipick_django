@@ -64,10 +64,11 @@ class ChatRoomSerializer(serializers.ModelSerializer):
 class ChatRoomListSerializer(serializers.ModelSerializer):
     shop_user_id = serializers.SerializerMethodField()
     visitor_user_id = serializers.SerializerMethodField()
+    latest_message = serializers.SerializerMethodField()
 
     class Meta:
         model = ChatRoom
-        fields = ['id', 'shop_user_id', 'visitor_user_id']
+        fields = ['id', 'shop_user_id', 'visitor_user_id', 'latest_message']
 
         # shop_user의 이메일을 반환하는 메소드입니다.
     def get_shop_user_id(self, obj):
@@ -76,3 +77,10 @@ class ChatRoomListSerializer(serializers.ModelSerializer):
     # visitor_user의 이메일을 반환하는 메소드입니다.
     def get_visitor_user_id(self, obj):
         return obj.visitor_user.id
+
+    def get_latest_message(self, obj):
+        latest_msg = Message.objects.filter(
+            room=obj).order_by('-timestamp').first()
+        if latest_msg:
+            return latest_msg.text
+        return None

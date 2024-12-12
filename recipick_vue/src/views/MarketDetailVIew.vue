@@ -36,7 +36,7 @@
             class="btn btn-warning me-2">나눔완료</button>
           <button v-if="isAuthor && !market.is_shared" @click="handleEdit" class="btn btn-primary me-2">수정하기</button>
           <button v-if="isAuthor" @click="handleDelete" class="btn btn-danger">삭제하기</button>
-          <button v-if="!isAuthor && !market.is_shared" @click="handleContact" class="btn btn-success">연락하기</button>
+          <button v-if="!isAuthor && !market.is_shared" @click="handleContact" class="btn btn-success">채팅하기</button>
         </div>
       </div>
     </div>
