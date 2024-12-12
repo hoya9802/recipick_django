@@ -135,7 +135,7 @@ class LabByIngredientView(generics.ListAPIView):
         ingredient_id = self.kwargs.get('ingredient_id')
 
         try:
-            lab = Lab.objects.get(id=ingredient_id)
+            Lab.objects.get(id=ingredient_id)
         except Lab.DoesNotExist:
             raise Http404('존재하지 않는 재료입니다.')
 

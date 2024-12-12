@@ -193,7 +193,7 @@ class RecipeByIngredientView(generics.ListAPIView):
         ingredient_id = self.kwargs.get('ingredient_id')
 
         try:
-            ingredient = Ingredient.objects.get(id=ingredient_id)
+            Ingredient.objects.get(id=ingredient_id)
         except Ingredient.DoesNotExist:
             raise Http404('존재하지 않는 재료입니다.')
 
