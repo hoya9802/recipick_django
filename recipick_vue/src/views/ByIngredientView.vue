@@ -77,7 +77,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /* 레시피 리스트 */
 .dish-grid {
   display: grid;
