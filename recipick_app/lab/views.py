@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
+from recipe.models import Ingredient
 from lab.models import Lab, Like
 from .serializers import (
     LabSerializer,
@@ -135,7 +136,7 @@ class LabByIngredientView(generics.ListAPIView):
         ingredient_id = self.kwargs.get('ingredient_id')
 
         try:
-            Lab.objects.get(id=ingredient_id)
+            Ingredient.objects.get(id=ingredient_id)
         except Lab.DoesNotExist:
             raise Http404('존재하지 않는 재료입니다.')
 
