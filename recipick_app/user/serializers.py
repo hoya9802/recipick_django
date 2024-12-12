@@ -9,7 +9,7 @@ from rest_framework import serializers
 from recipe.models import Recipe
 from lab.models import Lab
 from freemarket.models import Freemarket
-
+from help.models import Help
 from django.db.models import Count, Q
 
 
@@ -65,6 +65,7 @@ class MypageSerializer(serializers.ModelSerializer):
     recipes_count = serializers.SerializerMethodField()
     labs_count = serializers.SerializerMethodField()
     freemarkets_count = serializers.SerializerMethodField()
+    helps_count = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
     dislikes_count = serializers.SerializerMethodField()
     lab_likes_count = serializers.SerializerMethodField()
@@ -78,6 +79,7 @@ class MypageSerializer(serializers.ModelSerializer):
             'recipes_count',
             'labs_count',
             'freemarkets_count',
+            'helps_count',
             'likes_count',
             'dislikes_count',
             'lab_likes_count',
@@ -101,6 +103,10 @@ class MypageSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.IntegerField)
     def get_freemarkets_count(self, obj):
         return Freemarket.objects.filter(user=obj).count()
+
+    @extend_schema_field(serializers.IntegerField)
+    def get_helps_count(self, obj):
+        return Help.objects.filter(user=obj).count()
 
     @extend_schema_field(serializers.IntegerField)
     def get_likes_count(self, obj):

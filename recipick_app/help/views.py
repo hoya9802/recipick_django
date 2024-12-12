@@ -14,11 +14,12 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from help.models import Help
+from help.models import Help, Comment
 from .serializers import (
     HelpSerializer,
     HelpListSerializer,
-    HelpImageSerializer
+    HelpImageSerializer,
+    CommentSerializer
 )
 
 
@@ -79,3 +80,67 @@ class HelpViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.action == 'list':
+            post_id = self.request.query_params.get('post')
+            if post_id:
+                return self.queryset.filter(
+                    post_id=post_id).order_by('-create_dt')
+            return self.queryset.none()
+        return self.queryset
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def update(self, request, pk=None, *args, **kwargs):
+        try:
+            comment = self.get_object()
+        except Exception:
+            return Response(
+                {'error': '댓글이 없음'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if comment.user != request.user:
+            return Response(
+                {'error': '내가 작성한 댓글이 아닙니다.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = self.get_serializer(
+                        comment,
+                        data=request.data,
+                        partial=True
+                    )
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        print(f"Deleting comment with ID: {pk}")  # 요청된 ID 출력
+        try:
+            comment = self.get_object()
+            print(f"Found comment: {comment}")
+        except Exception as e:
+            print(f"Error finding comment: {e}")
+            return Response(
+                {'error': '댓글이 없음'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if comment.user != request.user:
+            return Response(
+                {'error': '내가 작성한 댓글이 아닙니다.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        self.perform_destroy(comment)
+        return Response(status=status.HTTP_204_NO_CONTENT)

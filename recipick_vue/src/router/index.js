@@ -28,6 +28,16 @@ import ChatListView from '@/views/ChatListView.vue'
 import FindId from '@/views/FindIdView.vue';
 import ResetPassword from '@/views/ResetPasswordView.vue';
 import ByIngredientView from '@/views/ByIngredientView.vue';
+import Like from '@/views/LikeView.vue';
+import DisLike from '@/views/DisLikeView.vue';
+import MyHelp from '@/views/MyHelpView.vue';
+import MyLab from '@/views/MyLabView.vue';
+import MyMarket from '@/views/MyMarketView.vue';
+import MyRecipe from '@/views/MyRecipeView.vue';
+import MyHelpEdit from '@/views/MyHelpEditView.vue';
+import MyLabEdit from '@/views/MyLabEditView.vue';
+import MyMarketEdit from '@/views/MyMarketEditView.vue';
+import MyRecipeEdit from '@/views/MyRecipeEditView.vue';
 
 const routes = [
   {
@@ -252,6 +262,86 @@ const routes = [
     path: '/find-id',
     name: 'FindId',
     component: FindId,
+  },
+  {
+    path: '/user-dislike',
+    name: 'DisLike',
+    component: DisLike,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/user-like',
+    name: 'Like',
+    component: Like,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/my-recipe',
+    name: 'MyRecipe',
+    component: MyRecipe,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/my-lab',
+    name: 'MyLab',
+    component: MyLab,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/my-market',
+    name: 'MyMarket',
+    component: MyMarket,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/my-help',
+    name: 'MyHelp',
+    component: MyHelp,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/my-help/edit/:id',
+    name: 'MyHelpEdit',
+    component: MyHelpEdit,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/my-market/edit/:id',
+    name: 'MyMarketEdit',
+    component: MyMarketEdit,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/my-lab/edit/:id',
+    name: 'MyLabEdit',
+    component: MyLabEdit,
+    meta: {
+      requireLogin: true
+    },
+  },
+  {
+    path: '/my-recipe/edit/:id',
+    name: 'MyRecipeEdit',
+    component: MyRecipeEdit,
+    meta: {
+      requireLogin: true
+    },
   },
 ]
 

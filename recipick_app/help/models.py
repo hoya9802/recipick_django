@@ -27,3 +27,20 @@ class Help(models.Model):
 
     def __str__(self):
         return f"{self.id} - {self.title}"
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(
+        Help,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE)
+    content = models.TextField()
+    create_dt = models.DateTimeField(auto_now_add=True)
+    modify_dt = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.content[:20]
