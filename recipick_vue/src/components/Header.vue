@@ -169,6 +169,7 @@ export default {
     justify-content: flex-start;
     width: auto;
     padding: 0;
+    cursor: pointer;
 }
 
 .emo1,
@@ -207,7 +208,7 @@ export default {
 
 .id ul li {
     padding: 8px 16px;
-    font-size: 14px;
+    font-size: 16px;
     color: black;
     cursor: pointer;
     transition: background-color 0.2s ease;

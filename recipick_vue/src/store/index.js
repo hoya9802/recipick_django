@@ -41,12 +41,20 @@ export default createStore({
   },
   actions: {
     async fetchLikedRecipes({ commit }) {
-      const response = await apiClient.get('/likengs/user-liked/');
-      commit('setLikedRecipes', response.data);
+      try {
+        const response = await apiClient.get('/likengs/user-liked/');
+        commit('setLikedRecipes', response.data);
+      } catch (error) {
+        console.error('좋아요 누른 레시피 가져오기 실패:', error);
+      }
     },
     async fetchDislikedRecipes({ commit }) {
-      const response = await apiClient.get('/likengs/user-disliked/');
-      commit('setDislikedRecipes', response.data);
+      try {
+        const response = await apiClient.get('/likengs/user-disliked/');
+        commit('setDislikedRecipes', response.data);
+      } catch (error) {
+        console.error('싫어요 누른 레시피 가져오기 실패:', error);
+      }
     },
   },
   modules: {

@@ -75,7 +75,6 @@ export default {
             try {
                 const response = await apiClient.get('/labs/?all=true');
                 this.labs = response.data;
-                console.log(response.data); //나중에삭제
 
             } catch (error) {
                 console.error('요리 실험 일지를 가져오는 중 오류 발생:', error);

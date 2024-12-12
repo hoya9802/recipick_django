@@ -23,7 +23,8 @@
             <div class="help-comment">
                 <h2>Comment</h2>
                 <div class="black-bar"></div>
-                <p>댓글 예정</p>
+                <CommentList :postId="help.id" :currentUserId="$store.state.id">
+                </CommentList>
             </div>
 
             <div class="back">
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+import CommentList from "@/components/CommentList.vue";
 import apiClient from "@/store/api";
 
 export default {
@@ -45,6 +47,9 @@ export default {
         return {
             help: null,
         };
+    },
+    components: {
+        CommentList,
     },
     async created() {
         const id = this.$route.params.id;
@@ -73,6 +78,7 @@ export default {
     padding: 20px;
     background-color: white
 }
+
 .help-detail {
     max-width: 800px;
     margin: auto;
@@ -81,37 +87,45 @@ export default {
     border-radius: 8px;
     padding: 20px;
 }
+
 .help-header {
     margin-bottom: 30px;
 }
+
 .help-title {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
 }
+
 .help-meta {
     display: flex;
     justify-content: space-between;
     margin: 20px;
 }
+
 .user {
     color: #777;
     text-align: start;
     font-size: 17px;
 }
+
 .date {
     color: #777;
     font-size: 17px;
     text-align: end;
 }
+
 .help-image-container {
     margin: 20px 0;
     text-align: center;
 }
+
 .help-image {
     max-width: 100%;
     border-radius: 8px;
 }
+
 .help-content {
     margin: 0 auto 50px;
     padding: 20px;
@@ -128,12 +142,14 @@ export default {
     overflow: hidden;
     clear: both;
 }
+
 .help-content h2,
-.help-comment h2{
+.help-comment h2 {
     font-weight: bold;
     font-size: 25px;
     text-align: left;
 }
+
 .help-content p {
     font-size: 18px;
     line-height: 1.6;
@@ -141,10 +157,12 @@ export default {
     max-height: 400px;
     overflow-y: auto;
 }
-.help-comment p{
+
+.help-comment p {
     font-size: 18px;
     text-align: left;
 }
+
 .black-bar {
     width: 100%;
     height: 2px;
@@ -155,6 +173,7 @@ export default {
 .back {
     margin: 20px;
 }
+
 .back-btn {
     display: block;
     margin: auto;

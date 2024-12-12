@@ -146,8 +146,16 @@ export default {
                 this.fieldMessages[fieldName]= "성공적으로 수정되었습니다.";
                 console.log(`${fieldName} 수정 성공:`, response.data);
             } catch (error) {
-                console.error(`${fieldName} 수정 중 오류:`, error.response?.data || error);
-                this.fieldMessages[fieldName] = "수정에 실패했습니다.";
+                const errors = error.response?.data || {};
+                console.error(`${fieldName} 수정 중 오류:`, errors);
+
+                if (errors[fieldName]) {
+                    this.fieldMessages[fieldName] = Array.isArray(errors[fieldName])
+                        ? errors[fieldName].join(", ")
+                        : errors[fieldName];
+                } else {
+                    this.fieldMessages[fieldName] = "수정에 실패했습니다.";
+                }
             }
         },
 
@@ -208,8 +216,6 @@ export default {
                 this.fieldMessages.password = "비밀번호 변경에 실패했습니다.";
             }
         },
-
-
         onFileChange(event) {
             const file = event.target.files[0];
 
@@ -228,7 +234,6 @@ export default {
                 reader.readAsDataURL(file);
             }
         },
-
         async confirmDeleteAccount() {
             if (!this.password) {
                 this.errorMessage = "비밀번호를 입력해주세요.";

@@ -36,15 +36,19 @@
             <div class="posts">
                 <div class="post-row">
                     <span class="post-label">레시피</span>
-                    <span class="post-value">{{ user.recipes_count || 0 }}개</span>
+                    <span @click="goToMyRecipe" class="post-value">{{ user.recipes_count || 0 }}개</span>
                 </div>
                 <div class="post-row">
                     <span class="post-label">요리 실험일지</span>
-                    <span class="post-value">{{ user.labs_count || 0 }}개</span>
+                    <span @click="goToMyLab" class="post-value">{{ user.labs_count || 0 }}개</span>
                 </div>
                 <div class="post-row">
                     <span class="post-label">재료 나눔</span>
-                    <span class="post-value">{{ user.freemarkets_count || 0 }}개</span>
+                    <span @click="goToMyMarket" class="post-value">{{ user.freemarkets_count || 0 }}개</span>
+                </div>
+                <div class="post-row">
+                    <span class="post-label">요리 지식인</span>
+                    <span @click="goToMyHelp" class="post-value">{{ user.helps_count || 0 }}개</span>
                 </div>
             </div>
         </div>
@@ -98,6 +102,18 @@ export default{
                 path: "/chat/list",
                 query: { id: this.user.id }
             });
+        },
+        goToMyRecipe() {
+            this.$router.push("/my-recipe")
+        },
+        goToMyLab() {
+            this.$router.push("/my-lab")
+        },
+        goToMyMarket() {
+            this.$router.push("/my-market")
+        },
+        goToMyHelp() {
+            this.$router.push("/my-help")
         },
     },
     mounted() {
@@ -189,6 +205,7 @@ export default{
 .post-value {
     text-align: right;
     color: #555;
+    cursor: pointer;
 }
 
 /* 회원정보 수정 */
@@ -197,7 +214,6 @@ export default{
     gap: 10px;
     justify-content: center;
 }
-
 .update-profile button,
 .chat-list-btn {
     width: 130px;
