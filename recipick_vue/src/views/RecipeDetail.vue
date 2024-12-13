@@ -24,11 +24,11 @@
           <p class="ingredient-title">재료</p>
           <span class="ingredients">: </span>
           <span v-for="(ing, index) in dish.ingredients" :key="ing.id">
-            <router-link 
-              :to="{ 
+            <router-link
+              :to="{
                 path: '/ingredients/' + ing.id,
                 query: { name: ing.name }
-              }" 
+              }"
               class="ingredient-link ingredients"
             >
                 {{ ing.name }}
@@ -192,7 +192,7 @@ export default {
     this.$router.push("/recipes")
     },
     confirmReport() {
-      if (confirm("신고하���를 누르면 수정 및 삭제가 불가능합니다. 계속 진행하시겠습니까?")) {
+      if (confirm("신고하기를 누르면 수정 및 삭제가 불가능합니다. 계속 진행하시겠습니까?")) {
         this.showReportModal = true;
       }
     },

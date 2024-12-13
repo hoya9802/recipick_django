@@ -4,7 +4,7 @@
             <h1 class="title">{{ announcement.title }}</h1>
             <div class="black-bar"></div>
             <p class="date">{{ formatDate(announcement.announce_dt) }}</p>
-            <div class="contents">{{ announcement.contents }}</div>
+            <p class="contents" v-html="formatDescription(announcement.contents)"></p>
             <button @click="goBack">목록</button>
         </div>
         <div v-else>
@@ -37,6 +37,10 @@ export default {
         formatDate(date) {
             const options = { year: "numeric", month: "2-digit", day: "2-digit" };
             return new Date(date).toLocaleDateString("ko-KR", options);
+        },
+        formatDescription(description) {
+            // 줄바꿈 문자를 <br> 태그로 변환
+            return description.replace(/\n/g, '<br>');
         },
         goBack() {
             this.$router.push({ name: "NoticeView" });
