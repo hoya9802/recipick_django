@@ -168,7 +168,7 @@ export default {
                 const formData = new FormData();
                 formData.append("image", this.image);
 
-                await apiClient.post(`/recipes/${this.recipeId}/upload-image/`, formData, {
+                await apiClient.post(`/recipes/${this.id}/upload-image/`, formData, {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
             } catch (error) {
