@@ -72,6 +72,11 @@
 ### 메인 페이지
 ![ezgif com-resize](https://github.com/user-attachments/assets/98e25295-83ea-476b-92c5-cb58805c2604)
 
+
+### 요리보기
+![요리보기 (1)](https://github.com/user-attachments/assets/4d70add1-510e-4c52-9a2d-15c9a97777dd)
+
+
 ### 재료 무료나눔
 ![재료무료나눔](https://github.com/user-attachments/assets/6ff74366-f285-4462-b524-d28c32550e2c)
 
@@ -82,9 +87,12 @@
 ### 요리지식인
 ![요리지식인](https://github.com/user-attachments/assets/982ee90b-2fae-4b32-a454-904e561ab81c)
 
+### 요리실험일지
+![요리실험일지](https://github.com/user-attachments/assets/c9ea13a6-43d7-41af-bc6e-065218346cd4)
+
 
 ### AI 레시피 추천
-![Ai레시피추천 (1)](https://github.com/user-attachments/assets/bc1c9559-db08-4dea-8e24-eded664dd8e0)
+![Ai레시피추천](https://github.com/user-attachments/assets/bc1c9559-db08-4dea-8e24-eded664dd8e0)
 
 
 ### 신고하기
@@ -94,6 +102,9 @@
 
 ### 유통기한&공지사항
 ![유통기한&공지사항](https://drive.google.com/uc?id=1RXY6nb1WB7nlDw6wZYCFRvjlOgAMqg1T)
+
+### 레시피 수정&삭제
+![레시피수정 삭제](https://github.com/user-attachments/assets/b0b7304b-f23f-478c-b55a-177bcadbe992)
 
 
 ### 회원탈퇴
