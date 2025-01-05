@@ -60,14 +60,46 @@
 ### 회원가입및 아이디 & 패스워드 찾기
 ![회원가입및아이디 amp;패스워드찾기](https://github.com/user-attachments/assets/72c7a394-9de9-4399-b704-f2a4b2dcf20a)
 
- - 홈페이지에 접속하기 위해서는 회원가입을 해야 접속이 가능합니다.
- - Gmail API를 사용하여 아이디와 패스워드를 회원가입시 입력한 이메일을 통해서 발급 받을 수 있습니다.
+ - 홈페이지에 접속하기 위해서는 회원가입을 해야 접속이 가능
+ - Gmail API를 사용하여 아이디와 패스워드를 회원가입시 입력한 이메일을 통해서 발급
 
 ### 회원정보 수정
+![회원정보 수정](https://drive.google.com/uc?id=1AivuAlWRDxu-yPbVyO4ZZ4B1NF7sOUQR)
 
- - 개인 프로필 정보들을 하나 또는 전체 수정이 가능합니다.
+ - 개인 프로필 정보들을 하나 또는 전체 수정이 가능
+ - 비밀번호는 동일하게 2번 입력해야 수정이 가능
+
+### 메인 페이지
+![ezgif com-resize](https://github.com/user-attachments/assets/98e25295-83ea-476b-92c5-cb58805c2604)
+
+### 재료 무료나눔
+![재료무료나눔](https://github.com/user-attachments/assets/6ff74366-f285-4462-b524-d28c32550e2c)
+
+ - 채팅을 통해서 나눔자와 1대1 채팅가능
+ - 나눔자는 나눔 이후 나눔완료 버튼을 눌러서 나눔 종료 가능
+ - 나눔이 종료된 상품은 여전히 목록에 보이지만 채팅은 불가능
+
+### 요리지식인
+![요리지식인](https://github.com/user-attachments/assets/982ee90b-2fae-4b32-a454-904e561ab81c)
 
 
+### AI 레시피 추천
+![Ai레시피추천 (1)](https://github.com/user-attachments/assets/bc1c9559-db08-4dea-8e24-eded664dd8e0)
+
+
+### 신고하기
+![신고하기](https://github.com/user-attachments/assets/d3907c27-a1af-4eca-9daa-70fb9b508a34)
+
+ - 물건 상세보기를 누르면 우측 하단에 신고하기 버튼 활성화
+
+### 유통기한&공지사항
+![유통기한&공지사항](https://drive.google.com/uc?id=1RXY6nb1WB7nlDw6wZYCFRvjlOgAMqg1T)
+
+
+### 회원탈퇴
+![회원탈퇴](https://drive.google.com/uc?id=1Oik6KQBKKx6GYoJFG7xzmhtM5HpscJp4)
+
+ - 회원정보 수정페이지에서 패스워드 한번 더 입력하면 계정 삭제
 
 
 ## 🔥 향후 계획
