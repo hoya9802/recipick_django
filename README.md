@@ -58,7 +58,7 @@
 
 ## 기능 미리보기
 ### 회원가입및 아이디 & 패스워드 찾기
-![회원가입및아이디 amp;패스워드찾기](https://github.com/user-attachments/assets/72c7a394-9de9-4399-b704-f2a4b2dcf20a)
+![회원가입및아이디&패스워드찾기](https://github.com/user-attachments/assets/72c7a394-9de9-4399-b704-f2a4b2dcf20a)
 
  - 홈페이지에 접속하기 위해서는 회원가입을 해야 접속이 가능
  - Gmail API를 사용하여 아이디와 패스워드를 회원가입시 입력한 이메일을 통해서 발급
@@ -70,42 +70,64 @@
  - 비밀번호는 동일하게 2번 입력해야 수정이 가능
 
 ### 메인 페이지
-![ezgif com-resize](https://github.com/user-attachments/assets/98e25295-83ea-476b-92c5-cb58805c2604)
+![메인페이지](https://github.com/user-attachments/assets/98e25295-83ea-476b-92c5-cb58805c2604)
 
+ - 배너 사진을 통해 웹사이트의 기능을 간단하게 소개
+ - Best 레시피 : 사람 이모티콘을 가장 많이 받은 상위 5개의 레시피
+ - 지구인은 이해할 수 없는 음식 : 외계인 이모티콘을 가장 많이 받은 상위 5개의 레시피
+ - 요리의 재발견 : 좋아요를 가장 많이 받은 상위 3개의 요리실험일지
 
 ### 요리보기
-![요리보기 (1)](https://github.com/user-attachments/assets/4d70add1-510e-4c52-9a2d-15c9a97777dd)
+![요리보기](https://github.com/user-attachments/assets/4d70add1-510e-4c52-9a2d-15c9a97777dd)
 
-
-### 재료 무료나눔
-![재료무료나눔](https://github.com/user-attachments/assets/6ff74366-f285-4462-b524-d28c32550e2c)
-
- - 채팅을 통해서 나눔자와 1대1 채팅가능
- - 나눔자는 나눔 이후 나눔완료 버튼을 눌러서 나눔 종료 가능
- - 나눔이 종료된 상품은 여전히 목록에 보이지만 채팅은 불가능
-
-### 요리지식인
-![요리지식인](https://github.com/user-attachments/assets/982ee90b-2fae-4b32-a454-904e561ab81c)
-
-### 요리실험일지
-![요리실험일지](https://github.com/user-attachments/assets/c9ea13a6-43d7-41af-bc6e-065218346cd4)
-
-
-### AI 레시피 추천
-![Ai레시피추천](https://github.com/user-attachments/assets/bc1c9559-db08-4dea-8e24-eded664dd8e0)
+- 사람, 외계인에 투표 가능 (중복 투표, 다중 투표 불가) / 두번 누르면 투표 취소
+- 한 페이지마다 12개씩 게시
+- 요리 상세 페이지에 재료를 누르면 해당 재료를 가지고 있는 모든 레시피와 요리실험일지를 검색
 
 
 ### 신고하기
 ![신고하기](https://github.com/user-attachments/assets/d3907c27-a1af-4eca-9daa-70fb9b508a34)
 
  - 물건 상세보기를 누르면 우측 하단에 신고하기 버튼 활성화
+ - 신고 내역은 관리자 페이지에서 확인 후 해당 유저 조치
+
+### 재료 무료나눔
+![재료무료나눔](https://github.com/user-attachments/assets/6ff74366-f285-4462-b524-d28c32550e2c)
+
+ - 채팅을 통해서 나눔자와 1대1 채팅가능
+ - 나눔자는 나눔 이후 나눔완료 버튼을 눌러서 나눔 종료 가능 (나눔 완료 버튼 이후에는 삭제만 가능)
+ - 나눔이 종료된 상품은 여전히 목록에 보이지만 채팅은 불가능
+
+### 요리실험 일지
+![요리실험일지](https://github.com/user-attachments/assets/c9ea13a6-43d7-41af-bc6e-065218346cd4)
+
+ - 좋아요 기능 (중복 투표 불가)
+ - 재료 버튼을 누르면 해당 재료를 가지고 있는 게시글 검색
+
+### 요리 지식인
+![요리지식인](https://github.com/user-attachments/assets/982ee90b-2fae-4b32-a454-904e561ab81c)
+
+ - 댓글 기능
+ - 내가 올린 댓글 수정&삭제 가능
+
+### AI 추천 레시피
+![Ai레시피추천](https://github.com/user-attachments/assets/bc1c9559-db08-4dea-8e24-eded664dd8e0)
+
+ - 영어로 재료들을 하나씩 추가 (최대 5개까지 가능)
+ - 생성형 AI가 새로운 레시피를 추천 (단 영어로 추천)
+ - 요리의 이름 / 내가 입력한 재료 / 요리를 만들때 필요한 재료 / 요리 만드는 방법 추천
 
 ### 유통기한&공지사항
 ![유통기한&공지사항](https://drive.google.com/uc?id=1RXY6nb1WB7nlDw6wZYCFRvjlOgAMqg1T)
 
+ - 재료의 유통기한 확인 가능
+ - 웹사이트의 공지사항을 확인 가능
+
 ### 레시피 수정&삭제
 ![레시피수정 삭제](https://github.com/user-attachments/assets/b0b7304b-f23f-478c-b55a-177bcadbe992)
 
+ - 내가 올린 레시피들을 확인 가능
+ - 확인 후 레시피를 수정 및 삭제 가능
 
 ### 회원탈퇴
 ![회원탈퇴](https://drive.google.com/uc?id=1Oik6KQBKKx6GYoJFG7xzmhtM5HpscJp4)
