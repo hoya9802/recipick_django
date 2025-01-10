@@ -16,6 +16,9 @@
 ![image](https://github.com/user-attachments/assets/42ba3db3-7c21-4ce2-9b15-e9ebfcc406fb)
 <br><br/>
 
+### 📄 WBS
+<img width="1083" alt="스크린샷 2025-01-10 오후 8 10 32" src="https://github.com/user-attachments/assets/b55652c5-33c7-4f93-a698-21d5a8f6f886" />
+
 
 ## 개발 방법론
 ### Test-Driven Development (TDD)
