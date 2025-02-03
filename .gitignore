@@ -162,5 +162,4 @@ cython_debug/
 #.idea/
 
 # secrets json 파일 제외
-recipick_app/user/secrets/credentials.json
-recipick_app/user/secrets/token.json
+recipick_app/user/secrets/*.json
