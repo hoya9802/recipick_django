@@ -7,6 +7,7 @@ ENV HF_HOME=/vol/cache
 
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
+COPY ./scripts /scripts
 COPY ./recipick_app /recipick_app
 WORKDIR /recipick_app
 EXPOSE 8000
@@ -19,6 +20,7 @@ RUN python -m venv /py && \
     libpq-dev \
     libjpeg-dev \
     zlib1g-dev \
+    linux-headers-generic \
     libfreetype6-dev \
     liblcms2-dev \
     libopenjp2-7-dev \
@@ -42,8 +44,11 @@ RUN python -m venv /py && \
     mkdir -p /vol/web/static && \
     mkdir -p /vol/cache && \
     chown -R django-user:django-user /vol && \
-    chmod -R 755 /vol
+    chmod -R 755 /vol && \
+    chmod -R +x /scripts
 
-ENV PATH="/py/bin:$PATH"
+ENV PATH="/scripts:/py/bin:$PATH"
 
 USER django-user
+
+CMD ["run.sh"]

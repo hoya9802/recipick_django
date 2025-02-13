@@ -22,6 +22,7 @@ services:
       - DB_PASS=passkey
       - REDIS_HOST=redis
       - HF_MODEL_NAME=Ashikan/dut-recipe-generator
+      - DEBUG=1
     depends_on:
       - db
       - redis
