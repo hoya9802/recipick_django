@@ -20,6 +20,7 @@ services:
       - DB_NAME=rpdb
       - DB_USER=rpteam
       - DB_PASS=passkey
+      - SECRET_KEY=secretkey
       - REDIS_HOST=redis
       - HF_MODEL_NAME=Ashikan/dut-recipe-generator
       - DEBUG=1
