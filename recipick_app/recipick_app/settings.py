@@ -64,11 +64,15 @@ INSTALLED_APPS = [
     'chat.apps.ChatConfig',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
-]
+CORS_ALLOWED_ORIGINS = []
+CORS_ALLOWED_ORIGINS.extend(
+    filter(
+        None,
+        os.environ.get('CORS_ALLOWED_ORIGINS', '').split(','),
+    )
+)
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = bool(int(os.environ.get('DEBUG', 0)))
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
