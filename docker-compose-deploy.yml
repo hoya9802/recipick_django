@@ -41,11 +41,11 @@ services:
     depends_on:
       - app
     ports:
-      - 80:8000
-      - 443:443
+      - 8000:8000
+      # - 443:443
     volumes:
       - recipick-static-data:/vol/static
-      - ./ssl:/etc/nginx/ssl:ro
+      # - ./ssl:/etc/nginx/ssl:ro
 
 volumes:
   recipick-static-data:
