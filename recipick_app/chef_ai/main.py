@@ -21,7 +21,7 @@ def generate_recipe(ingredients):
         max_length=1024,
         temperature=0.7,
         do_sample=True,
-        truncation=True
+        # truncation=True
     )[0]["generated_text"]
 
     return json.loads(output)
