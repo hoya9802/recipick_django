@@ -42,12 +42,30 @@ services:
       - app
     ports:
       - 80:8000
-      # - 443:443
+      - 443:443
     volumes:
       - recipick-static-data:/vol/static
-      # - ./ssl:/etc/nginx/ssl:ro
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - webroot:/var/www/html
+    environment:
+      - DOMAIN=${DOMAIN}
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - webroot:/var/www/html
+    depends_on:
+      - proxy
+    command: certonly --webroot --webroot-path=/var/www/html --email ${EMAIL} --agree-tos --no-eff-email --staging -d ${DOMAIN}
 
 volumes:
   recipick-static-data:
   rp-huggingface-cache:
   recipick-postgres-data:
+  certbot-etc:
+  certbot-var:
+  webroot:
