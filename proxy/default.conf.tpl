@@ -1,6 +1,6 @@
 # https server
 server {
-    listen 80;
+    listen ${LISTEN_PORT};
     server_name ${DOMAIN};
 
     location /.well-known/acme-challenge/ {
