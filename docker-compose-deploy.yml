@@ -60,7 +60,7 @@ services:
       - webroot:/var/www/html
     depends_on:
       - proxy
-    command: certonly --webroot --webroot-path=/var/www/html --email ${EMAIL} --agree-tos --no-eff-email --staging -d ${DOMAIN}
+    command: certonly --webroot --webroot-path=/var/www/html --email ${EMAIL} --agree-tos --no-eff-email -d ${DOMAIN}
 
 volumes:
   recipick-static-data:
