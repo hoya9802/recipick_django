@@ -20,7 +20,7 @@ RUN python -m venv /py && \
     libpq-dev \
     libjpeg-dev \
     zlib1g-dev \
-    linux-headers-generic \
+    linux-headers-amd64 \
     libfreetype6-dev \
     liblcms2-dev \
     libopenjp2-7-dev \
