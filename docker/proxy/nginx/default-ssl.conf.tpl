@@ -12,7 +12,7 @@ server {
 }
 
 server {
-    listen 443 ssl
+    listen 443 ssl;
     server_name ${DOMAIN} www.${DOMAIN};
 
     ssl_certificate     /etc/letsencrypt/live/${DOMAIN}/fullchain.pem;
