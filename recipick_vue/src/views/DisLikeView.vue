@@ -61,7 +61,7 @@ export default {
     computed: {
         ...mapState(['dislikedRecipes']),
         baseUrl() {
-            return VUE_APP_API_BASE_URL.replace('/api', '');
+            return process.env.VUE_APP_API_BASE_URL.replace('/api', '');
         },
         paginatedRecipes() {
             const start = (this.currentPage - 1) * this.itemsPerPage;
