@@ -6,7 +6,7 @@
             <router-link v-for="recipe in paginatedRecipes" :key="recipe.id" :to="`/recipes/${recipe.id}`" class="recipe-card">
                 <!-- 프로필 이미지와 닉네임 -->
                 <div class="profile-container">
-                    <img v-if="recipe.user.profile_image" :src="`http://127.0.0.1:8000${recipe.user.profile_image}`"
+                    <img v-if="recipe.user.profile_image" :src="`${process.env.VUE_APP_API_BASE_URL.replace('/api', '')}${recipe.user.profile_image}`"
                         alt="profile image" class="profile-image" />
                     <img v-else src="@/assets/default-profile.png"
                         alt="profile image" class="profile-image" />
@@ -18,7 +18,7 @@
                 <div class="post-link">
                     <!-- 레시피 이미지 -->
                     <div class="post-body">
-                        <img :src="`http://127.0.0.1:8000${recipe.image}`" alt="recipe image" class="recipe-image" />
+                        <img :src="`${process.env.VUE_APP_API_BASE_URL.replace('/api', '')}${recipe.image}`" alt="recipe image" class="recipe-image" />
                     </div>
                     <!-- 레시피 정보 -->
                     <div class="post-content">

@@ -156,7 +156,7 @@ export default {
                 const response = await apiClient.get("/recipes/top-ranked/");
                 this.topRecipes = response.data.map((recipe) => ({
                     ...recipe,
-                    image: recipe.image ? `http://127.0.0.1:8000${recipe.image}` : null,
+                    image: recipe.image ? `${process.env.VUE_APP_API_BASE_URL.replace('/api', '')}${recipe.image}` : null,
                 }));
             } catch (error) {
                 console.error("레시피 데이터를 가져오는 중 오류 발생:", error);
@@ -168,7 +168,7 @@ export default {
                 const response = await apiClient.get("/recipes/top-nglisted/");
                 this.ng5Recipes = response.data.map((recipe) => ({
                     ...recipe,
-                    image: recipe.image ? `http://127.0.0.1:8000${recipe.image}` : null,
+                    image: recipe.image ? `${process.env.VUE_APP_API_BASE_URL.replace('/api', '')}${recipe.image}` : null,
                 }));
             } catch (error) {
                 console.error("지구인은 이해할 수 없는 음식 데이터를 가져오는 중 오류 발생:", error);
@@ -180,7 +180,7 @@ export default {
                 const response = await apiClient.get("/labs/top-lablisted/");
                 this.recipe3Labs = response.data.map((lab) => ({
                     ...lab,
-                    image: lab.image ? `http://127.0.0.1:8000${lab.image}` : null,
+                    image: lab.image ? `${process.env.VUE_APP_API_BASE_URL.replace('/api', '')}${lab.image}` : null,
                 }));
             } catch (error) {
                 console.error("요리 실험 일지 데이터를 가져오는 중 오류 발생:", error);
