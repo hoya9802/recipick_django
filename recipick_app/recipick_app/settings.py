@@ -73,6 +73,7 @@ CORS_ALLOWED_ORIGINS.extend(
 )
 
 CORS_ALLOW_ALL_ORIGINS = bool(int(os.environ.get('DEBUG', 0)))
+CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -178,10 +179,10 @@ SPECTACULAR_SETTINGS = {
 }
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('redis', 6379)],
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
         },
     },
 }

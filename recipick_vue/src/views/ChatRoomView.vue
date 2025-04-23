@@ -58,7 +58,7 @@ export default {
                 this.socket.close();
             }
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/rooms/', {
+                const response = await fetch(`${process.env.VUE_APP_API_BASE_URL}/rooms/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -87,7 +87,8 @@ export default {
         },
 
         setupWebSocket(roomId) {
-            this.socket = new WebSocket(`ws://127.0.0.1:8000/ws/room/${roomId}/messages`);
+            const wsUrl = process.env.VUE_APP_API_BASE_URL.replace('https', 'ws').replace('/api', '');
+            this.socket = new WebSocket(`${wsUrl}/ws/room/${roomId}/messages`);
             this.socket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 this.messages.push(data);
