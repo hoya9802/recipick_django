@@ -87,7 +87,10 @@ export default {
         },
 
         setupWebSocket(roomId) {
-            const wsUrl = process.env.VUE_APP_API_BASE_URL.replace('https', 'ws').replace('/api', '');
+            const wsUrl = process.env.VUE_APP_API_BASE_URL
+                .replace('http://', 'ws://')
+                .replace('https://', 'wss://')
+                .replace('/api', '');
             this.socket = new WebSocket(`${wsUrl}/ws/room/${roomId}/messages`);
             this.socket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
