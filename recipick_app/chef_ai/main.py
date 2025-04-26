@@ -19,7 +19,7 @@ def generate_recipe(ingredients):
     output = pipe(
         input_text,
         max_length=1024,
-        temperature=0.7,
+        temperature=0.2,
         do_sample=True,
         # truncation=True
     )[0]["generated_text"]

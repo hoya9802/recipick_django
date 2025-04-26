@@ -5,7 +5,7 @@ import os
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 # credentials.json 파일 위치
-CREDENTIALS_FILE = '/recipick_app/user/secrets/credentials.json'
+CREDENTIALS_FILE = 'recipick_app/user/secrets/credentials.json'
 
 
 def generate_token():
@@ -18,12 +18,13 @@ def generate_token():
     # access_type='offline'을 명시적으로 추가
     creds = flow.run_local_server(
         port=8080,
+        redirect_uri_trailing_slash=True,  # 슬래시(/) 끝나는 URI 사용
         access_type='offline',
         prompt='consent'
     )
 
     # token.json 파일로 저장
-    token_path = '/recipick_app/user/secrets/token.json'
+    token_path = 'recipick_app/user/secrets/token.json'
     with open(token_path, 'w') as token:
         token.write(creds.to_json())
     print(f"token.json 파일이 {token_path}에 성공적으로 생성되었습니다!")
