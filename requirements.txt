@@ -16,3 +16,4 @@ google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
 uWSGI==2.0.20
+uvicorn[standard]>=0.20,<1.0

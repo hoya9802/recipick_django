@@ -6,4 +6,4 @@ python manage.py wait_for_db
 python manage.py collectstatic --noinput
 python manage.py migrate
 
-uwsgi --socket :9000 --workers 4 --master --enable-threads --module recipick_app.wsgi --chdir /recipick_app
+uvicorn recipick_app.asgi:application --host 0.0.0.0 --port 9000
