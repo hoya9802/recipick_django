@@ -11,6 +11,10 @@ fi
 # Avoid replacing these with envsubst
 export host=\$host
 export request_uri=\$request_uri
+export http_upgrade=\$http_upgrade
+export remote_addr=\$remote_addr
+export proxy_add_x_forwarded_for=\$proxy_add_x_forwarded_for
+export scheme=\$scheme
 
 echo "Checking for fullchain.pem"
 if [ ! -f "/etc/letsencrypt/live/${DOMAIN}/fullchain.pem" ]; then

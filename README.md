@@ -3,13 +3,14 @@
 ### 🧑‍🍳 다양한 요리를 해보며 맛있게 살자!
 
  **Recipick**은 1인 가구의 요리 고민을 해결해주는 종합 플랫폼입니다!
- 
+
+#### 사이트 링크 : https://recipickk.netlify.app/
 ---
 
 ## 프로젝트 소개
 
 ### 🛠️ Architecture
-![Screenshot 2024-12-16 121513](https://github.com/user-attachments/assets/39fae645-8b29-4380-8892-50069a405dde)
+![recipick-architecture](https://github.com/user-attachments/assets/fdc3cdcf-66d8-4278-96e3-ee05630d7e15)
 <br><br/>
 
 ### 🔎 ERD
@@ -139,6 +140,6 @@
 
 
 ## 🔥 향후 계획
-- 배포 진행 예정
-- 아쉬운 부분은 꾸준히 수정 예정
+ - AI를 현재 코드에서 사용하려면 비싼 인스턴스를 사용해야해서 비용이 크게 증가. 따라서 AI부분을 다른 서버로 옮길 예정
+ - Redis을 이용한 실시간 웹소켓 통신을 위해서 ASGI 기반 서버 구축 예정
 
