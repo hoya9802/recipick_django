@@ -39,7 +39,9 @@
         <div class="black-bar"></div>
         <div class="url-section">
           <p class="url-title">참고링크</p>
-          <p class="url" v-if="dish.link">{{ dish.link }}</p>
+            <p class="url" v-if="dish.link">
+              <a :href="dish.link" target="_blank">{{ dish.link }}</a>
+            </p>
           <p class="url" v-else>: 없음</p>
         </div>
 
