@@ -145,7 +145,7 @@ export default {
       }
     },
     handleEdit() {
-      this.$router.push(`/market/${this.market.id}/edit`);
+      this.$router.push(`/my-market/edit/${this.market.id}`);
     },
     async handleDelete() {
       if (confirm('정말로 삭제하시겠습니까?')) {
