@@ -11,8 +11,8 @@ from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .main import generate_recipe
-
+import requests
+import os
 
 @extend_schema(
     request={
@@ -43,10 +43,19 @@ class AiChefAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = InputDataSerializer(data=request.data)
-
+        print("serializer: ",serializer)
         if serializer.is_valid():
-            input_data = serializer.validated_data['ingredients']
-            response = generate_recipe(input_data)
+            input_data = serializer.validated_data
+            chef_ai_url = os.environ.get('CHEF_AI_URL', 'http://chef-ai:8001/api/generate-recipe')
+            print("input_data: ",input_data)
+            try:
+                response = requests.post(chef_ai_url, json=input_data)
+                response.raise_for_status()
+                return Response(response.json(), status=status.HTTP_200_OK)
+            except requests.RequestException as e:
+                return Response(
+                    {"error": f"AI 서비스 연결 오류: {str(e)}"},
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE
+                )
 
-            return Response(response, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
