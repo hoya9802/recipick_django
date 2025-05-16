@@ -14,6 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 import requests
 import os
 
+
 @extend_schema(
     request={
         'application/json': {
@@ -43,13 +44,22 @@ class AiChefAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = InputDataSerializer(data=request.data)
-        print("serializer: ",serializer)
+        print("serializer: ", serializer)
         if serializer.is_valid():
             input_data = serializer.validated_data
-            chef_ai_url = os.environ.get('CHEF_AI_URL', 'http://chef-ai:8001/api/generate-recipe')
-            print("input_data: ",input_data)
+            print("input_data: ", input_data)
             try:
-                response = requests.post(chef_ai_url, json=input_data)
+                headers = {
+                    "Authorization": (
+                        f"Bearer {os.environ.get('RUNPOD_API_KEY')}"
+                    ),
+                    "Content-Type": "application/json"
+                }
+                response = requests.post(
+                    os.environ.get('RUNPOD_API_URL'),
+                    headers=headers,
+                    json=input_data
+                )
                 response.raise_for_status()
                 return Response(response.json(), status=status.HTTP_200_OK)
             except requests.RequestException as e:

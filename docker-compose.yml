@@ -40,6 +40,8 @@ services:
       - CHEF_AI_URL=http://chef-ai:8001/api/generate-recipe
       - HF_MODEL_NAME=Ashikan/dut-recipe-generator
       - HF_CACHE_DIR=/vol/cache
+      - RUNPOD_API_URL=${RUNPOD_API_URL}
+      - RUNPOD_API_KEY=${RUNPOD_API_KEY}
   redis:
     image: redis:alpine
     ports:
