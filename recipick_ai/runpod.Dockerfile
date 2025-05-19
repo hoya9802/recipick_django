@@ -3,7 +3,7 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Install dependencies
-COPY ./src/requirements.runpod.txt .
+COPY requirements.runpod.txt .
 RUN pip install --no-cache-dir -r requirements.runpod.txt && \
     pip install --no-cache-dir runpod
 

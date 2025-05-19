@@ -1,5 +1,0 @@
-fastapi[standard]==0.115.0
-uvicorn[standard]>=0.20,<1.0
-torch==2.0.1
-transformers==4.30.2
-numpy>=1.21.0,<2.0.0

@@ -19,8 +19,8 @@ def load_model():
         device = 0 if torch.cuda.is_available() else -1
         return pipeline("text-generation", model=model_cache, tokenizer=tokenizer_cache, device=device)
 
-    model_name = os.environ.get("HF_MODEL_NAME", "Ashikan/dut-recipe-generator")
-    cache_dir = os.environ.get('HF_CACHE_DIR', "/runpod-volume/cache")
+    model_name = os.environ.get("HF_MODEL_NAME")
+    cache_dir = os.environ.get('HF_CACHE_DIR')
 
     # 캐시 디렉토리 확인 및 생성
     if not os.path.exists(cache_dir):

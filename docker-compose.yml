@@ -29,20 +29,6 @@ services:
       - db
       - redis
 
-  chef-ai:
-    build:
-      context: ./recipick_ai
-    ports:
-      - "8001:8001"
-    volumes:
-      - ./recipick_ai/app:/app
-      - huggingface-cache:/vol/cache
-    environment:
-      - ALLOWED_ORIGINS=http://localhost:8000
-      - CHEF_AI_URL=http://chef-ai:8001/api/generate-recipe
-      - HF_MODEL_NAME=${HF_MODEL_NAME}
-      - HF_CACHE_DIR=/vol/cache
-
   redis:
     image: redis:alpine
     ports:
