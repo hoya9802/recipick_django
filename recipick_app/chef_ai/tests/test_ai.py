@@ -21,9 +21,35 @@ AICHEF_URL = reverse('chef_ai:generate-recipe')
 
 # 테스트용 Mock 응답
 MOCK_RUNPOD_RESPONSE = {
-    'title': '김치찌개',
-    'ingredients': ['김치', '돼지고기', '두부'],
-    'method': '1. 물을 끓인다\n2. 김치를 넣는다\n3. 돼지고기를 넣는다'
+    "delayTime": 10232,
+    "executionTime": 20278,
+    "id": "sync-22092345-4377-41117-8336-c15-e7",
+    "output": {
+        "ingredients": [
+            "1 cup low-sodium chicken or vegetable broth",
+            "1 large egg",
+            "1 tablespoon water",
+            "1 cup low-fat milk",
+            "salt and pepper to taste"
+        ],
+        "method": [
+            "bring the broth to a boil in a medium pot.",
+            "in a small bowl, whisk together the egg, water, and milk.",
+            "slowly pour the egg mixture into the boiling broth, "
+            "stirring constantly.",
+            "use a fork to gently stir the egg drop shell while it cooks.",
+            "season with salt and pepper to taste.",
+            "serve hot and enjoy!"
+        ],
+        "prompt": [
+            "milk",
+            "egg",
+            "chicken"
+        ],
+        "title": "wholemeal egg drop soup with wholemeal crust"
+    },
+    "status": "COMPLETED",
+    "workerId": "s9hxv8276wd9ug"
 }
 
 
@@ -69,23 +95,24 @@ class PrivateAiChefAPITests(TestCase):
             call_args[1]['headers']['Authorization'],
             'Bearer test_api_key'
         )
+
         self.assertEqual(
             call_args[1]['json'],
-            self.payload
+            {"input": self.payload}
         )
 
         # 응답 데이터 검증
         self.assertEqual(
-            res.data['title'],
-            MOCK_RUNPOD_RESPONSE['title']
+            res.data['output']['title'],
+            MOCK_RUNPOD_RESPONSE['output']['title']
         )
         self.assertEqual(
-            res.data['ingredients'],
-            MOCK_RUNPOD_RESPONSE['ingredients']
+            res.data['output']['ingredients'],
+            MOCK_RUNPOD_RESPONSE['output']['ingredients']
         )
         self.assertEqual(
-            res.data['method'],
-            MOCK_RUNPOD_RESPONSE['method']
+            res.data['output']['method'],
+            MOCK_RUNPOD_RESPONSE['output']['method']
         )
 
     def test_post_invalid_data(self):
