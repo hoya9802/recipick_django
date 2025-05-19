@@ -10,6 +10,10 @@ recipick_app/__pycache__/
 recipick_app/*/__pycache__/
 recipick_app/*/*/__pycache__/
 recipick_app/*/*/*/__pycache__/
+recipick_ai/__pycache__/
+recipick_ai/*/__pycache__/
+recipick_ai/*/*/__pycache__/
+
 .env/
 .venv/
 venv/

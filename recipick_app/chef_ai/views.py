@@ -11,7 +11,8 @@ from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-from .main import generate_recipe
+import requests
+import os
 
 
 @extend_schema(
@@ -45,8 +46,29 @@ class AiChefAPIView(APIView):
         serializer = InputDataSerializer(data=request.data)
 
         if serializer.is_valid():
-            input_data = serializer.validated_data['ingredients']
-            response = generate_recipe(input_data)
+            input_data = serializer.validated_data
+            payload = {
+                "input": dict(input_data)
+            }
+            try:
+                headers = {
+                    "Authorization": (
+                        f"Bearer {os.environ.get('RUNPOD_API_KEY')}"
+                    ),
+                    "Content-Type": "application/json"
+                }
+                response = requests.post(
+                    os.environ.get('RUNPOD_API_URL'),
+                    headers=headers,
+                    json=payload
+                )
+                response.raise_for_status()
+                print(f"Response : {response.json()}")
+                return Response(response.json(), status=status.HTTP_200_OK)
+            except requests.RequestException as e:
+                return Response(
+                    {"error": f"AI 서비스 연결 오류: {str(e)}"},
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE
+                )
 
-            return Response(response, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
