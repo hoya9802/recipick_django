@@ -24,7 +24,7 @@
             <div v-if="recipe" class="recipe-result">
             <h2>생성된 레시피: <strong>{{ recipe.title }}</strong></h2>
             <hr>
-            <p>내가 입력한 재료들: {{ recipe.prompt.join(', ') }}</p>
+            <p>내가 입력한 재료들: {{ recipe.prompt ? recipe.prompt.join(', ') : inputs.join(', ') }}</p>
             <hr>
             <p v-for="ingre in recipe.ingredients" :key="ingre">
                 {{ ingre }}
@@ -67,7 +67,8 @@ export default {
                 const response = await apiClient.post('/ai/generate/', {
                     "ingredients": this.inputs
                 });
-                this.recipe = response.data;
+                console.log('API Response:', response.data.output);
+                this.recipe = response.data.output;
             } catch (error) {
                 console.error('Error generating recipe:', error);
             } finally {

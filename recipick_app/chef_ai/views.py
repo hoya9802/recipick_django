@@ -44,10 +44,12 @@ class AiChefAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = InputDataSerializer(data=request.data)
-        print("serializer: ", serializer)
+
         if serializer.is_valid():
             input_data = serializer.validated_data
-            print("input_data: ", input_data)
+            payload = {
+                "input": dict(input_data)
+            }
             try:
                 headers = {
                     "Authorization": (
@@ -58,9 +60,10 @@ class AiChefAPIView(APIView):
                 response = requests.post(
                     os.environ.get('RUNPOD_API_URL'),
                     headers=headers,
-                    json=input_data
+                    json=payload
                 )
                 response.raise_for_status()
+                print(f"Response : {response.json()}")
                 return Response(response.json(), status=status.HTTP_200_OK)
             except requests.RequestException as e:
                 return Response(

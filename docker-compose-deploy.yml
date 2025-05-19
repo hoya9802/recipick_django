@@ -16,6 +16,8 @@ services:
       - SECRET_KEY=${DJANGO_SECRET_KEY}
       - ALLOWED_HOSTS=${DOMAIN}
       - CORS_ALLOWED_ORIGINS=${DJANGO_CORS_ALLOWED_ORIGINS}
+      - RUNPOD_API_URL=${RUNPOD_API_URL}
+      - RUNPOD_API_KEY=${RUNPOD_API_KEY}
     depends_on:
       - db
       - redis
