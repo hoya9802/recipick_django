@@ -41,7 +41,7 @@ docker push [YOUR_DOCKER_USERNAME]/recipick-ai-serverless:latest
 4. "Container Image" 필드에 Docker 이미지 URL을 입력합니다: `docker.io/[YOUR_DOCKER_USERNAME]/recipick-ai-serverless:latest`
 5. (선택사항) 엔드포인트의 이름을 지정하거나 자동 생성된 이름을 사용합니다.
 6. "Worker Configuration"에서 필요한 GPU 타입을 선택합니다.
-7. **중요: "Network Volume" 옵션이 활성화되어 있는지 확인하세요. 이는 모델 캐싱에 필요합니다.**
+7. 만약 이미 Pods랑 연결되어 있는 Network Volume 이 있다면. 이를 연결하여 모델 캐싱합니다.
 8. 나머지 설정은 기본값으로 둡니다.
 9. "Create Endpoint"를 클릭합니다.
 
@@ -63,20 +63,6 @@ docker push [YOUR_DOCKER_USERNAME]/recipick-ai-serverless:latest
 ```
 
 "Run" 버튼을 클릭하면 결과가 표시됩니다.
-
-## 모델 캐싱 메커니즘
-
-이 Serverless 애플리케이션은 모델 다운로드 시간과 시작 지연을 최소화하기 위해 다음 캐싱 매커니즘을 사용합니다:
-
-1. **Docker 빌드 시 사전 다운로드**: Docker 이미지 빌드 과정에서 모델이 미리 다운로드되어 이미지에 포함됩니다.
-
-2. **RunPod 볼륨 사용**: `/runpod-volume/cache` 디렉토리가 영구 볼륨으로 마운트되어 모델 파일이 여러 요청 사이에 보존됩니다.
-
-3. **Local Files 우선 사용**: handler는 항상 로컬 캐시에서 모델을 먼저 로드하려고 시도하고, 실패할 경우에만 HuggingFace Hub에서 다운로드합니다.
-
-위 설정으로 인해:
-- 첫 번째 요청 이후의 콜드 스타트 시간이 크게 단축됩니다.
-- 워커가 종료되고 다시 시작되더라도 볼륨에 캐시된 모델을 재사용할 수 있습니다.
 
 ## API 호출 예시
 
