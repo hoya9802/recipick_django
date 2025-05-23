@@ -14,7 +14,7 @@ export default {
     },
     computed: {
         showHeader() {
-            return !['loginaccount', 'Signup', 'FindId', 'ResetPassword'].includes(this.$route?.name);
+            return !['loginaccount', 'Signup', 'FindId', 'ResetPassword', 'PrivacyPolicy', 'TermsOfService'].includes(this.$route?.name);
         },
     },
 
