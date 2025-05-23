@@ -10,7 +10,7 @@
 ## 프로젝트 소개
 
 ### 🛠️ Architecture
-![recipick-architecture](https://github.com/user-attachments/assets/fdc3cdcf-66d8-4278-96e3-ee05630d7e15)
+![recipick-architecture](https://github.com/user-attachments/assets/bc6d3635-996a-4097-bbbd-b133eba486bd)
 <br><br/>
 
 ### 🔎 ERD
@@ -140,4 +140,4 @@
 
 
 ## 🔥 향후 계획
- - AI를 현재 코드에서 사용하려면 비싼 인스턴스를 사용해야해서 비용이 크게 증가. 따라서 AI부분을 다른 서버로 옮길 예정
+모두 수정 완료!!
