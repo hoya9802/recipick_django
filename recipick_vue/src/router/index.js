@@ -38,6 +38,8 @@ import MyHelpEdit from '@/views/MyHelpEditView.vue';
 import MyLabEdit from '@/views/MyLabEditView.vue';
 import MyMarketEdit from '@/views/MyMarketEditView.vue';
 import MyRecipeEdit from '@/views/MyRecipeEditView.vue';
+import PrivacyPolicy from '@/views/PrivacyPolicy.vue';
+import TermsOfService from '@/views/TermsOfService.vue';
 
 const routes = [
   {
@@ -343,6 +345,16 @@ const routes = [
       requireLogin: true
     },
   },
+  {
+    path: '/privacy-policy',
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicy
+  },
+  {
+    path: '/terms-of-service',
+    name: 'TermsOfService',
+    component: TermsOfService
+  }
 ]
 
 const router = createRouter({
